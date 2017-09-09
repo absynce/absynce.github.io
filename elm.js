@@ -7801,7 +7801,7 @@ var _user$project$Main$view = function (model) {
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html$text('Home is wherever I want to be s. absynce developer blog written in Elm coming soon.'),
+			_0: _elm_lang$html$Html$text('Home is wherever I want to be. absynce developer blog written in Elm coming soon.'),
 			_1: {ctor: '[]'}
 		});
 };
