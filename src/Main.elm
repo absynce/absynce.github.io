@@ -1,6 +1,8 @@
 module Main exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
+import Markdown exposing (..)
 
 
 main =
@@ -46,7 +48,9 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    render model (text "Home is wherever I want to be. absynce developer blog written in Elm coming soon.")
+    model
+        |> pageToContent
+        |> render model
 
 
 
@@ -61,6 +65,27 @@ render page content =
             ]
         , div [] [ content ]
         ]
+
+
+pageToContent : Page -> Html Msg
+pageToContent page =
+    case page of
+        Home ->
+            Markdown.toHtml [ class "content" ] """
+Home is wherever I want to be. absynce developer blog written in Elm coming soon.
+
+```
+codez
+```
+"""
+
+        TestBlogPost ->
+            Markdown.toHtml [ class "content" ] """
+
+# Test Blog Post
+
+Test blog post content.
+"""
 
 
 pageToTitle : Page -> String
