@@ -72,10 +72,18 @@ pageToContent page =
     case page of
         Home ->
             Markdown.toHtml [ class "content" ] """
-Home is wherever I want to be. absynce developer blog written in Elm coming soon.
+"... is wherever I want to be."
+
+absynce developer blog written in Elm coming soon.
+
+## Test Code Block
 
 ```
-codez
+import Html exposing (..)
+
+main =
+    Html.beginnerProgram { model = model, view = view, update = update }
+
 ```
 """
 
