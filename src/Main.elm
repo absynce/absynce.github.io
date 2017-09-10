@@ -11,13 +11,13 @@ main =
 -- MODEL
 
 
-type Pages
+type Page
     = Home
     | TestBlogPost
 
 
 type alias Model =
-    Pages
+    Page
 
 
 model : Model
@@ -46,4 +46,28 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] [ text "Home is wherever I want to be. absynce developer blog written in Elm coming soon." ]
+    render model (text "Home is wherever I want to be. absynce developer blog written in Elm coming soon.")
+
+
+
+-- NOTE: Possibly refactor into (Views)/Page.elm like elm-spa-example.
+
+
+render : Page -> Html Msg -> Html Msg
+render page content =
+    div []
+        [ header []
+            [ h1 [] [ page |> pageToTitle |> text ]
+            ]
+        , div [] [ content ]
+        ]
+
+
+pageToTitle : Page -> String
+pageToTitle page =
+    case page of
+        Home ->
+            "Home"
+
+        TestBlogPost ->
+            "Test Blog Post"
