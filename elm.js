@@ -8303,7 +8303,7 @@ var _user$project$Main$pageToContent = function (page) {
 				_0: _elm_lang$html$Html_Attributes$class('content'),
 				_1: {ctor: '[]'}
 			},
-			'\n\"... is wherever I want to be.\"\n\nabsynce developer blog written in Elm coming soon.\n\n# Learning Elm by writing a SPA blog with Github pages\n\n## Test Code Block\n\n```\nimport Html exposing (..)\n\nmain =\n    Html.beginnerProgram { model = model, view = view, update = update }\n\n```\n');
+			'\n\"... is wherever I want to be.\"\n\nabsynce developer blog written in Elm coming soon.\n\n# Learning Elm by writing a SPA blog with Github pages\n\nI\'ve been writing software for over 10 years. The beauty, simplicity, and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.\n\nShare your journey into Elm while learning it by creating an Elm SPA blog and hosting it for free on GitHub Pages.\n\n## Step 0.\n\nIf you haven\'t walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It\'s easy and fun to read. By the end you\'ll have your environment set up and be ready to start writing your blog in Elm.\n\n## Test Code Block\n\n```\nimport Html exposing (..)\n\nmain =\n    Html.beginnerProgram { model = model, view = view, update = update }\n\n```\n');
 	} else {
 		return A2(
 			_evancz$elm_markdown$Markdown$toHtml,
@@ -8329,7 +8329,11 @@ var _user$project$Main$render = F2(
 						ctor: '::',
 						_0: A2(
 							_elm_lang$html$Html$h1,
-							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('title'),
+								_1: {ctor: '[]'}
+							},
 							{
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(

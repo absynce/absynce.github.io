@@ -61,7 +61,7 @@ render : Page -> Html Msg -> Html Msg
 render page content =
     div []
         [ header []
-            [ h1 [] [ page |> pageToTitle |> text ]
+            [ h1 [ class "title" ] [ page |> pageToTitle |> text ]
             ]
         , div [] [ content ]
         ]
@@ -77,6 +77,14 @@ pageToContent page =
 absynce developer blog written in Elm coming soon.
 
 # Learning Elm by writing a SPA blog with Github pages
+
+I've been writing software for over 10 years. The beauty, simplicity, and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
+
+Share your journey into Elm while learning it by creating an Elm SPA blog and hosting it for free on GitHub Pages.
+
+## Step 0.
+
+If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
 
 ## Test Code Block
 
