@@ -8303,7 +8303,7 @@ var _user$project$Main$pageToContent = function (page) {
 				_0: _elm_lang$html$Html_Attributes$class('content'),
 				_1: {ctor: '[]'}
 			},
-			'\n\"... is wherever I want to be.\"\n\nabsynce developer blog written in Elm coming soon.\n\n## Test Code Block\n\n```\nimport Html exposing (..)\n\nmain =\n    Html.beginnerProgram { model = model, view = view, update = update }\n\n```\n');
+			'\n\"... is wherever I want to be.\"\n\nabsynce developer blog written in Elm coming soon.\n\n# Learning Elm by writing a SPA blog with Github pages\n\n## Test Code Block\n\n```\nimport Html exposing (..)\n\nmain =\n    Html.beginnerProgram { model = model, view = view, update = update }\n\n```\n');
 	} else {
 		return A2(
 			_evancz$elm_markdown$Markdown$toHtml,

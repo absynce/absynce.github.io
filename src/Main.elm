@@ -76,6 +76,8 @@ pageToContent page =
 
 absynce developer blog written in Elm coming soon.
 
+# Learning Elm by writing a SPA blog with Github pages
+
 ## Test Code Block
 
 ```
