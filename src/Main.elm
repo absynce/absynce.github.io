@@ -111,14 +111,16 @@ Fire up your favorite text editor. Add the following to index.html in the root o
 </html>
 ```
 
+GitHub Pages looks for `index.html` when serving your site at username.github.io.
+
 This does two important things for Elm:
 
-1. References your soon-to-be compiled Elm app JavaScript output
+1. References your soon-to-be-compiled Elm app JavaScript output:
 ```
     <script src="elm.js"></script>
 ```
 
-2. Tells Elm to run your app full screen.
+2. Tells Elm to run your app full screen:
 ```
     var app = Elm.Main.fullscreen(null);
 ```
@@ -127,10 +129,11 @@ This does two important things for Elm:
     There's an intentional error in the JavaScript you'll fix once you've set up the Elm application.
 </aside>
 
-Now that you have a basic idea of the syntax and architecture of Elm apps
+## Step 3. - Write some Elm code
 
-## Test Code Block
+Now we're to the fun part. Create a `src/Main.elm` file with the following skeleton similar to [The Elm Architecture section](https://guide.elm-lang.org/architecture/) of An Introduction to Elm.
 
+### Skeleton
 ```
 import Html exposing (..)
 
