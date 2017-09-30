@@ -67,21 +67,24 @@ render page content =
         ]
 
 
+
+-- "... is wherever I want to be."
+--
+-- absynce developer blog written in Elm coming soon.
+--
+-- I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
+
+
 pageToContent : Page -> Html Msg
 pageToContent page =
     case page of
         Home ->
             Markdown.toHtml [ class "content" ] """
-"... is wherever I want to be."
 
-absynce developer blog written in Elm coming soon.
-
-I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
-
-# Learning Elm by writing a SPA blog with Github pages
+# Learn Elm while writing a blog on Github Pages
 
 
-Share your journey into Elm while learning it by creating an Elm SPA blog and hosting it for free on GitHub Pages.
+Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
 
 ## Step 0. - Read _An Introduction to Elm_
 
@@ -122,12 +125,8 @@ This does two important things for Elm:
 
 2. Tells Elm to run your app full screen:
 ```
-    var app = Elm.Main.fullscreen(null);
+    var app = Elm.Main.fullscreen();
 ```
-
-<aside class="notice">
-    There's an intentional error in the JavaScript you'll fix once you've set up the Elm application.
-</aside>
 
 ## Step 3. - Write some Elm code
 
@@ -140,7 +139,62 @@ import Html exposing (..)
 main =
     Html.beginnerProgram { model = model, view = view, update = update }
 
+
+-- Model
+
+
+type alias Model = { ... }
+
+model : Model
+model =
+    ...
+
+
+-- Update
+
+
+type Msg = Reset | ...
+
+update : Msg -> Model -> Model
+update msg model =
+  case msg of
+    Reset -> ...
+    ...
+
+
+-- View
+
+
+view : Model -> Html Msg
+view model =
+  ...
 ```
+
+Let's examine the model section. How can we describe what our model is?
+
+```
+type alias Model = { ... }
+
+model : Model
+model =
+    ...
+```
+
+To keep it simple, let's say our model is a page.
+
+```
+type alias Model = Page
+```
+
+Now we need to define `Page`.
+
+```
+-- Should I explain this union type, simplify model, or bypass?
+type Page = Home
+```
+
+This says what our model looks like, but doesn't give it a default value.
+
 """
 
         TestBlogPost ->
