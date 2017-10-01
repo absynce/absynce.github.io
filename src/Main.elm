@@ -16,6 +16,7 @@ main =
 type Page
     = Home
     | TestBlogPost
+    | Step2
 
 
 type alias Model =
@@ -90,9 +91,9 @@ Share your journey into Elm while learning it by creating a blog in Elm and host
 
 If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
 
-## Step 1. - Create a GitHub page
+## Step 1. - Write some Elm code
 
-[Create a GitHub page](https://pages.github.com/) with your GitHub username: username.github.io. Clone your repo locally.
+Now we're to the fun part. Create a `src/Main.elm` file
 
 ## Step 2. - Add index.html
 
@@ -128,9 +129,16 @@ This does two important things for Elm:
     var app = Elm.Main.fullscreen();
 ```
 
-## Step 3. - Write some Elm code
+## Step 3. - Create a GitHub page
 
-Now we're to the fun part. Create a `src/Main.elm` file with the following skeleton similar to [The Elm Architecture section](https://guide.elm-lang.org/architecture/) of An Introduction to Elm.
+[Create a GitHub page](https://pages.github.com/) with your GitHub username: username.github.io. Clone your repo locally.
+
+
+"""
+
+        Step2 ->
+            Markdown.toHtml [ class "content" ] """
+with the following skeleton similar to [The Elm Architecture section](https://guide.elm-lang.org/architecture/) of An Introduction to Elm.
 
 ### Skeleton
 ```
@@ -211,6 +219,9 @@ pageToTitle page =
     case page of
         Home ->
             "Home"
+
+        Step2 ->
+            "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on Github."
 
         TestBlogPost ->
             "Test Blog Post"
