@@ -82,7 +82,7 @@ pageToContent page =
         Home ->
             Markdown.toHtml [ class "content" ] """
 
-# Learn Elm while writing a blog on Github Pages
+# Learn Elm while writing a blog on GitHub Pages
 
 
 Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
@@ -93,7 +93,17 @@ If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.or
 
 ## Step 1. - Write some Elm code
 
-Now we're to the fun part. Create a `src/Main.elm` file
+Create a `src/Main.elm` file with the following code:
+
+```
+module Main exposing (main)
+
+import Html exposing (..)
+
+
+main =
+    text "Here's what I learned while exploring Elm..."
+```
 
 ## Step 2. - Add index.html
 
@@ -221,7 +231,7 @@ pageToTitle page =
             "Home"
 
         Step2 ->
-            "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on Github."
+            "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
 
         TestBlogPost ->
             "Test Blog Post"
