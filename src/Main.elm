@@ -87,9 +87,9 @@ pageToContent page =
 
 Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
 
-## Step 0. - Read _An Introduction to Elm_
+## Step 0. - Work through _An Introduction to Elm_
 
-If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
+If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. And by "walk through" I mean do the examples and play with the code. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
 
 ## Step 1. - Write some Elm code
 
@@ -164,7 +164,23 @@ This does two important things for Elm:
     var app = Elm.Main.fullscreen();
 ```
 
-## Step 4. - Create a GitHub page
+## Step 4. - Run your app locally
+
+```
+elm reactor
+```
+
+This will start the built-in Elm web server. Go to `http://localhost:8000/index.html`.
+
+<div class="notice">
+If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
+
+```
+elm reactor -p 8088
+```
+</div>
+
+## Step 5. - Create a GitHub page
 
 [Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_. Clone your repository locally.
 
