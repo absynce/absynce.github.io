@@ -16,7 +16,7 @@ main =
 type Page
     = Home
     | TestBlogPost
-    | Step2
+    | ElmBlogGithubPart2
 
 
 type alias Model =
@@ -105,7 +105,32 @@ main =
     text "Here's what I learned while exploring Elm..."
 ```
 
-## Step 2. - Add index.html
+## Step 2. - Compile your Elm code
+
+```
+elm make src/Main.elm --output=elm.js
+```
+
+The first time you compile you'll get the following:
+
+```nohighlight
+Some new packages are needed. Here is the upgrade plan.
+
+  Install:
+    elm-lang/core 5.1.1
+    elm-lang/html 2.0.0
+    elm-lang/virtual-dom 2.0.4
+
+Do you approve of this plan? [Y/n]
+```
+
+Press Enter. You should see some packages download and finally:
+
+```nohighlight
+Successfully generated elm.js
+```
+
+## Step 3. - Add index.html
 
 Fire up your favorite text editor. Add the following to index.html in the root of your project:
 
@@ -129,7 +154,7 @@ GitHub Pages looks for `index.html` when serving your site at username.github.io
 
 This does two important things for Elm:
 
-1. References your soon-to-be-compiled Elm app JavaScript output:
+1. References your compiled Elm app JavaScript output (`elm.js`):
 ```
     <script src="elm.js"></script>
 ```
@@ -139,14 +164,14 @@ This does two important things for Elm:
     var app = Elm.Main.fullscreen();
 ```
 
-## Step 3. - Create a GitHub page
+## Step 4. - Create a GitHub page
 
-[Create a GitHub page](https://pages.github.com/) with your GitHub username: username.github.io. Clone your repo locally.
+[Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_. Clone your repository locally.
 
 
 """
 
-        Step2 ->
+        ElmBlogGithubPart2 ->
             Markdown.toHtml [ class "content" ] """
 with the following skeleton similar to [The Elm Architecture section](https://guide.elm-lang.org/architecture/) of An Introduction to Elm.
 
@@ -230,7 +255,7 @@ pageToTitle page =
         Home ->
             "Home"
 
-        Step2 ->
+        ElmBlogGithubPart2 ->
             "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
 
         TestBlogPost ->

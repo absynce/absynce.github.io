@@ -8290,7 +8290,7 @@ var _user$project$Main$pageToTitle = function (page) {
 	switch (_p0.ctor) {
 		case 'Home':
 			return 'Home';
-		case 'Step2':
+		case 'ElmBlogGithubPart2':
 			return 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.';
 		default:
 			return 'Test Blog Post';
@@ -8307,8 +8307,8 @@ var _user$project$Main$pageToContent = function (page) {
 					_0: _elm_lang$html$Html_Attributes$class('content'),
 					_1: {ctor: '[]'}
 				},
-				'\n\n# Learn Elm while writing a blog on GitHub Pages\n\n\nShare your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.\n\n## Step 0. - Read _An Introduction to Elm_\n\nIf you haven\'t walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It\'s easy and fun to read. By the end you\'ll have your environment set up and be ready to start writing your blog in Elm.\n\n## Step 1. - Write some Elm code\n\nCreate a `src/Main.elm` file with the following code:\n\n```\nmodule Main exposing (main)\n\nimport Html exposing (..)\n\n\nmain =\n    text \"Here\'s what I learned while exploring Elm...\"\n```\n\n## Step 2. - Add index.html\n\nFire up your favorite text editor. Add the following to index.html in the root of your project:\n\n```\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>your blog title</title>\n    <script src=\"elm.js\"></script>\n  </head>\n  <body id=\"page-body\">\n    <script>\n      var app = Elm.Main.fullscreen(null);\n    </script>\n  </body>\n</html>\n```\n\nGitHub Pages looks for `index.html` when serving your site at username.github.io.\n\nThis does two important things for Elm:\n\n1. References your soon-to-be-compiled Elm app JavaScript output:\n```\n    <script src=\"elm.js\"></script>\n```\n\n2. Tells Elm to run your app full screen:\n```\n    var app = Elm.Main.fullscreen();\n```\n\n## Step 3. - Create a GitHub page\n\n[Create a GitHub page](https://pages.github.com/) with your GitHub username: username.github.io. Clone your repo locally.\n\n\n');
-		case 'Step2':
+				'\n\n# Learn Elm while writing a blog on GitHub Pages\n\n\nShare your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.\n\n## Step 0. - Read _An Introduction to Elm_\n\nIf you haven\'t walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. It\'s easy and fun to read. By the end you\'ll have your environment set up and be ready to start writing your blog in Elm.\n\n## Step 1. - Write some Elm code\n\nCreate a `src/Main.elm` file with the following code:\n\n```\nmodule Main exposing (main)\n\nimport Html exposing (..)\n\n\nmain =\n    text \"Here\'s what I learned while exploring Elm...\"\n```\n\n## Step 2. - Compile your Elm code\n\n```\nelm make src/Main.elm --output=elm.js\n```\n\nThe first time you compile you\'ll get the following:\n\n```nohighlight\nSome new packages are needed. Here is the upgrade plan.\n\n  Install:\n    elm-lang/core 5.1.1\n    elm-lang/html 2.0.0\n    elm-lang/virtual-dom 2.0.4\n\nDo you approve of this plan? [Y/n]\n```\n\nPress Enter. You should see some packages download and finally:\n\n```nohighlight\nSuccessfully generated elm.js\n```\n\n## Step 3. - Add index.html\n\nFire up your favorite text editor. Add the following to index.html in the root of your project:\n\n```\n<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>your blog title</title>\n    <script src=\"elm.js\"></script>\n  </head>\n  <body id=\"page-body\">\n    <script>\n      var app = Elm.Main.fullscreen(null);\n    </script>\n  </body>\n</html>\n```\n\nGitHub Pages looks for `index.html` when serving your site at username.github.io.\n\nThis does two important things for Elm:\n\n1. References your compiled Elm app JavaScript output (`elm.js`):\n```\n    <script src=\"elm.js\"></script>\n```\n\n2. Tells Elm to run your app full screen:\n```\n    var app = Elm.Main.fullscreen();\n```\n\n## Step 4. - Create a GitHub page\n\n[Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_. Clone your repository locally.\n\n\n');
+		case 'ElmBlogGithubPart2':
 			return A2(
 				_evancz$elm_markdown$Markdown$toHtml,
 				{
@@ -8375,7 +8375,7 @@ var _user$project$Main$view = function (model) {
 		model,
 		_user$project$Main$pageToContent(model));
 };
-var _user$project$Main$Step2 = {ctor: 'Step2'};
+var _user$project$Main$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
 var _user$project$Main$TestBlogPost = {ctor: 'TestBlogPost'};
 var _user$project$Main$Home = {ctor: 'Home'};
 var _user$project$Main$model = _user$project$Main$Home;
