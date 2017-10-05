@@ -190,9 +190,32 @@ Next we're going to work on publishing it.
 
 ## Step 5. - Create a GitHub page
 
-[Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_. Clone your repository locally.
+[Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_.
+
+Clone your repository locally.
 
 
+## Step 6. - Publish it!
+
+Commit your code. You can ignore `elm-stuff`.
+
+<div class="notice">
+Make sure you commit `elm.js` too.
+
+<p>
+We typically ignore compiled code, but this simplifies the steps for this exercise.
+</p>
+</div>
+
+Push your commit(s) to GitHub.
+
+Woohoo! You've just hosted an Elm blog on GitHub Pages.
+
+Go to _username.github.io_ and check it out!
+
+## Next steps
+
+In the next post we'll make the site more interesting with a title and content section.
 """
 
         ElmBlogGithubPart2 ->
