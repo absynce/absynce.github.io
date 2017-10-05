@@ -107,7 +107,7 @@ main =
 
 ## Step 2. - Compile your Elm code
 
-```
+```bash
 elm make src/Main.elm --output=elm.js
 ```
 
@@ -166,11 +166,11 @@ This does two important things for Elm:
 
 ## Step 4. - Run your app locally
 
-```
+```bash
 elm reactor
 ```
 
-This will start the built-in Elm web server. Go to `http://localhost:8000/index.html`.
+This will start the built-in Elm web server.
 
 <div class="notice">
 If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
@@ -179,6 +179,14 @@ If you get `elm-reactor: bind: resource busy (Address already in use)` then spec
 elm reactor -p 8088
 ```
 </div>
+
+Go to `http://localhost:8000/index.html`.
+
+You should see the text "Here's what I learned while exploring Elm...".
+
+You've written an application! Granted it doesn't do much yet, but you can get pretty far with good content.
+
+Next we're going to work on publishing it.
 
 ## Step 5. - Create a GitHub page
 
