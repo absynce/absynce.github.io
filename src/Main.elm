@@ -58,7 +58,11 @@ update msg model =
             ( { page = Home, contentString = blogPostContent }, Cmd.none )
 
         ElmBlogGithubPart1Loaded (Err _) ->
-            init
+            ( { page = Home -- TODO: Set correct page.
+              , contentString = "Failed to load Elm Blog Github - Part 1" -- TODO: Use type to get title.
+              }
+            , Cmd.none
+            )
 
 
 
@@ -76,7 +80,9 @@ subscriptions model =
 
 getElmBlogGithubPart1 : Cmd Msg
 getElmBlogGithubPart1 =
-    Http.send ElmBlogGithubPart1Loaded (Http.getString "https://absynce.github.io/posts/elm-blog-github-part-1.md")
+    "https://absynce.github.io/posts/elm-blog-github-part-1.md"
+        |> Http.getString
+        |> Http.send ElmBlogGithubPart1Loaded
 
 
 
@@ -92,7 +98,7 @@ view model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( { page = Home, contentString = "Hello, World" }, getElmBlogGithubPart1 )
+    ( { page = Home, contentString = "Loading..." }, getElmBlogGithubPart1 )
 
 
 

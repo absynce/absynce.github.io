@@ -9148,7 +9148,7 @@ var _user$project$Main$getElmBlogGithubPart1 = A2(
 	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-1.md'));
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: {page: _user$project$Main$Home, contentString: 'Hello, World'},
+	_0: {page: _user$project$Main$Home, contentString: 'Loading...'},
 	_1: _user$project$Main$getElmBlogGithubPart1
 };
 var _user$project$Main$update = F2(
@@ -9167,7 +9167,11 @@ var _user$project$Main$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					return _user$project$Main$init;
+					return {
+						ctor: '_Tuple2',
+						_0: {page: _user$project$Main$Home, contentString: 'Failed to load Elm Blog Github - Part 1'},
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 				}
 		}
 	});
