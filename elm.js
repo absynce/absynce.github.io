@@ -2732,6 +2732,39 @@ var _elm_lang$core$Char$isHexDigit = function ($char) {
 		$char));
 };
 
+//import Result //
+
+var _elm_lang$core$Native_Date = function() {
+
+function fromString(str)
+{
+	var date = new Date(str);
+	return isNaN(date.getTime())
+		? _elm_lang$core$Result$Err('Unable to parse \'' + str + '\' as a date. Dates must be in the ISO 8601 format.')
+		: _elm_lang$core$Result$Ok(date);
+}
+
+var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var monthTable =
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+return {
+	fromString: fromString,
+	year: function(d) { return d.getFullYear(); },
+	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
+	day: function(d) { return d.getDate(); },
+	hour: function(d) { return d.getHours(); },
+	minute: function(d) { return d.getMinutes(); },
+	second: function(d) { return d.getSeconds(); },
+	millisecond: function(d) { return d.getMilliseconds(); },
+	toTime: function(d) { return d.getTime(); },
+	fromTime: function(t) { return new Date(t); },
+	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+};
+
+}();
 //import Native.Utils //
 
 var _elm_lang$core$Native_Scheduler = function() {
@@ -5488,6 +5521,39 @@ var _elm_lang$core$Time$subMap = F2(
 			});
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
+
+var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
+var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
+var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
+var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
+var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
+var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
+var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
+var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
+var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
+var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
+var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
+var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
+var _elm_lang$core$Date$Date = {ctor: 'Date'};
+var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
+var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
+var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
+var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
+var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
+var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
+var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
+var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
+var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
+var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
+var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
+var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
+var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
+var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
+var _elm_lang$core$Date$May = {ctor: 'May'};
+var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
+var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
+var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
+var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
 
 var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
@@ -9060,24 +9126,40 @@ var _evancz$elm_markdown$Markdown$Options = F4(
 
 var _user$project$Main$pageToTitle = function (page) {
 	var _p0 = page;
-	switch (_p0.ctor) {
-		case 'Home':
-			return 'Home';
-		case 'ElmBlogGithubPart2':
-			return 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.';
-		default:
-			return 'Test Blog Post';
+	if (_p0.ctor === 'Home') {
+		return 'Home';
+	} else {
+		switch (_p0._0.ctor) {
+			case 'ElmBlogGithubPart1':
+				return 'elm-blog-github - Part 1 - Prove you can code in Elm.';
+			case 'ElmBlogGithubPart2':
+				return 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.';
+			default:
+				return 'Test Blog Post';
+		}
 	}
 };
 var _user$project$Main$pageResponseToContent = function (page) {
-	return A2(
-		_evancz$elm_markdown$Markdown$toHtml,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('content'),
-			_1: {ctor: '[]'}
-		},
-		page.contentString);
+	var _p1 = page;
+	if (_p1.ctor === 'Home') {
+		return A2(
+			_evancz$elm_markdown$Markdown$toHtml,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('content'),
+				_1: {ctor: '[]'}
+			},
+			_p1._0.blogPost.contentString);
+	} else {
+		return A2(
+			_evancz$elm_markdown$Markdown$toHtml,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('content'),
+				_1: {ctor: '[]'}
+			},
+			_p1._1.contentString);
+	}
 };
 var _user$project$Main$render = F2(
 	function (page, content) {
@@ -9123,22 +9205,29 @@ var _user$project$Main$render = F2(
 var _user$project$Main$view = function (model) {
 	return A2(
 		_user$project$Main$render,
-		model.page,
+		model,
 		_user$project$Main$pageResponseToContent(model));
 };
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Main$BlogModel = function (a) {
-	return {contentString: a};
-};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {page: a, contentString: b};
+var _user$project$Main$BlogPostModel = F3(
+	function (a, b, c) {
+		return {contentString: a, author: b, publishedOn: c};
 	});
+var _user$project$Main$HomeModel = function (a) {
+	return {blogPost: a};
+};
 var _user$project$Main$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
+var _user$project$Main$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
 var _user$project$Main$TestBlogPost = {ctor: 'TestBlogPost'};
-var _user$project$Main$Home = {ctor: 'Home'};
+var _user$project$Main$BlogPostPage = F2(
+	function (a, b) {
+		return {ctor: 'BlogPostPage', _0: a, _1: b};
+	});
+var _user$project$Main$Home = function (a) {
+	return {ctor: 'Home', _0: a};
+};
 var _user$project$Main$ElmBlogGithubPart1Loaded = function (a) {
 	return {ctor: 'ElmBlogGithubPart1Loaded', _0: a};
 };
@@ -9148,28 +9237,46 @@ var _user$project$Main$getElmBlogGithubPart1 = A2(
 	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-1.md'));
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: {page: _user$project$Main$Home, contentString: 'Loading...'},
+	_0: _user$project$Main$Home(
+		_user$project$Main$HomeModel(
+			{
+				contentString: 'Loading...',
+				author: '',
+				publishedOn: _elm_lang$core$Date$fromString('')
+			})),
 	_1: _user$project$Main$getElmBlogGithubPart1
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
 			case 'Reset':
 				return _user$project$Main$init;
 			case 'ElmBlogGithubPart1Msg':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart1};
 			default:
-				if (_p1._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
-						_0: {page: _user$project$Main$Home, contentString: _p1._0._0},
+						_0: _user$project$Main$Home(
+							_user$project$Main$HomeModel(
+								{
+									contentString: _p2._0._0,
+									author: 'Jared M. Smith',
+									publishedOn: _elm_lang$core$Date$fromString('2017-11-13')
+								})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
 					return {
 						ctor: '_Tuple2',
-						_0: {page: _user$project$Main$Home, contentString: 'Failed to load Elm Blog Github - Part 1'},
+						_0: _user$project$Main$Home(
+							_user$project$Main$HomeModel(
+								{
+									contentString: 'Failed to load Elm Blog Github - Part 1',
+									author: 'Jared M. Smith',
+									publishedOn: _elm_lang$core$Date$fromString('2017-11-13')
+								})),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
