@@ -9129,14 +9129,7 @@ var _user$project$Main$pageToTitle = function (page) {
 	if (_p0.ctor === 'Home') {
 		return 'Home';
 	} else {
-		switch (_p0._0.ctor) {
-			case 'ElmBlogGithubPart1':
-				return 'elm-blog-github - Part 1 - Prove you can code in Elm.';
-			case 'ElmBlogGithubPart2':
-				return 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.';
-			default:
-				return 'Test Blog Post';
-		}
+		return _p0._0.title;
 	}
 };
 var _user$project$Main$pageResponseToContent = function (page) {
@@ -9158,7 +9151,7 @@ var _user$project$Main$pageResponseToContent = function (page) {
 				_0: _elm_lang$html$Html_Attributes$class('content'),
 				_1: {ctor: '[]'}
 			},
-			_p1._1.contentString);
+			_p1._0.contentString);
 	}
 };
 var _user$project$Main$render = F2(
@@ -9211,9 +9204,21 @@ var _user$project$Main$view = function (model) {
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Main$BlogPostModel = F3(
-	function (a, b, c) {
-		return {contentString: a, author: b, publishedOn: c};
+var _user$project$Main$elmBlogGithubPart2 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: _elm_lang$core$Date$fromString('2017-11-20'),
+	title: 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.'
+};
+var _user$project$Main$elmBlogGithubPart1 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: _elm_lang$core$Date$fromString('2017-11-13'),
+	title: 'elm-blog-github - Part 1 - Prove you can code in Elm.'
+};
+var _user$project$Main$BlogPostModel = F4(
+	function (a, b, c, d) {
+		return {contentString: a, author: b, publishedOn: c, title: d};
 	});
 var _user$project$Main$HomeModel = function (a) {
 	return {blogPost: a};
@@ -9221,10 +9226,9 @@ var _user$project$Main$HomeModel = function (a) {
 var _user$project$Main$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
 var _user$project$Main$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
 var _user$project$Main$TestBlogPost = {ctor: 'TestBlogPost'};
-var _user$project$Main$BlogPostPage = F2(
-	function (a, b) {
-		return {ctor: 'BlogPostPage', _0: a, _1: b};
-	});
+var _user$project$Main$BlogPostPage = function (a) {
+	return {ctor: 'BlogPostPage', _0: a};
+};
 var _user$project$Main$Home = function (a) {
 	return {ctor: 'Home', _0: a};
 };
@@ -9242,7 +9246,8 @@ var _user$project$Main$init = {
 			{
 				contentString: 'Loading...',
 				author: '',
-				publishedOn: _elm_lang$core$Date$fromString('')
+				publishedOn: _elm_lang$core$Date$fromString(''),
+				title: 'Loading...'
 			})),
 	_1: _user$project$Main$getElmBlogGithubPart1
 };
@@ -9260,11 +9265,9 @@ var _user$project$Main$update = F2(
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Home(
 							_user$project$Main$HomeModel(
-								{
-									contentString: _p2._0._0,
-									author: 'Jared M. Smith',
-									publishedOn: _elm_lang$core$Date$fromString('2017-11-13')
-								})),
+								_elm_lang$core$Native_Utils.update(
+									_user$project$Main$elmBlogGithubPart1,
+									{contentString: _p2._0._0}))),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -9272,11 +9275,9 @@ var _user$project$Main$update = F2(
 						ctor: '_Tuple2',
 						_0: _user$project$Main$Home(
 							_user$project$Main$HomeModel(
-								{
-									contentString: 'Failed to load Elm Blog Github - Part 1',
-									author: 'Jared M. Smith',
-									publishedOn: _elm_lang$core$Date$fromString('2017-11-13')
-								})),
+								_elm_lang$core$Native_Utils.update(
+									_user$project$Main$elmBlogGithubPart1,
+									{contentString: 'Failed to load Elm Blog Github - Part 1'}))),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}

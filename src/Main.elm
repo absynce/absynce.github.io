@@ -26,17 +26,30 @@ type BlogPost
     | ElmBlogGithubPart2
 
 
-type Page
-    = Home HomeModel
-    | BlogPostPage BlogPost BlogPostModel -- TODO: Maybe move BlogPost to type: BlogPost in BlogPostModel.
-
-
 type alias BlogPostModel =
     { contentString : String
     , author : String
     , publishedOn : Result String Date
+    , title : String
 
+    -- , : BlogPost
     -- TODO: Do I need to add post type here? type: BlogPost
+    }
+
+
+elmBlogGithubPart1 =
+    { contentString = ""
+    , author = "Jared M. Smith"
+    , publishedOn = (Date.fromString "2017-11-13")
+    , title = "elm-blog-github - Part 1 - Prove you can code in Elm."
+    }
+
+
+elmBlogGithubPart2 =
+    { contentString = ""
+    , author = "Jared M. Smith"
+    , publishedOn = (Date.fromString "2017-11-20")
+    , title = "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
     }
 
 
@@ -45,14 +58,16 @@ type alias HomeModel =
     }
 
 
+type Page
+    = Home HomeModel
+    | BlogPostPage BlogPostModel -- TODO: Maybe move BlogPost to type: BlogPost in BlogPostModel.
+
+
 type alias Model =
     Page
 
 
 
--- { page : Page
--- , contentString : String
--- }
 -- UPDATE
 
 
@@ -74,22 +89,15 @@ update msg model =
         ElmBlogGithubPart1Loaded (Ok blogPostContent) ->
             ( Home <|
                 -- TODO: Should I add cases for each page instead of hard-coding Home?
-                HomeModel
-                    { contentString = blogPostContent
-                    , author = "Jared M. Smith"
-                    , publishedOn = (Date.fromString "2017-11-13")
-                    }
+                HomeModel { elmBlogGithubPart1 | contentString = blogPostContent }
             , Cmd.none
             )
 
         ElmBlogGithubPart1Loaded (Err _) ->
             ( Home <|
+                -- TODO: Set correct page.
                 HomeModel
-                    -- TODO: Set correct page.
-                    { contentString = "Failed to load Elm Blog Github - Part 1" -- TODO: Use type to get title.
-                    , author = "Jared M. Smith"
-                    , publishedOn = (Date.fromString "2017-11-13")
-                    }
+                    { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1" }
             , Cmd.none
             )
 
@@ -132,6 +140,7 @@ init =
             { contentString = "Loading..."
             , author = ""
             , publishedOn = (Date.fromString "")
+            , title = "Loading..."
             }
     , getElmBlogGithubPart1
     )
@@ -164,7 +173,7 @@ pageResponseToContent page =
         Home homeModel ->
             Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
 
-        BlogPostPage blogPostType blogPostModel ->
+        BlogPostPage blogPostModel ->
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
 
 
@@ -180,11 +189,5 @@ pageToTitle page =
         Home _ ->
             "Home"
 
-        BlogPostPage ElmBlogGithubPart1 model ->
-            "elm-blog-github - Part 1 - Prove you can code in Elm."
-
-        BlogPostPage ElmBlogGithubPart2 model ->
-            "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
-
-        BlogPostPage TestBlogPost model ->
-            "Test Blog Post"
+        BlogPostPage model ->
+            model.title
