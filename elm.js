@@ -9132,28 +9132,6 @@ var _user$project$Main$pageToTitle = function (page) {
 		return _p0._0.title;
 	}
 };
-var _user$project$Main$pageResponseToContent = function (page) {
-	var _p1 = page;
-	if (_p1.ctor === 'Home') {
-		return A2(
-			_evancz$elm_markdown$Markdown$toHtml,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('content'),
-				_1: {ctor: '[]'}
-			},
-			_p1._0.blogPost.contentString);
-	} else {
-		return A2(
-			_evancz$elm_markdown$Markdown$toHtml,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('content'),
-				_1: {ctor: '[]'}
-			},
-			_p1._0.contentString);
-	}
-};
 var _user$project$Main$render = F2(
 	function (page, content) {
 		return A2(
@@ -9195,12 +9173,6 @@ var _user$project$Main$render = F2(
 				}
 			});
 	});
-var _user$project$Main$view = function (model) {
-	return A2(
-		_user$project$Main$render,
-		model,
-		_user$project$Main$pageResponseToContent(model));
-};
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
@@ -9215,6 +9187,99 @@ var _user$project$Main$elmBlogGithubPart1 = {
 	author: 'Jared M. Smith',
 	publishedOn: _elm_lang$core$Date$fromString('2017-11-13'),
 	title: 'elm-blog-github - Part 1 - Prove you can code in Elm.'
+};
+var _user$project$Main$blogPosts = {
+	ctor: '::',
+	_0: _user$project$Main$elmBlogGithubPart1,
+	_1: {
+		ctor: '::',
+		_0: _user$project$Main$elmBlogGithubPart2,
+		_1: {ctor: '[]'}
+	}
+};
+var _user$project$Main$pageResponseToContent = function (page) {
+	var _p1 = page;
+	if (_p1.ctor === 'Home') {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_evancz$elm_markdown$Markdown$toHtml,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('content'),
+						_1: {ctor: '[]'}
+					},
+					_p1._0.blogPost.contentString),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('other-posts'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$h2,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Other Posts'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$ul,
+									{ctor: '[]'},
+									A2(
+										_elm_lang$core$List$map,
+										function (p) {
+											return A2(
+												_elm_lang$html$Html$li,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: p,
+													_1: {ctor: '[]'}
+												});
+										},
+										A2(
+											_elm_lang$core$List$map,
+											_elm_lang$html$Html$text,
+											A2(
+												_elm_lang$core$List$map,
+												function (_) {
+													return _.title;
+												},
+												_user$project$Main$blogPosts)))),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	} else {
+		return A2(
+			_evancz$elm_markdown$Markdown$toHtml,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('content'),
+				_1: {ctor: '[]'}
+			},
+			_p1._0.contentString);
+	}
+};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_user$project$Main$render,
+		model,
+		_user$project$Main$pageResponseToContent(model));
 };
 var _user$project$Main$BlogPostModel = F4(
 	function (a, b, c, d) {

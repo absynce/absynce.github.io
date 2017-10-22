@@ -4,6 +4,7 @@ import Date exposing (Date)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
+import List
 import Markdown exposing (..)
 
 
@@ -126,6 +127,10 @@ getElmBlogGithubPart1 =
 -- VIEW
 
 
+blogPosts =
+    [ elmBlogGithubPart1, elmBlogGithubPart2 ]
+
+
 view : Model -> Html Msg
 view model =
     model
@@ -171,7 +176,17 @@ render page content =
 pageResponseToContent page =
     case page of
         Home homeModel ->
-            Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
+            div []
+                [ Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
+                , div [ class "other-posts" ]
+                    [ h2 [] [ text "Other Posts" ]
+                    , blogPosts
+                        |> List.map .title
+                        |> List.map text
+                        |> List.map (\p -> li [] [ p ])
+                        |> ul []
+                    ]
+                ]
 
         BlogPostPage blogPostModel ->
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
