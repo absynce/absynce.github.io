@@ -9455,35 +9455,43 @@ var _user$project$Main$update = F2(
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart1};
 			case 'ElmBlogGithubPart1Loaded':
 				if (_p2._0.ctor === 'Ok') {
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Home(
-							_user$project$Main$HomeModel(
-								_elm_lang$core$Native_Utils.update(
-									_user$project$Main$elmBlogGithubPart1,
-									{contentString: _p2._0._0}))),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
+					var newBlogPost = _elm_lang$core$Native_Utils.update(
+						_user$project$Main$elmBlogGithubPart1,
+						{contentString: _p2._0._0});
+					var newModel = function () {
+						var _p3 = model;
+						if (_p3.ctor === 'Home') {
+							return _user$project$Main$Home(
+								_user$project$Main$HomeModel(newBlogPost));
+						} else {
+							return _user$project$Main$BlogPostPage(newBlogPost);
+						}
+					}();
+					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$Home(
-							_user$project$Main$HomeModel(
-								_elm_lang$core$Native_Utils.update(
-									_user$project$Main$elmBlogGithubPart1,
-									{contentString: 'Failed to load Elm Blog Github - Part 1'}))),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
+					var newBlogPost = _elm_lang$core$Native_Utils.update(
+						_user$project$Main$elmBlogGithubPart1,
+						{contentString: 'Failed to load Elm Blog Github - Part 1'});
+					var newModel = function () {
+						var _p4 = model;
+						if (_p4.ctor === 'Home') {
+							return _user$project$Main$Home(
+								_user$project$Main$HomeModel(newBlogPost));
+						} else {
+							return _user$project$Main$BlogPostPage(newBlogPost);
+						}
+					}();
+					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			default:
 				if (_p2._0.ctor === 'Home') {
 					return _user$project$Main$init;
 				} else {
-					var _p3 = _p2._0._0;
+					var _p5 = _p2._0._0;
 					return {
 						ctor: '_Tuple2',
-						_0: _user$project$Main$BlogPostPage(_p3),
-						_1: _p3.getContentCmd
+						_0: _user$project$Main$BlogPostPage(_p5),
+						_1: _p5.getContentCmd
 					};
 				}
 		}

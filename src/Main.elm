@@ -93,19 +93,34 @@ update msg model =
             ( model, getElmBlogGithubPart1 )
 
         ElmBlogGithubPart1Loaded (Ok blogPostContent) ->
-            ( Home <|
-                -- TODO: Should I add cases for each page instead of hard-coding Home?
-                HomeModel { elmBlogGithubPart1 | contentString = blogPostContent }
-            , Cmd.none
-            )
+            let
+                newBlogPost =
+                    { elmBlogGithubPart1 | contentString = blogPostContent }
+
+                newModel =
+                    case model of
+                        Home homeModel ->
+                            Home <| HomeModel newBlogPost
+
+                        BlogPostPage blogPostModel ->
+                            BlogPostPage newBlogPost
+            in
+                ( newModel, Cmd.none )
 
         ElmBlogGithubPart1Loaded (Err _) ->
-            ( Home <|
-                -- TODO: Set correct page.
-                HomeModel
+            let
+                newBlogPost =
                     { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1" }
-            , Cmd.none
-            )
+
+                newModel =
+                    case model of
+                        Home homeModel ->
+                            Home <| HomeModel newBlogPost
+
+                        BlogPostPage blogPostModel ->
+                            BlogPostPage newBlogPost
+            in
+                ( newModel, Cmd.none )
 
         TransitionTo (Home homeModel) ->
             init
