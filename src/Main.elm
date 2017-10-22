@@ -3,6 +3,7 @@ module Main exposing (..)
 import Date exposing (Date)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Http
 import List
 import Markdown exposing (..)
@@ -32,6 +33,7 @@ type alias BlogPostModel =
     , author : String
     , publishedOn : Result String Date
     , title : String
+    , getContentCmd : Cmd Msg
 
     -- , : BlogPost
     -- TODO: Do I need to add post type here? type: BlogPost
@@ -43,6 +45,7 @@ elmBlogGithubPart1 =
     , author = "Jared M. Smith"
     , publishedOn = (Date.fromString "2017-11-13")
     , title = "elm-blog-github - Part 1 - Prove you can code in Elm."
+    , getContentCmd = getElmBlogGithubPart1
     }
 
 
@@ -51,6 +54,7 @@ elmBlogGithubPart2 =
     , author = "Jared M. Smith"
     , publishedOn = (Date.fromString "2017-11-20")
     , title = "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
+    , getContentCmd = Cmd.none
     }
 
 
@@ -76,6 +80,7 @@ type Msg
     = Reset
     | ElmBlogGithubPart1Msg
     | ElmBlogGithubPart1Loaded (Result Http.Error String)
+    | TransitionTo Page
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -101,6 +106,12 @@ update msg model =
                     { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1" }
             , Cmd.none
             )
+
+        TransitionTo (Home homeModel) ->
+            init
+
+        TransitionTo (BlogPostPage blogPostModel) ->
+            ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
 
 
 
@@ -146,6 +157,7 @@ init =
             , author = ""
             , publishedOn = (Date.fromString "")
             , title = "Loading..."
+            , getContentCmd = Cmd.none
             }
     , getElmBlogGithubPart1
     )
@@ -181,9 +193,7 @@ pageResponseToContent page =
                 , div [ class "other-posts" ]
                     [ h2 [] [ text "Other Posts" ]
                     , blogPosts
-                        |> List.map .title
-                        |> List.map text
-                        |> List.map (\p -> li [] [ p ])
+                        |> List.map (\post -> li [] [ viewBlogPostLink post ])
                         |> ul []
                     ]
                 ]
@@ -206,3 +216,12 @@ pageToTitle page =
 
         BlogPostPage model ->
             model.title
+
+
+
+-- BlogPost Views
+
+
+viewBlogPostLink blogPost =
+    button [ onClick <| TransitionTo <| BlogPostPage blogPost ]
+        [ text blogPost.title ]
