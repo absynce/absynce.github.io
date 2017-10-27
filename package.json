@@ -10,7 +10,7 @@
     "elm": "^0.18.0"
   },
   "scripts": {
-    "build": "elm make src/Main.elm --output=elm.js",
+    "build": "elm make src/Main.elm --output=elm.js --debug",
     "dev": "npm run watch -s & npm run start",
     "start": "elm reactor -p 8082",
     "test": "echo \"Error: no test specified\" && exit 1",

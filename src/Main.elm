@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Date exposing (Date)
 import Html exposing (..)
@@ -105,12 +105,12 @@ update msg model =
                         BlogPostPage blogPostModel ->
                             BlogPostPage newBlogPost
             in
-                ( newModel, Cmd.none )
+                ( newModel, initHighlighting () )
 
-        ElmBlogGithubPart1Loaded (Err _) ->
+        ElmBlogGithubPart1Loaded (Err err) ->
             let
                 newBlogPost =
-                    { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1" }
+                    { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1: " ++ (toString err) }
 
                 newModel =
                     case model of
@@ -127,6 +127,13 @@ update msg model =
 
         TransitionTo (BlogPostPage blogPostModel) ->
             ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
+
+
+
+-- Ports
+
+
+port initHighlighting : () -> Cmd msg
 
 
 

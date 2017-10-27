@@ -27,11 +27,20 @@
   </head>
   <body id="page-body">
     <script>
+      var requestAnimationFrame =
+        window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame;   //Cross browser support
+
       var app = Elm.Main.fullscreen();
 
-      setTimeout(function() {
-        hljs.initHighlighting();
-      }, 1000);
+      app.ports.initHighlighting.subscribe(function initHighlightJsCalled() {
+        requestAnimationFrame(function callInitHighlighting() { // See https://stackoverflow.com/a/42451273/448876 for solution source.
+          hljs.initHighlighting.called = false;
+          hljs.initHighlighting();
+        });
+      });
     </script>
   </body>
 </html>
