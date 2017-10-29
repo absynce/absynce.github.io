@@ -13,7 +13,7 @@ If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.or
 
 Create a `src/Main.elm` file with the following code:
 
-```
+```elm
 module Main exposing (main)
 
 import Html exposing (..)
@@ -52,7 +52,7 @@ Successfully generated elm.js
 
 Fire up your favorite text editor. Add the following to index.html in the root of your project:
 
-```
+```html
 <!DOCTYPE html>
 <html>
   <head>
@@ -73,12 +73,12 @@ GitHub Pages looks for `index.html` when serving your site at username.github.io
 This does two important things for Elm:
 
 1. References your compiled Elm app JavaScript output (`elm.js`):
-```
+```html
     <script src="elm.js"></script>
 ```
 
 2. Tells Elm to run your app full screen:
-```
+```javascript
     var app = Elm.Main.fullscreen();
 ```
 
