@@ -1,4 +1,4 @@
-# Learn Elm while writing a blog on GitHub Pages
+# Learn Elm while writing a blog on GitHub Pages - Part 1 of ...
 
 
 Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
