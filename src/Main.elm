@@ -23,7 +23,7 @@ main =
 
 
 type BlogPost
-    = TestBlogPost
+    = None
     | ElmBlogGithubPart1
     | ElmBlogGithubPart2
 
@@ -34,9 +34,7 @@ type alias BlogPostModel =
     , publishedOn : Result String Date
     , title : String
     , getContentCmd : Cmd Msg
-
-    -- , : BlogPost
-    -- TODO: Do I need to add post type here? type: BlogPost
+    , entry : BlogPost
     }
 
 
@@ -46,6 +44,7 @@ elmBlogGithubPart1 =
     , publishedOn = (Date.fromString "2017-11-13")
     , title = "elm-blog-github - Part 1 - Prove you can code in Elm."
     , getContentCmd = getElmBlogGithubPart1
+    , entry = ElmBlogGithubPart1
     }
 
 
@@ -55,6 +54,7 @@ elmBlogGithubPart2 =
     , publishedOn = (Date.fromString "2017-11-20")
     , title = "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
     , getContentCmd = Cmd.none
+    , entry = ElmBlogGithubPart2
     }
 
 
@@ -180,6 +180,7 @@ init =
             , publishedOn = (Date.fromString "")
             , title = "Loading..."
             , getContentCmd = Cmd.none
+            , entry = None
             }
     , getElmBlogGithubPart1
     )
@@ -212,16 +213,20 @@ pageResponseToContent page =
         Home homeModel ->
             div []
                 [ Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
-                , div [ class "other-posts" ]
-                    [ h2 [] [ text "Other Posts" ]
-                    , blogPosts
-                        |> List.map (\post -> li [] [ viewBlogPostLink post ])
-                        |> ul []
-                    ]
+                , viewPostLinks
                 ]
 
         BlogPostPage blogPostModel ->
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
+
+
+viewPostLinks =
+    div [ class "posts" ]
+        [ h2 [] [ text "Blog Posts" ]
+        , blogPosts
+            |> List.map (\post -> li [] [ viewBlogPostLink post ])
+            |> ul []
+        ]
 
 
 
