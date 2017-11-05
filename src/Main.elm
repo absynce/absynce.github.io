@@ -192,11 +192,14 @@ init =
 
 render : Page -> Html Msg -> Html Msg
 render page content =
-    div []
+    div [ class "container" ]
         [ header []
             [ h1 [ class "title" ] [ page |> pageToTitle |> text ]
             ]
-        , div [] [ content ]
+        , content
+        , aside []
+            [ viewPostLinks
+            ]
         ]
 
 
@@ -211,10 +214,7 @@ render page content =
 pageResponseToContent page =
     case page of
         Home homeModel ->
-            div []
-                [ Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
-                , viewPostLinks
-                ]
+            Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
 
         BlogPostPage blogPostModel ->
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
