@@ -173,7 +173,13 @@ view model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Home <|
+    ( initialModel
+    , getElmBlogGithubPart1
+    )
+
+
+initialModel =
+    Home <|
         HomeModel
             { contentString = "Loading..."
             , author = ""
@@ -182,8 +188,6 @@ init =
             , getContentCmd = Cmd.none
             , entry = None
             }
-    , getElmBlogGithubPart1
-    )
 
 
 
@@ -198,7 +202,8 @@ render page content =
             ]
         , content
         , aside []
-            [ viewPostLinks
+            [ a [ onClick <| TransitionTo <| initialModel, href "#" ] [ text "Home" ]
+            , viewPostLinks
             ]
         ]
 
@@ -250,5 +255,8 @@ pageToTitle page =
 
 
 viewBlogPostLink blogPost =
-    button [ onClick <| TransitionTo <| BlogPostPage blogPost ]
+    a
+        [ onClick <| TransitionTo <| BlogPostPage blogPost
+        , href "#/post"
+        ]
         [ text blogPost.title ]

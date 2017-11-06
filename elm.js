@@ -13260,18 +13260,32 @@ var _user$project$Main$BlogPostPage = function (a) {
 var _user$project$Main$Home = function (a) {
 	return {ctor: 'Home', _0: a};
 };
+var _user$project$Main$initialModel = _user$project$Main$Home(
+	_user$project$Main$HomeModel(
+		{
+			contentString: 'Loading...',
+			author: '',
+			publishedOn: _elm_lang$core$Date$fromString(''),
+			title: 'Loading...',
+			getContentCmd: _elm_lang$core$Platform_Cmd$none,
+			entry: _user$project$Main$None
+		}));
 var _user$project$Main$TransitionTo = function (a) {
 	return {ctor: 'TransitionTo', _0: a};
 };
 var _user$project$Main$viewBlogPostLink = function (blogPost) {
 	return A2(
-		_elm_lang$html$Html$button,
+		_elm_lang$html$Html$a,
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html_Events$onClick(
 				_user$project$Main$TransitionTo(
 					_user$project$Main$BlogPostPage(blogPost))),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#/post'),
+				_1: {ctor: '[]'}
+			}
 		},
 		{
 			ctor: '::',
@@ -13382,8 +13396,28 @@ var _user$project$Main$render = F2(
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _user$project$Main$viewPostLinks,
-								_1: {ctor: '[]'}
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Main$TransitionTo(_user$project$Main$initialModel)),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href('#'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Home'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Main$viewPostLinks,
+									_1: {ctor: '[]'}
+								}
 							}),
 						_1: {ctor: '[]'}
 					}
@@ -13396,20 +13430,7 @@ var _user$project$Main$view = function (model) {
 		model,
 		_user$project$Main$pageResponseToContent(model));
 };
-var _user$project$Main$init = {
-	ctor: '_Tuple2',
-	_0: _user$project$Main$Home(
-		_user$project$Main$HomeModel(
-			{
-				contentString: 'Loading...',
-				author: '',
-				publishedOn: _elm_lang$core$Date$fromString(''),
-				title: 'Loading...',
-				getContentCmd: _elm_lang$core$Platform_Cmd$none,
-				entry: _user$project$Main$None
-			})),
-	_1: _user$project$Main$getElmBlogGithubPart1
-};
+var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _user$project$Main$getElmBlogGithubPart1};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p2 = msg;
