@@ -13273,6 +13273,25 @@ var _user$project$Main$initialModel = _user$project$Main$Home(
 var _user$project$Main$TransitionTo = function (a) {
 	return {ctor: 'TransitionTo', _0: a};
 };
+var _user$project$Main$viewHomeLink = function (child) {
+	return A2(
+		_elm_lang$html$Html$a,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(
+				_user$project$Main$TransitionTo(_user$project$Main$initialModel)),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: child,
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$Main$viewBlogPostLink = function (blogPost) {
 	return A2(
 		_elm_lang$html$Html$a,
@@ -13359,11 +13378,7 @@ var _user$project$Main$render = F2(
 	function (page, content) {
 		return A2(
 			_elm_lang$html$Html$div,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('container'),
-				_1: {ctor: '[]'}
-			},
+			{ctor: '[]'},
 			{
 				ctor: '::',
 				_0: A2(
@@ -13380,47 +13395,99 @@ var _user$project$Main$render = F2(
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(
-									_user$project$Main$pageToTitle(page)),
+								_0: _user$project$Main$viewHomeLink(
+									_elm_lang$html$Html$text('absynce.github.io')),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
 					ctor: '::',
-					_0: content,
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$aside,
-							{ctor: '[]'},
-							{
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('container'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: content,
+							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$a,
+									_elm_lang$html$Html$aside,
+									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Events$onClick(
-											_user$project$Main$TransitionTo(_user$project$Main$initialModel)),
+										_0: _user$project$Main$viewHomeLink(
+											A2(
+												_elm_lang$html$Html$img,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$src('https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188'),
+													_1: {ctor: '[]'}
+												},
+												{ctor: '[]'})),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('#'),
-											_1: {ctor: '[]'}
+											_0: A2(
+												_elm_lang$html$Html$h2,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('author-name'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Jared M. Smith'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$div,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$a,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$href('https://twitter.com/absynce'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text('@absynce'),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$p,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _user$project$Main$viewHomeLink(
+																_elm_lang$html$Html$text('Home')),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: _user$project$Main$viewPostLinks,
+														_1: {ctor: '[]'}
+													}
+												}
+											}
 										}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Home'),
-										_1: {ctor: '[]'}
 									}),
-								_1: {
-									ctor: '::',
-									_0: _user$project$Main$viewPostLinks,
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {ctor: '[]'}
-					}
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {ctor: '[]'}
 				}
 			});
 	});

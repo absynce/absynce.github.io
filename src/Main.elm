@@ -196,16 +196,25 @@ initialModel =
 
 render : Page -> Html Msg -> Html Msg
 render page content =
-    div [ class "container" ]
+    div []
         [ header []
-            [ h1 [ class "title" ] [ page |> pageToTitle |> text ]
+            [ h1 [ class "title" ] [ viewHomeLink <| text "absynce.github.io" ]
             ]
-        , content
-        , aside []
-            [ a [ onClick <| TransitionTo <| initialModel, href "#" ] [ text "Home" ]
-            , viewPostLinks
+        , div [ class "container" ]
+            [ content
+            , aside []
+                [ viewHomeLink <| img [ src "https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188" ] []
+                , h2 [ class "author-name" ] [ text "Jared M. Smith" ]
+                , div [] [ a [ href "https://twitter.com/absynce" ] [ text "@absynce" ] ]
+                , p [] [ viewHomeLink <| text "Home" ]
+                , viewPostLinks
+                ]
             ]
         ]
+
+
+viewHomeLink child =
+    a [ onClick <| TransitionTo <| initialModel, href "#" ] [ child ]
 
 
 

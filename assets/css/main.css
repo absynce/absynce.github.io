@@ -1,0 +1,43 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #333;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+a {
+  color: #419d78;
+}
+a:visited {
+  color: #2d3047;
+}
+
+header {
+  background-color: #419d78;
+}
+header h1 {
+  margin: 0;
+  padding: 10px;
+}
+header a {
+  color: #2d3047;
+  color: rgba(45, 48, 71, 0.9);
+}
+
+.title {
+  text-align: center;
+}
+.title a {
+  text-decoration: none;
+}
+
+.notice {
+  padding: 10px;
+  border: solid 1px #c60;
+  border-radius: 3px;
+}
+.notice p:last-child {
+  margin-bottom: 0;
+}
