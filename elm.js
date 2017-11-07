@@ -13244,14 +13244,6 @@ var _user$project$Main$HomeModel = function (a) {
 	return {blogPost: a};
 };
 var _user$project$Main$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
-var _user$project$Main$elmBlogGithubPart2 = {
-	contentString: '',
-	author: 'Jared M. Smith',
-	publishedOn: _elm_lang$core$Date$fromString('2017-11-20'),
-	title: 'elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub.',
-	getContentCmd: _elm_lang$core$Platform_Cmd$none,
-	entry: _user$project$Main$ElmBlogGithubPart2
-};
 var _user$project$Main$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
 var _user$project$Main$None = {ctor: 'None'};
 var _user$project$Main$BlogPostPage = function (a) {
@@ -13260,6 +13252,16 @@ var _user$project$Main$BlogPostPage = function (a) {
 var _user$project$Main$Home = function (a) {
 	return {ctor: 'Home', _0: a};
 };
+var _user$project$Main$updateModelBlogPost = F2(
+	function (model, newBlogPost) {
+		var _p2 = model;
+		if (_p2.ctor === 'Home') {
+			return _user$project$Main$Home(
+				_user$project$Main$HomeModel(newBlogPost));
+		} else {
+			return _user$project$Main$BlogPostPage(newBlogPost);
+		}
+	});
 var _user$project$Main$initialModel = _user$project$Main$Home(
 	_user$project$Main$HomeModel(
 		{
@@ -13312,6 +13314,22 @@ var _user$project$Main$viewBlogPostLink = function (blogPost) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$Main$ElmBlogGithubPart2Loaded = function (a) {
+	return {ctor: 'ElmBlogGithubPart2Loaded', _0: a};
+};
+var _user$project$Main$getElmBlogGithubPart2 = A2(
+	_elm_lang$http$Http$send,
+	_user$project$Main$ElmBlogGithubPart2Loaded,
+	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-2.md'));
+var _user$project$Main$elmBlogGithubPart2 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: _elm_lang$core$Date$fromString('2017-11-20'),
+	title: 'elm-blog-github - Part 2 - Add title and content areas.',
+	getContentCmd: _user$project$Main$getElmBlogGithubPart2,
+	entry: _user$project$Main$ElmBlogGithubPart2
+};
+var _user$project$Main$ElmBlogGithubPart2Msg = {ctor: 'ElmBlogGithubPart2Msg'};
 var _user$project$Main$ElmBlogGithubPart1Loaded = function (a) {
 	return {ctor: 'ElmBlogGithubPart1Loaded', _0: a};
 };
@@ -13500,26 +13518,18 @@ var _user$project$Main$view = function (model) {
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _user$project$Main$getElmBlogGithubPart1};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p2 = msg;
-		switch (_p2.ctor) {
+		var _p3 = msg;
+		switch (_p3.ctor) {
 			case 'Reset':
 				return _user$project$Main$init;
 			case 'ElmBlogGithubPart1Msg':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart1};
 			case 'ElmBlogGithubPart1Loaded':
-				if (_p2._0.ctor === 'Ok') {
+				if (_p3._0.ctor === 'Ok') {
 					var newBlogPost = _elm_lang$core$Native_Utils.update(
 						_user$project$Main$elmBlogGithubPart1,
-						{contentString: _p2._0._0});
-					var newModel = function () {
-						var _p3 = model;
-						if (_p3.ctor === 'Home') {
-							return _user$project$Main$Home(
-								_user$project$Main$HomeModel(newBlogPost));
-						} else {
-							return _user$project$Main$BlogPostPage(newBlogPost);
-						}
-					}();
+						{contentString: _p3._0._0});
+					var newModel = A2(_user$project$Main$updateModelBlogPost, model, newBlogPost);
 					return {
 						ctor: '_Tuple2',
 						_0: newModel,
@@ -13533,28 +13543,46 @@ var _user$project$Main$update = F2(
 							contentString: A2(
 								_elm_lang$core$Basics_ops['++'],
 								'Failed to load Elm Blog Github - Part 1: ',
-								_elm_lang$core$Basics$toString(_p2._0._0))
+								_elm_lang$core$Basics$toString(_p3._0._0))
 						});
-					var newModel = function () {
-						var _p4 = model;
-						if (_p4.ctor === 'Home') {
-							return _user$project$Main$Home(
-								_user$project$Main$HomeModel(newBlogPost));
-						} else {
-							return _user$project$Main$BlogPostPage(newBlogPost);
-						}
-					}();
+					var newModel = A2(_user$project$Main$updateModelBlogPost, model, newBlogPost);
+					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'ElmBlogGithubPart2Msg':
+				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart2};
+			case 'ElmBlogGithubPart2Loaded':
+				if (_p3._0.ctor === 'Ok') {
+					var newBlogPost = _elm_lang$core$Native_Utils.update(
+						_user$project$Main$elmBlogGithubPart2,
+						{contentString: _p3._0._0});
+					var newModel = A2(_user$project$Main$updateModelBlogPost, model, newBlogPost);
+					return {
+						ctor: '_Tuple2',
+						_0: newModel,
+						_1: _user$project$Main$initHighlighting(
+							{ctor: '_Tuple0'})
+					};
+				} else {
+					var newBlogPost = _elm_lang$core$Native_Utils.update(
+						_user$project$Main$elmBlogGithubPart2,
+						{
+							contentString: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Failed to load Elm Blog Github - Part 2: ',
+								_elm_lang$core$Basics$toString(_p3._0._0))
+						});
+					var newModel = A2(_user$project$Main$updateModelBlogPost, model, newBlogPost);
 					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			default:
-				if (_p2._0.ctor === 'Home') {
+				if (_p3._0.ctor === 'Home') {
 					return _user$project$Main$init;
 				} else {
-					var _p5 = _p2._0._0;
+					var _p4 = _p3._0._0;
 					return {
 						ctor: '_Tuple2',
-						_0: _user$project$Main$BlogPostPage(_p5),
-						_1: _p5.getContentCmd
+						_0: _user$project$Main$BlogPostPage(_p4),
+						_1: _p4.getContentCmd
 					};
 				}
 		}
@@ -13567,7 +13595,7 @@ var _user$project$Main$Reset = {ctor: 'Reset'};
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Platform.Cmd.Cmd":{"args":["msg"],"tags":{"Cmd":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"ElmBlogGithubPart1Msg":[],"ElmBlogGithubPart1Loaded":["Result.Result Http.Error String"],"Reset":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Main.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart1":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"Home":["Main.HomeModel"],"BlogPostPage":["Main.BlogPostModel"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Main.BlogPostModel":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Result.Result String Date.Date , title : String , getContentCmd : Platform.Cmd.Cmd Main.Msg , entry : Main.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Main.BlogPostModel }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Platform.Cmd.Cmd":{"args":["msg"],"tags":{"Cmd":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"ElmBlogGithubPart2Loaded":["Result.Result Http.Error String"],"ElmBlogGithubPart1Msg":[],"ElmBlogGithubPart2Msg":[],"ElmBlogGithubPart1Loaded":["Result.Result Http.Error String"],"Reset":[]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Main.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart1":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"Home":["Main.HomeModel"],"BlogPostPage":["Main.BlogPostModel"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Main.BlogPostModel":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Result.Result String Date.Date , title : String , getContentCmd : Platform.Cmd.Cmd Main.Msg , entry : Main.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Main.BlogPostModel }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

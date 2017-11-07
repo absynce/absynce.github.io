@@ -52,8 +52,8 @@ elmBlogGithubPart2 =
     { contentString = ""
     , author = "Jared M. Smith"
     , publishedOn = (Date.fromString "2017-11-20")
-    , title = "elm-blog-github - Part 2 - Add markdown to your Elm blog hosted on GitHub."
-    , getContentCmd = Cmd.none
+    , title = "elm-blog-github - Part 2 - Add title and content areas."
+    , getContentCmd = getElmBlogGithubPart2
     , entry = ElmBlogGithubPart2
     }
 
@@ -80,6 +80,8 @@ type Msg
     = Reset
     | ElmBlogGithubPart1Msg
     | ElmBlogGithubPart1Loaded (Result Http.Error String)
+    | ElmBlogGithubPart2Msg
+    | ElmBlogGithubPart2Loaded (Result Http.Error String)
     | TransitionTo Page
 
 
@@ -98,12 +100,7 @@ update msg model =
                     { elmBlogGithubPart1 | contentString = blogPostContent }
 
                 newModel =
-                    case model of
-                        Home homeModel ->
-                            Home <| HomeModel newBlogPost
-
-                        BlogPostPage blogPostModel ->
-                            BlogPostPage newBlogPost
+                    updateModelBlogPost model newBlogPost
             in
                 ( newModel, initHighlighting () )
 
@@ -113,12 +110,30 @@ update msg model =
                     { elmBlogGithubPart1 | contentString = "Failed to load Elm Blog Github - Part 1: " ++ (toString err) }
 
                 newModel =
-                    case model of
-                        Home homeModel ->
-                            Home <| HomeModel newBlogPost
+                    updateModelBlogPost model newBlogPost
+            in
+                ( newModel, Cmd.none )
 
-                        BlogPostPage blogPostModel ->
-                            BlogPostPage newBlogPost
+        ElmBlogGithubPart2Msg ->
+            ( model, getElmBlogGithubPart2 )
+
+        ElmBlogGithubPart2Loaded (Ok blogPostContent) ->
+            let
+                newBlogPost =
+                    { elmBlogGithubPart2 | contentString = blogPostContent }
+
+                newModel =
+                    updateModelBlogPost model newBlogPost
+            in
+                ( newModel, initHighlighting () )
+
+        ElmBlogGithubPart2Loaded (Err err) ->
+            let
+                newBlogPost =
+                    { elmBlogGithubPart2 | contentString = "Failed to load Elm Blog Github - Part 2: " ++ (toString err) }
+
+                newModel =
+                    updateModelBlogPost model newBlogPost
             in
                 ( newModel, Cmd.none )
 
@@ -127,6 +142,15 @@ update msg model =
 
         TransitionTo (BlogPostPage blogPostModel) ->
             ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
+
+
+updateModelBlogPost model newBlogPost =
+    case model of
+        Home homeModel ->
+            Home <| HomeModel newBlogPost
+
+        BlogPostPage blogPostModel ->
+            BlogPostPage newBlogPost
 
 
 
@@ -154,6 +178,13 @@ getElmBlogGithubPart1 =
     "https://absynce.github.io/posts/elm-blog-github-part-1.md"
         |> Http.getString
         |> Http.send ElmBlogGithubPart1Loaded
+
+
+getElmBlogGithubPart2 : Cmd Msg
+getElmBlogGithubPart2 =
+    "https://absynce.github.io/posts/elm-blog-github-part-2.md"
+        |> Http.getString
+        |> Http.send ElmBlogGithubPart2Loaded
 
 
 
