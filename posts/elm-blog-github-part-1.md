@@ -79,7 +79,7 @@ This does two important things for Elm:
 
 2. Tells Elm to run your app full screen:
 ```javascript
-    var app = Elm.Main.fullscreen();
+    var app = Elm.Main.fullscreen(null);
 ```
 
 ## Step 4. - Run your app locally
