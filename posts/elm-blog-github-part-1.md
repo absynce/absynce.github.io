@@ -62,7 +62,7 @@ Fire up your favorite text editor. Add the following to index.html in the root o
   </head>
   <body id="page-body">
     <script>
-      var app = Elm.Main.fullscreen(null);
+      var app = Elm.Main.fullscreen();
     </script>
   </body>
 </html>
@@ -79,7 +79,7 @@ This does two important things for Elm:
 
 2. Tells Elm to run your app full screen:
 ```javascript
-    var app = Elm.Main.fullscreen(null);
+    var app = Elm.Main.fullscreen();
 ```
 
 ## Step 4. - Run your app locally
