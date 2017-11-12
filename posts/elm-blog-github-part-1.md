@@ -3,11 +3,11 @@
 
 Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
 
-## Step 0. - Work through _An Introduction to Elm_
+## Step 0. - Work through the beginning of _An Introduction to Elm_
 
 [// NOTE:]: # (Should I just say to read the syntax part since this is so simple?)
 
-If you haven't walked through [An Introduction to Elm](https://guide.elm-lang.org/) do that now. And by "walk through" I mean do the examples and play with the code. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
+If you haven't walked through the beginning of [_An Introduction to Elm_](https://guide.elm-lang.org/) to the ["Core Language" section](https://guide.elm-lang.org/core_language.html) do that now. And by "walk through" I mean do the examples and play with the code. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
 
 ## Step 1. - Write some Elm code
 
