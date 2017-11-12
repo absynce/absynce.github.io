@@ -20,6 +20,7 @@ main =
 
 
 -- MODEL
+-- Is BlogPost useful?
 
 
 type BlogPost
@@ -170,7 +171,7 @@ subscriptions model =
 
 
 
--- http
+-- HTTP
 
 
 getElmBlogGithubPart1 : Cmd Msg
