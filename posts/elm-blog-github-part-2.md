@@ -12,8 +12,15 @@ main =
     text "Here's what I learned while exploring Elm..."
 ```
 
-Let's see what the compiler has to say about it...
+Let's see what the compiler has to say about it.
 
+Run the following on the command line:
+
+```bash
+elm make src/Main.elm --output=elm.js
+```
+
+Output from the compiler:
 ```
 -- TYPE MISMATCH -------------------------------------------------- src/Main.elm
 
@@ -66,7 +73,7 @@ This makes sense if we think about how we write HTML; every element has a single
 </html>
 ```
 
-In this case both the `h1` and the text have a single parent element, `body`. Let's apply this to the Elm application.
+In this case both the `h1` and the text "Here's what I..." have a single parent element, `body`. Let's apply this to the Elm application.
 
 ## Step 3 - Wrap the elements in the `body`
 
@@ -106,7 +113,7 @@ That was easy. It made the code a bit more semantic too.
 
 ## Step 5 - Wrap the content with a `div`
 
-Actually, instead of showing this code, try it on your own.
+Actually, instead of _me_ showing _you_ this code, try it on your own; then show it to me.
 
 <p class="notice">
 Chances are good if you make a mistake the compiler will let you know. If you get lost, start back where you knew the code was working and try again.
