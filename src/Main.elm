@@ -357,7 +357,7 @@ viewBlogPostLink : BlogPostModel -> Html Msg
 viewBlogPostLink blogPost =
     a
         [ onClick <| TransitionTo <| BlogPostPage blogPost
-        , href "#/post"
+        , href <| "#/post/" ++ (blogPost.slug |> blogPostSlugToString)
         ]
         [ text blogPost.title ]
 

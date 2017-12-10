@@ -14167,7 +14167,11 @@ var _user$project$Main$viewBlogPostLink = function (blogPost) {
 					_user$project$Main$BlogPostPage(blogPost))),
 			_1: {
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#/post'),
+				_0: _elm_lang$html$Html_Attributes$href(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'#/post/',
+						_user$project$Main$blogPostSlugToString(blogPost.slug))),
 				_1: {ctor: '[]'}
 			}
 		},
