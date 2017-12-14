@@ -9,6 +9,7 @@ import Http
 import List
 import Markdown exposing (..)
 import Navigation
+import Page.BlogPost as BlogPost
 import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, string)
 
 
@@ -24,71 +25,16 @@ main =
 
 
 -- MODEL
--- Is BlogPost useful?
-
-
-type BlogPost
-    = None
-    | ElmBlogGithubPart1
-    | ElmBlogGithubPart2
-    | ElmBlogGithubPart3
-
-
-type alias BlogPostModel =
-    { contentString : String
-    , author : String
-    , publishedOn : Result String Date
-    , slug : Slug
-    , title : String
-    , getContentCmd : Cmd Msg
-    , entry : BlogPost
-    }
-
-
-elmBlogGithubPart1 : BlogPostModel
-elmBlogGithubPart1 =
-    { contentString = ""
-    , author = "Jared M. Smith"
-    , publishedOn = (Date.fromString "2017-12-13")
-    , slug = Slug "elm-blog-github-part-1-host-elm-code-on-github"
-    , title = "elm-blog-github - Part 1 - Host Elm code on GitHub"
-    , getContentCmd = getElmBlogGithubPart1
-    , entry = ElmBlogGithubPart1
-    }
-
-
-elmBlogGithubPart2 : BlogPostModel
-elmBlogGithubPart2 =
-    { contentString = ""
-    , author = "Jared M. Smith"
-    , publishedOn = (Date.fromString "2017-12-20")
-    , slug = Slug "elm-blog-github-part-2-add-title-and-content-areas"
-    , title = "elm-blog-github - Part 2 - Add title and content areas"
-    , getContentCmd = getElmBlogGithubPart2
-    , entry = ElmBlogGithubPart2
-    }
-
-
-elmBlogGithubPart3 : BlogPostModel
-elmBlogGithubPart3 =
-    { contentString = ""
-    , author = "Jared M. Smith"
-    , publishedOn = (Date.fromString "2017-12-27")
-    , slug = Slug "elm-blog-github-part-3-add-multiple-pages"
-    , title = "elm-blog-github - Part 3 - Add multiple pages"
-    , getContentCmd = getElmBlogGithubPart3
-    , entry = ElmBlogGithubPart3
-    }
 
 
 type alias HomeModel =
-    { blogPost : BlogPostModel
+    { blogPost : BlogPost.Model
     }
 
 
 type Page
     = HomePage HomeModel
-    | BlogPostPage BlogPostModel -- TODO: Maybe move BlogPost to type: BlogPost in BlogPostModel.
+    | BlogPostPage BlogPost.Model
 
 
 
@@ -125,14 +71,16 @@ update msg model =
                 |> setRoute (Just Home)
 
         TransitionTo (BlogPostPage blogPostModel) ->
-            ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
+            -- ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
+            model
+                |> (setRoute <| Just <| Post blogPostModel.slug)
 
         SetRoute maybeRoute ->
             model
                 |> setRoute maybeRoute
 
 
-getPageBlogPost : Page -> BlogPostModel
+getPageBlogPost : Page -> BlogPost.Model
 getPageBlogPost page =
     case page of
         HomePage homeModel ->
@@ -142,7 +90,7 @@ getPageBlogPost page =
             blogPostModel
 
 
-updateModelBlogPost : BlogPostModel -> Page -> Page
+updateModelBlogPost : BlogPost.Model -> Page -> Page
 updateModelBlogPost newBlogPost model =
     case model of
         HomePage homeModel ->
@@ -176,7 +124,7 @@ blogPostLoaded model blogPostResult =
                 newContentString =
                     err
                         |> toString
-                        |> (++) "Failed to load Elm Blog Github - Part 2: "
+                        |> (++) "Failed to load blog post: "
 
                 oldBlogPost =
                     model
@@ -193,7 +141,7 @@ blogPostLoaded model blogPostResult =
                 ( newModel, Cmd.none )
 
 
-updateBlogPostContent : String -> BlogPostModel -> BlogPostModel
+updateBlogPostContent : String -> BlogPost.Model -> BlogPost.Model
 updateBlogPostContent newContent blogPost =
     { blogPost | contentString = newContent }
 
@@ -215,47 +163,7 @@ subscriptions model =
 
 
 
--- HTTP
-
-
-getElmBlogGithubPart1 : Cmd Msg
-getElmBlogGithubPart1 =
-    "https://absynce.github.io/posts/elm-blog-github-part-1.md"
-        |> Http.getString
-        |> Http.send BlogPostLoaded
-
-
-getElmBlogGithubPart2 : Cmd Msg
-getElmBlogGithubPart2 =
-    "https://absynce.github.io/posts/elm-blog-github-part-2.md"
-        |> Http.getString
-        |> Http.send BlogPostLoaded
-
-
-getElmBlogGithubPart3 : Cmd Msg
-getElmBlogGithubPart3 =
-    "https://absynce.github.io/posts/elm-blog-github-part-3.md"
-        |> Http.getString
-        |> Http.send BlogPostLoaded
-
-
-
 -- VIEW
-
-
-blogPosts : List BlogPostModel
-blogPosts =
-    [ elmBlogGithubPart1
-    , elmBlogGithubPart2
-    , elmBlogGithubPart3
-    ]
-
-
-blogPostsBySlug : Dict String BlogPostModel
-blogPostsBySlug =
-    blogPosts
-        |> List.map (\blogPost -> ( blogPost.slug |> blogPostSlugToString, blogPost ))
-        |> Dict.fromList
 
 
 view : Model -> Html Msg
@@ -278,11 +186,11 @@ initialModel =
         HomeModel
             { contentString = "Loading..."
             , author = ""
-            , publishedOn = (Date.fromString "")
-            , slug = Slug ""
+            , publishedOn = Date.fromTime 0
+            , slug = BlogPost.Slug ""
             , title = "Loading..."
-            , getContentCmd = Cmd.none
-            , entry = None
+            , getContentUrl = ""
+            , entry = BlogPost.None
             }
 
 
@@ -319,7 +227,7 @@ viewHomeLink child =
 -- I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
 
 
-pageResponseToContent : Page -> Html msg
+pageResponseToContent : Page -> Html Msg
 pageResponseToContent page =
     case page of
         HomePage homeModel ->
@@ -329,11 +237,25 @@ pageResponseToContent page =
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
 
 
+
+-- PageNotFound errorMessage ->
+--     page |> viewPageNotFound errorMessage
+
+
+viewPageNotFound : String -> Page -> Html Msg
+viewPageNotFound errorMessage page =
+    div []
+        [ h2 [] [ text "404 - Page Not Found :(" ]
+        , p [] [ text errorMessage ]
+        , p [] [ viewHomeLink <| text "Go Home" ]
+        ]
+
+
 viewPostLinks : Html Msg
 viewPostLinks =
     div [ class "posts" ]
         [ h2 [] [ text "Blog Posts" ]
-        , blogPosts
+        , BlogPost.posts
             |> List.map (\post -> li [] [ viewBlogPostLink post ])
             |> ul []
         ]
@@ -350,41 +272,28 @@ pageToTitle page =
 
 
 
+-- PageNotFound errorMessage ->
+--     "Page not found"
+--
 -- BlogPost Views
 
 
-viewBlogPostLink : BlogPostModel -> Html Msg
+viewBlogPostLink : BlogPost.Model -> Html Msg
 viewBlogPostLink blogPost =
     a
         [ onClick <| TransitionTo <| BlogPostPage blogPost
-        , href <| "#/post/" ++ (blogPost.slug |> blogPostSlugToString)
+        , href <| "#/post/" ++ (blogPost.slug |> BlogPost.slugToString)
         ]
         [ text blogPost.title ]
-
-
-{-| Slug parser based on [elm-spa-example](https://github.com/rtfeldman/elm-spa-example/).
--}
-blogPostSlugParser : Url.Parser (Slug -> a) a
-blogPostSlugParser =
-    Url.custom "SLUG" (Ok << Slug)
-
-
-blogPostSlugToString : Slug -> String
-blogPostSlugToString (Slug slug) =
-    slug
 
 
 
 -- Route
 
 
-type Slug
-    = Slug String
-
-
 type Route
     = Home
-    | Post Slug
+    | Post BlogPost.Slug
 
 
 {-| Route parser based on [elm-spa-example](https://github.com/rtfeldman/elm-spa-example/blob/master/src/Route.elm#L26).
@@ -393,7 +302,7 @@ route : Parser (Route -> a) a
 route =
     oneOf
         [ Url.map Home (Url.s "")
-        , Url.map Post (Url.s "post" </> blogPostSlugParser)
+        , Url.map Post (Url.s "post" </> BlogPost.slugParser)
         ]
 
 
@@ -403,35 +312,36 @@ routeFromLocation location =
         |> parseHash route
 
 
-{-| TODO: Set route based on parameter.
--}
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
         Just Home ->
             ( model
-            , getElmBlogGithubPart1
+            , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
 
         Just (Post slug) ->
             -- Should this move to BlogPost.elm (init)?
             let
                 slugString =
-                    slug |> blogPostSlugToString
+                    slug |> BlogPost.slugToString
 
                 maybeBlogPost =
-                    blogPostsBySlug |> Dict.get slugString
+                    BlogPost.postsBySlug |> Dict.get slugString
             in
                 case maybeBlogPost of
                     Just blogPost ->
-                        ( BlogPostPage blogPost, blogPost.getContentCmd )
+                        ( BlogPostPage blogPost
+                        , blogPost
+                            |> BlogPost.get BlogPostLoaded
+                        )
 
                     Nothing ->
-                        Debug.crash "Handle page not found."
+                        Debug.crash "TODO: Handle page not found."
 
         Nothing ->
             ( model
-            , getElmBlogGithubPart1
+            , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
 
 

@@ -14041,21 +14041,120 @@ var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
 };
 
-var _user$project$Main$blogPostSlugToString = function (_p0) {
+var _user$project$Page_BlogPost$slugToString = function (_p0) {
 	var _p1 = _p0;
 	return _p1._0;
 };
+var _user$project$Page_BlogPost$get = F2(
+	function (toMsg, model) {
+		return A2(
+			_elm_lang$http$Http$send,
+			toMsg,
+			_elm_lang$http$Http$getString(model.getContentUrl));
+	});
+var _user$project$Page_BlogPost$Model = F7(
+	function (a, b, c, d, e, f, g) {
+		return {contentString: a, author: b, publishedOn: c, slug: d, title: e, getContentUrl: f, entry: g};
+	});
+var _user$project$Page_BlogPost$ElmBlogGithubPart3 = {ctor: 'ElmBlogGithubPart3'};
+var _user$project$Page_BlogPost$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
+var _user$project$Page_BlogPost$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
+var _user$project$Page_BlogPost$None = {ctor: 'None'};
+var _user$project$Page_BlogPost$Slug = function (a) {
+	return {ctor: 'Slug', _0: a};
+};
+var _user$project$Page_BlogPost$elmBlogGithubPart1 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: A2(
+		_elm_lang$core$Result$withDefault,
+		_elm_lang$core$Date$fromTime(0),
+		_elm_lang$core$Date$fromString('2017-12-13')),
+	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-1-host-elm-code-on-github'),
+	title: 'elm-blog-github - Part 1 - Host Elm code on GitHub',
+	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-1.md',
+	entry: _user$project$Page_BlogPost$ElmBlogGithubPart1
+};
+var _user$project$Page_BlogPost$elmBlogGithubPart2 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: A2(
+		_elm_lang$core$Result$withDefault,
+		_elm_lang$core$Date$fromTime(0),
+		_elm_lang$core$Date$fromString('2017-12-20')),
+	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-2-add-title-and-content-areas'),
+	title: 'elm-blog-github - Part 2 - Add title and content areas',
+	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-2.md',
+	entry: _user$project$Page_BlogPost$ElmBlogGithubPart2
+};
+var _user$project$Page_BlogPost$elmBlogGithubPart3 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: A2(
+		_elm_lang$core$Result$withDefault,
+		_elm_lang$core$Date$fromTime(0),
+		_elm_lang$core$Date$fromString('2017-12-27')),
+	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-3-add-multiple-pages'),
+	title: 'elm-blog-github - Part 3 - Add multiple pages',
+	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-3.md',
+	entry: _user$project$Page_BlogPost$ElmBlogGithubPart3
+};
+var _user$project$Page_BlogPost$posts = {
+	ctor: '::',
+	_0: _user$project$Page_BlogPost$elmBlogGithubPart1,
+	_1: {
+		ctor: '::',
+		_0: _user$project$Page_BlogPost$elmBlogGithubPart2,
+		_1: {
+			ctor: '::',
+			_0: _user$project$Page_BlogPost$elmBlogGithubPart3,
+			_1: {ctor: '[]'}
+		}
+	}
+};
+var _user$project$Page_BlogPost$postsBySlug = _elm_lang$core$Dict$fromList(
+	A2(
+		_elm_lang$core$List$map,
+		function (blogPost) {
+			return {
+				ctor: '_Tuple2',
+				_0: _user$project$Page_BlogPost$slugToString(blogPost.slug),
+				_1: blogPost
+			};
+		},
+		_user$project$Page_BlogPost$posts));
+var _user$project$Page_BlogPost$latest = A2(
+	_elm_lang$core$Maybe$withDefault,
+	_user$project$Page_BlogPost$elmBlogGithubPart1,
+	_elm_lang$core$List$head(
+		A2(
+			_elm_lang$core$List$sortBy,
+			function (post) {
+				return _elm_lang$core$Date$toTime(post.publishedOn);
+			},
+			_user$project$Page_BlogPost$posts)));
+var _user$project$Page_BlogPost$slugParser = A2(
+	_evancz$url_parser$UrlParser$custom,
+	'SLUG',
+	function (_p2) {
+		return _elm_lang$core$Result$Ok(
+			_user$project$Page_BlogPost$Slug(_p2));
+	});
+var _user$project$Page_BlogPost$BlogPostLoaded = function (a) {
+	return {ctor: 'BlogPostLoaded', _0: a};
+};
+
 var _user$project$Main$pageToTitle = function (page) {
-	var _p2 = page;
-	if (_p2.ctor === 'HomePage') {
+	var _p0 = page;
+	if (_p0.ctor === 'HomePage') {
 		return 'Home';
 	} else {
-		return _p2._0.title;
+		return _p0._0.title;
 	}
 };
 var _user$project$Main$pageResponseToContent = function (page) {
-	var _p3 = page;
-	if (_p3.ctor === 'HomePage') {
+	var _p1 = page;
+	if (_p1.ctor === 'HomePage') {
 		return A2(
 			_evancz$elm_markdown$Markdown$toHtml,
 			{
@@ -14063,7 +14162,7 @@ var _user$project$Main$pageResponseToContent = function (page) {
 				_0: _elm_lang$html$Html_Attributes$class('content'),
 				_1: {ctor: '[]'}
 			},
-			_p3._0.blogPost.contentString);
+			_p1._0.blogPost.contentString);
 	} else {
 		return A2(
 			_evancz$elm_markdown$Markdown$toHtml,
@@ -14072,7 +14171,7 @@ var _user$project$Main$pageResponseToContent = function (page) {
 				_0: _elm_lang$html$Html_Attributes$class('content'),
 				_1: {ctor: '[]'}
 			},
-			_p3._0.contentString);
+			_p1._0.contentString);
 	}
 };
 var _user$project$Main$subscriptions = function (model) {
@@ -14085,11 +14184,11 @@ var _user$project$Main$updateBlogPostContent = F2(
 			{contentString: newContent});
 	});
 var _user$project$Main$getPageBlogPost = function (page) {
-	var _p4 = page;
-	if (_p4.ctor === 'HomePage') {
-		return _p4._0.blogPost;
+	var _p2 = page;
+	if (_p2.ctor === 'HomePage') {
+		return _p2._0.blogPost;
 	} else {
-		return _p4._0;
+		return _p2._0;
 	}
 };
 var _user$project$Main$initHighlighting = _elm_lang$core$Native_Platform.outgoingPort(
@@ -14097,17 +14196,9 @@ var _user$project$Main$initHighlighting = _elm_lang$core$Native_Platform.outgoin
 	function (v) {
 		return null;
 	});
-var _user$project$Main$BlogPostModel = F7(
-	function (a, b, c, d, e, f, g) {
-		return {contentString: a, author: b, publishedOn: c, slug: d, title: e, getContentCmd: f, entry: g};
-	});
 var _user$project$Main$HomeModel = function (a) {
 	return {blogPost: a};
 };
-var _user$project$Main$ElmBlogGithubPart3 = {ctor: 'ElmBlogGithubPart3'};
-var _user$project$Main$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
-var _user$project$Main$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
-var _user$project$Main$None = {ctor: 'None'};
 var _user$project$Main$BlogPostPage = function (a) {
 	return {ctor: 'BlogPostPage', _0: a};
 };
@@ -14116,8 +14207,8 @@ var _user$project$Main$HomePage = function (a) {
 };
 var _user$project$Main$updateModelBlogPost = F2(
 	function (newBlogPost, model) {
-		var _p5 = model;
-		if (_p5.ctor === 'HomePage') {
+		var _p3 = model;
+		if (_p3.ctor === 'HomePage') {
 			return _user$project$Main$HomePage(
 				_user$project$Main$HomeModel(newBlogPost));
 		} else {
@@ -14126,10 +14217,10 @@ var _user$project$Main$updateModelBlogPost = F2(
 	});
 var _user$project$Main$blogPostLoaded = F2(
 	function (model, blogPostResult) {
-		var _p6 = blogPostResult;
-		if (_p6.ctor === 'Ok') {
+		var _p4 = blogPostResult;
+		if (_p4.ctor === 'Ok') {
 			var oldBlogPost = _user$project$Main$getPageBlogPost(model);
-			var newBlogPost = A2(_user$project$Main$updateBlogPostContent, _p6._0, oldBlogPost);
+			var newBlogPost = A2(_user$project$Main$updateBlogPostContent, _p4._0, oldBlogPost);
 			var newModel = A2(_user$project$Main$updateModelBlogPost, newBlogPost, model);
 			return {
 				ctor: '_Tuple2',
@@ -14144,19 +14235,90 @@ var _user$project$Main$blogPostLoaded = F2(
 					function (x, y) {
 						return A2(_elm_lang$core$Basics_ops['++'], x, y);
 					}),
-				'Failed to load Elm Blog Github - Part 2: ',
-				_elm_lang$core$Basics$toString(_p6._0));
+				'Failed to load blog post: ',
+				_elm_lang$core$Basics$toString(_p4._0));
 			var newBlogPost = A2(_user$project$Main$updateBlogPostContent, newContentString, oldBlogPost);
 			var newModel = A2(_user$project$Main$updateModelBlogPost, newBlogPost, model);
 			return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
+var _user$project$Main$initialModel = _user$project$Main$HomePage(
+	_user$project$Main$HomeModel(
+		{
+			contentString: 'Loading...',
+			author: '',
+			publishedOn: _elm_lang$core$Date$fromTime(0),
+			slug: _user$project$Page_BlogPost$Slug(''),
+			title: 'Loading...',
+			getContentUrl: '',
+			entry: _user$project$Page_BlogPost$None
+		}));
 var _user$project$Main$SetRoute = function (a) {
 	return {ctor: 'SetRoute', _0: a};
 };
 var _user$project$Main$TransitionTo = function (a) {
 	return {ctor: 'TransitionTo', _0: a};
 };
+var _user$project$Main$viewHomeLink = function (child) {
+	return A2(
+		_elm_lang$html$Html$a,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Events$onClick(
+				_user$project$Main$TransitionTo(_user$project$Main$initialModel)),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href('#'),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: child,
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$viewPageNotFound = F2(
+	function (errorMessage, page) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('404 - Page Not Found :('),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(errorMessage),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$p,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _user$project$Main$viewHomeLink(
+									_elm_lang$html$Html$text('Go Home')),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	});
 var _user$project$Main$viewBlogPostLink = function (blogPost) {
 	return A2(
 		_elm_lang$html$Html$a,
@@ -14171,7 +14333,7 @@ var _user$project$Main$viewBlogPostLink = function (blogPost) {
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						'#/post/',
-						_user$project$Main$blogPostSlugToString(blogPost.slug))),
+						_user$project$Page_BlogPost$slugToString(blogPost.slug))),
 				_1: {ctor: '[]'}
 			}
 		},
@@ -14181,108 +14343,6 @@ var _user$project$Main$viewBlogPostLink = function (blogPost) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$BlogPostLoaded = function (a) {
-	return {ctor: 'BlogPostLoaded', _0: a};
-};
-var _user$project$Main$getElmBlogGithubPart1 = A2(
-	_elm_lang$http$Http$send,
-	_user$project$Main$BlogPostLoaded,
-	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-1.md'));
-var _user$project$Main$getElmBlogGithubPart2 = A2(
-	_elm_lang$http$Http$send,
-	_user$project$Main$BlogPostLoaded,
-	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-2.md'));
-var _user$project$Main$getElmBlogGithubPart3 = A2(
-	_elm_lang$http$Http$send,
-	_user$project$Main$BlogPostLoaded,
-	_elm_lang$http$Http$getString('https://absynce.github.io/posts/elm-blog-github-part-3.md'));
-var _user$project$Main$Reset = {ctor: 'Reset'};
-var _user$project$Main$Slug = function (a) {
-	return {ctor: 'Slug', _0: a};
-};
-var _user$project$Main$elmBlogGithubPart1 = {
-	contentString: '',
-	author: 'Jared M. Smith',
-	publishedOn: _elm_lang$core$Date$fromString('2017-12-13'),
-	slug: _user$project$Main$Slug('elm-blog-github-part-1-host-elm-code-on-github'),
-	title: 'elm-blog-github - Part 1 - Host Elm code on GitHub',
-	getContentCmd: _user$project$Main$getElmBlogGithubPart1,
-	entry: _user$project$Main$ElmBlogGithubPart1
-};
-var _user$project$Main$elmBlogGithubPart2 = {
-	contentString: '',
-	author: 'Jared M. Smith',
-	publishedOn: _elm_lang$core$Date$fromString('2017-12-20'),
-	slug: _user$project$Main$Slug('elm-blog-github-part-2-add-title-and-content-areas'),
-	title: 'elm-blog-github - Part 2 - Add title and content areas',
-	getContentCmd: _user$project$Main$getElmBlogGithubPart2,
-	entry: _user$project$Main$ElmBlogGithubPart2
-};
-var _user$project$Main$elmBlogGithubPart3 = {
-	contentString: '',
-	author: 'Jared M. Smith',
-	publishedOn: _elm_lang$core$Date$fromString('2017-12-27'),
-	slug: _user$project$Main$Slug('elm-blog-github-part-3-add-multiple-pages'),
-	title: 'elm-blog-github - Part 3 - Add multiple pages',
-	getContentCmd: _user$project$Main$getElmBlogGithubPart3,
-	entry: _user$project$Main$ElmBlogGithubPart3
-};
-var _user$project$Main$blogPosts = {
-	ctor: '::',
-	_0: _user$project$Main$elmBlogGithubPart1,
-	_1: {
-		ctor: '::',
-		_0: _user$project$Main$elmBlogGithubPart2,
-		_1: {
-			ctor: '::',
-			_0: _user$project$Main$elmBlogGithubPart3,
-			_1: {ctor: '[]'}
-		}
-	}
-};
-var _user$project$Main$blogPostsBySlug = _elm_lang$core$Dict$fromList(
-	A2(
-		_elm_lang$core$List$map,
-		function (blogPost) {
-			return {
-				ctor: '_Tuple2',
-				_0: _user$project$Main$blogPostSlugToString(blogPost.slug),
-				_1: blogPost
-			};
-		},
-		_user$project$Main$blogPosts));
-var _user$project$Main$setRoute = F2(
-	function (route, model) {
-		var _p7 = route;
-		if (_p7.ctor === 'Just') {
-			if (_p7._0.ctor === 'Home') {
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart1};
-			} else {
-				var slugString = _user$project$Main$blogPostSlugToString(_p7._0._0);
-				var maybeBlogPost = A2(_elm_lang$core$Dict$get, slugString, _user$project$Main$blogPostsBySlug);
-				var _p8 = maybeBlogPost;
-				if (_p8.ctor === 'Just') {
-					var _p9 = _p8._0;
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$BlogPostPage(_p9),
-						_1: _p9.getContentCmd
-					};
-				} else {
-					return _elm_lang$core$Native_Utils.crashCase(
-						'Main',
-						{
-							start: {line: 425, column: 17},
-							end: {line: 430, column: 61}
-						},
-						_p8)('Handle page not found.');
-				}
-			}
-		} else {
-			return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getElmBlogGithubPart1};
-		}
-	});
-var _user$project$Main$asRouteIn = _elm_lang$core$Basics$flip(_user$project$Main$setRoute);
 var _user$project$Main$viewPostLinks = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -14317,40 +14377,10 @@ var _user$project$Main$viewPostLinks = A2(
 								_1: {ctor: '[]'}
 							});
 					},
-					_user$project$Main$blogPosts)),
+					_user$project$Page_BlogPost$posts)),
 			_1: {ctor: '[]'}
 		}
 	});
-var _user$project$Main$initialModel = _user$project$Main$HomePage(
-	_user$project$Main$HomeModel(
-		{
-			contentString: 'Loading...',
-			author: '',
-			publishedOn: _elm_lang$core$Date$fromString(''),
-			slug: _user$project$Main$Slug(''),
-			title: 'Loading...',
-			getContentCmd: _elm_lang$core$Platform_Cmd$none,
-			entry: _user$project$Main$None
-		}));
-var _user$project$Main$viewHomeLink = function (child) {
-	return A2(
-		_elm_lang$html$Html$a,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Events$onClick(
-				_user$project$Main$TransitionTo(_user$project$Main$initialModel)),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$href('#'),
-				_1: {ctor: '[]'}
-			}
-		},
-		{
-			ctor: '::',
-			_0: child,
-			_1: {ctor: '[]'}
-		});
-};
 var _user$project$Main$render = F2(
 	function (page, content) {
 		return A2(
@@ -14474,44 +14504,78 @@ var _user$project$Main$view = function (model) {
 		model,
 		_user$project$Main$pageResponseToContent(model));
 };
-var _user$project$Main$blogPostSlugParser = A2(
-	_evancz$url_parser$UrlParser$custom,
-	'SLUG',
-	function (_p11) {
-		return _elm_lang$core$Result$Ok(
-			_user$project$Main$Slug(_p11));
+var _user$project$Main$BlogPostLoaded = function (a) {
+	return {ctor: 'BlogPostLoaded', _0: a};
+};
+var _user$project$Main$setRoute = F2(
+	function (route, model) {
+		var _p5 = route;
+		if (_p5.ctor === 'Just') {
+			if (_p5._0.ctor === 'Home') {
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _user$project$Page_BlogPost$latest)
+				};
+			} else {
+				var slugString = _user$project$Page_BlogPost$slugToString(_p5._0._0);
+				var maybeBlogPost = A2(_elm_lang$core$Dict$get, slugString, _user$project$Page_BlogPost$postsBySlug);
+				var _p6 = maybeBlogPost;
+				if (_p6.ctor === 'Just') {
+					var _p7 = _p6._0;
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$BlogPostPage(_p7),
+						_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _p7)
+					};
+				} else {
+					return _elm_lang$core$Native_Utils.crashCase(
+						'Main',
+						{
+							start: {line: 332, column: 17},
+							end: {line: 340, column: 67}
+						},
+						_p6)('TODO: Handle page not found.');
+				}
+			}
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: model,
+				_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _user$project$Page_BlogPost$latest)
+			};
+		}
 	});
+var _user$project$Main$asRouteIn = _elm_lang$core$Basics$flip(_user$project$Main$setRoute);
+var _user$project$Main$Reset = {ctor: 'Reset'};
 var _user$project$Main$Post = function (a) {
 	return {ctor: 'Post', _0: a};
 };
 var _user$project$Main$Home = {ctor: 'Home'};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p12 = msg;
-		switch (_p12.ctor) {
+		var _p9 = msg;
+		switch (_p9.ctor) {
 			case 'Reset':
 				return A2(
 					_user$project$Main$setRoute,
 					_elm_lang$core$Maybe$Just(_user$project$Main$Home),
 					model);
 			case 'BlogPostLoaded':
-				return A2(_user$project$Main$blogPostLoaded, model, _p12._0);
+				return A2(_user$project$Main$blogPostLoaded, model, _p9._0);
 			case 'TransitionTo':
-				if (_p12._0.ctor === 'HomePage') {
+				if (_p9._0.ctor === 'HomePage') {
 					return A2(
 						_user$project$Main$setRoute,
 						_elm_lang$core$Maybe$Just(_user$project$Main$Home),
 						model);
 				} else {
-					var _p13 = _p12._0._0;
-					return {
-						ctor: '_Tuple2',
-						_0: _user$project$Main$BlogPostPage(_p13),
-						_1: _p13.getContentCmd
-					};
+					return _user$project$Main$setRoute(
+						_elm_lang$core$Maybe$Just(
+							_user$project$Main$Post(_p9._0._0.slug)))(model);
 				}
 			default:
-				return A2(_user$project$Main$setRoute, _p12._0, model);
+				return A2(_user$project$Main$setRoute, _p9._0, model);
 		}
 	});
 var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
@@ -14529,7 +14593,7 @@ var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
 				A2(
 					_evancz$url_parser$UrlParser_ops['</>'],
 					_evancz$url_parser$UrlParser$s('post'),
-					_user$project$Main$blogPostSlugParser)),
+					_user$project$Page_BlogPost$slugParser)),
 			_1: {ctor: '[]'}
 		}
 	});
@@ -14544,16 +14608,16 @@ var _user$project$Main$init = function (location) {
 };
 var _user$project$Main$main = A2(
 	_elm_lang$navigation$Navigation$program,
-	function (_p14) {
+	function (_p10) {
 		return _user$project$Main$SetRoute(
-			_user$project$Main$routeFromLocation(_p14));
+			_user$project$Main$routeFromLocation(_p10));
 	},
 	{init: _user$project$Main$init, subscriptions: _user$project$Main$subscriptions, view: _user$project$Main$view, update: _user$project$Main$update})();
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Platform.Cmd.Cmd":{"args":["msg"],"tags":{"Cmd":[]}},"Main.Slug":{"args":[],"tags":{"Slug":["String"]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Main.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Main.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart1":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"BlogPostPage":["Main.BlogPostModel"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Main.BlogPostModel":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Result.Result String Date.Date , slug : Main.Slug , title : String , getContentCmd : Platform.Cmd.Cmd Main.Msg , entry : Main.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Main.BlogPostModel }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Page.BlogPost.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart1":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Page.BlogPost.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Page.BlogPost.Slug":{"args":[],"tags":{"Slug":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"BlogPostPage":["Page.BlogPost.Model"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Page.BlogPost.Model":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Date.Date , slug : Page.BlogPost.Slug , title : String , getContentUrl : String , entry : Page.BlogPost.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Page.BlogPost.Model }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
