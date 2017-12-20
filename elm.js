@@ -14144,38 +14144,19 @@ var _user$project$Page_BlogPost$BlogPostLoaded = function (a) {
 	return {ctor: 'BlogPostLoaded', _0: a};
 };
 
-var _user$project$Main$pageToTitle = function (page) {
-	var _p0 = page;
-	if (_p0.ctor === 'HomePage') {
-		return 'Home';
-	} else {
-		return _p0._0.title;
-	}
-};
-var _user$project$Main$pageResponseToContent = function (page) {
-	var _p1 = page;
-	if (_p1.ctor === 'HomePage') {
-		return A2(
-			_evancz$elm_markdown$Markdown$toHtml,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('content'),
-				_1: {ctor: '[]'}
-			},
-			_p1._0.blogPost.contentString);
-	} else {
-		return A2(
-			_evancz$elm_markdown$Markdown$toHtml,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('content'),
-				_1: {ctor: '[]'}
-			},
-			_p1._0.contentString);
-	}
-};
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main$pageToTitle = function (page) {
+	var _p0 = page;
+	switch (_p0.ctor) {
+		case 'HomePage':
+			return 'Home';
+		case 'BlogPostPage':
+			return _p0._0.title;
+		default:
+			return 'Page not found';
+	}
 };
 var _user$project$Main$updateBlogPostContent = F2(
 	function (newContent, blogPost) {
@@ -14184,11 +14165,14 @@ var _user$project$Main$updateBlogPostContent = F2(
 			{contentString: newContent});
 	});
 var _user$project$Main$getPageBlogPost = function (page) {
-	var _p2 = page;
-	if (_p2.ctor === 'HomePage') {
-		return _p2._0.blogPost;
-	} else {
-		return _p2._0;
+	var _p1 = page;
+	switch (_p1.ctor) {
+		case 'HomePage':
+			return _elm_lang$core$Maybe$Just(_p1._0.blogPost);
+		case 'BlogPostPage':
+			return _elm_lang$core$Maybe$Just(_p1._0);
+		default:
+			return _elm_lang$core$Maybe$Nothing;
 	}
 };
 var _user$project$Main$initHighlighting = _elm_lang$core$Native_Platform.outgoingPort(
@@ -14199,49 +14183,15 @@ var _user$project$Main$initHighlighting = _elm_lang$core$Native_Platform.outgoin
 var _user$project$Main$HomeModel = function (a) {
 	return {blogPost: a};
 };
+var _user$project$Main$ErrorPage = function (a) {
+	return {ctor: 'ErrorPage', _0: a};
+};
 var _user$project$Main$BlogPostPage = function (a) {
 	return {ctor: 'BlogPostPage', _0: a};
 };
 var _user$project$Main$HomePage = function (a) {
 	return {ctor: 'HomePage', _0: a};
 };
-var _user$project$Main$updateModelBlogPost = F2(
-	function (newBlogPost, model) {
-		var _p3 = model;
-		if (_p3.ctor === 'HomePage') {
-			return _user$project$Main$HomePage(
-				_user$project$Main$HomeModel(newBlogPost));
-		} else {
-			return _user$project$Main$BlogPostPage(newBlogPost);
-		}
-	});
-var _user$project$Main$blogPostLoaded = F2(
-	function (model, blogPostResult) {
-		var _p4 = blogPostResult;
-		if (_p4.ctor === 'Ok') {
-			var oldBlogPost = _user$project$Main$getPageBlogPost(model);
-			var newBlogPost = A2(_user$project$Main$updateBlogPostContent, _p4._0, oldBlogPost);
-			var newModel = A2(_user$project$Main$updateModelBlogPost, newBlogPost, model);
-			return {
-				ctor: '_Tuple2',
-				_0: newModel,
-				_1: _user$project$Main$initHighlighting(
-					{ctor: '_Tuple0'})
-			};
-		} else {
-			var oldBlogPost = _user$project$Main$getPageBlogPost(model);
-			var newContentString = A2(
-				F2(
-					function (x, y) {
-						return A2(_elm_lang$core$Basics_ops['++'], x, y);
-					}),
-				'Failed to load blog post: ',
-				_elm_lang$core$Basics$toString(_p4._0));
-			var newBlogPost = A2(_user$project$Main$updateBlogPostContent, newContentString, oldBlogPost);
-			var newModel = A2(_user$project$Main$updateModelBlogPost, newBlogPost, model);
-			return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
 var _user$project$Main$initialModel = _user$project$Main$HomePage(
 	_user$project$Main$HomeModel(
 		{
@@ -14253,6 +14203,56 @@ var _user$project$Main$initialModel = _user$project$Main$HomePage(
 			getContentUrl: '',
 			entry: _user$project$Page_BlogPost$None
 		}));
+var _user$project$Main$updateModelBlogPost = F2(
+	function (newBlogPost, model) {
+		var _p2 = model;
+		switch (_p2.ctor) {
+			case 'HomePage':
+				return _user$project$Main$HomePage(
+					_user$project$Main$HomeModel(newBlogPost));
+			case 'BlogPostPage':
+				return _user$project$Main$BlogPostPage(newBlogPost);
+			default:
+				return model;
+		}
+	});
+var _user$project$Main$blogPostLoaded = F2(
+	function (model, blogPostResult) {
+		var _p3 = blogPostResult;
+		if (_p3.ctor === 'Ok') {
+			var oldBlogPost = _user$project$Main$getPageBlogPost(model);
+			var _p4 = oldBlogPost;
+			if (_p4.ctor === 'Just') {
+				var newBlogPost = A2(_user$project$Main$updateBlogPostContent, _p3._0, _p4._0);
+				var newModel = A2(_user$project$Main$updateModelBlogPost, newBlogPost, model);
+				return {
+					ctor: '_Tuple2',
+					_0: newModel,
+					_1: _user$project$Main$initHighlighting(
+						{ctor: '_Tuple0'})
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: _user$project$Main$ErrorPage('Could not update blog post content.'),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			}
+		} else {
+			var errorMessage = A2(
+				F2(
+					function (x, y) {
+						return A2(_elm_lang$core$Basics_ops['++'], x, y);
+					}),
+				'Failed to load blog post: ',
+				_elm_lang$core$Basics$toString(_p3._0));
+			return {
+				ctor: '_Tuple2',
+				_0: _user$project$Main$ErrorPage(errorMessage),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
 var _user$project$Main$SetRoute = function (a) {
 	return {ctor: 'SetRoute', _0: a};
 };
@@ -14282,7 +14282,11 @@ var _user$project$Main$viewPageNotFound = F2(
 	function (errorMessage, page) {
 		return A2(
 			_elm_lang$html$Html$div,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('content'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
@@ -14290,7 +14294,7 @@ var _user$project$Main$viewPageNotFound = F2(
 					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('404 - Page Not Found :('),
+						_0: _elm_lang$html$Html$text('Error :('),
 						_1: {ctor: '[]'}
 					}),
 				_1: {
@@ -14319,6 +14323,31 @@ var _user$project$Main$viewPageNotFound = F2(
 				}
 			});
 	});
+var _user$project$Main$viewPage = function (page) {
+	var _p5 = page;
+	switch (_p5.ctor) {
+		case 'HomePage':
+			return A2(
+				_evancz$elm_markdown$Markdown$toHtml,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('content'),
+					_1: {ctor: '[]'}
+				},
+				_p5._0.blogPost.contentString);
+		case 'BlogPostPage':
+			return A2(
+				_evancz$elm_markdown$Markdown$toHtml,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('content'),
+					_1: {ctor: '[]'}
+				},
+				_p5._0.contentString);
+		default:
+			return A2(_user$project$Main$viewPageNotFound, _p5._0, page);
+	}
+};
 var _user$project$Main$viewBlogPostLink = function (blogPost) {
 	return A2(
 		_elm_lang$html$Html$a,
@@ -14502,46 +14531,48 @@ var _user$project$Main$view = function (model) {
 	return A2(
 		_user$project$Main$render,
 		model,
-		_user$project$Main$pageResponseToContent(model));
+		_user$project$Main$viewPage(model));
 };
 var _user$project$Main$BlogPostLoaded = function (a) {
 	return {ctor: 'BlogPostLoaded', _0: a};
 };
 var _user$project$Main$setRoute = F2(
 	function (route, model) {
-		var _p5 = route;
-		if (_p5.ctor === 'Just') {
-			if (_p5._0.ctor === 'Home') {
+		var _p6 = route;
+		if (_p6.ctor === 'Just') {
+			if (_p6._0.ctor === 'Home') {
 				return {
 					ctor: '_Tuple2',
-					_0: model,
+					_0: _user$project$Main$initialModel,
 					_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _user$project$Page_BlogPost$latest)
 				};
 			} else {
-				var slugString = _user$project$Page_BlogPost$slugToString(_p5._0._0);
+				var slugString = _user$project$Page_BlogPost$slugToString(_p6._0._0);
 				var maybeBlogPost = A2(_elm_lang$core$Dict$get, slugString, _user$project$Page_BlogPost$postsBySlug);
-				var _p6 = maybeBlogPost;
-				if (_p6.ctor === 'Just') {
-					var _p7 = _p6._0;
+				var _p7 = maybeBlogPost;
+				if (_p7.ctor === 'Just') {
+					var _p8 = _p7._0;
 					return {
 						ctor: '_Tuple2',
-						_0: _user$project$Main$BlogPostPage(_p7),
-						_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _p7)
+						_0: _user$project$Main$BlogPostPage(_p8),
+						_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _p8)
 					};
 				} else {
-					return _elm_lang$core$Native_Utils.crashCase(
-						'Main',
-						{
-							start: {line: 332, column: 17},
-							end: {line: 340, column: 67}
-						},
-						_p6)('TODO: Handle page not found.');
+					return {
+						ctor: '_Tuple2',
+						_0: _user$project$Main$ErrorPage(
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Page \"',
+								A2(_elm_lang$core$Basics_ops['++'], slugString, '\" not found'))),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 				}
 			}
 		} else {
 			return {
 				ctor: '_Tuple2',
-				_0: model,
+				_0: _user$project$Main$initialModel,
 				_1: A2(_user$project$Page_BlogPost$get, _user$project$Main$BlogPostLoaded, _user$project$Page_BlogPost$latest)
 			};
 		}
@@ -14563,19 +14594,26 @@ var _user$project$Main$update = F2(
 					model);
 			case 'BlogPostLoaded':
 				return A2(_user$project$Main$blogPostLoaded, model, _p9._0);
-			case 'TransitionTo':
-				if (_p9._0.ctor === 'HomePage') {
-					return A2(
-						_user$project$Main$setRoute,
-						_elm_lang$core$Maybe$Just(_user$project$Main$Home),
-						model);
-				} else {
-					return _user$project$Main$setRoute(
-						_elm_lang$core$Maybe$Just(
-							_user$project$Main$Post(_p9._0._0.slug)))(model);
-				}
-			default:
+			case 'SetRoute':
 				return A2(_user$project$Main$setRoute, _p9._0, model);
+			default:
+				switch (_p9._0.ctor) {
+					case 'HomePage':
+						return A2(
+							_user$project$Main$setRoute,
+							_elm_lang$core$Maybe$Just(_user$project$Main$Home),
+							model);
+					case 'BlogPostPage':
+						return _user$project$Main$setRoute(
+							_elm_lang$core$Maybe$Just(
+								_user$project$Main$Post(_p9._0._0.slug)))(model);
+					default:
+						return {
+							ctor: '_Tuple2',
+							_0: _user$project$Main$ErrorPage(_p9._0._0),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+				}
 		}
 	});
 var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
@@ -14617,7 +14655,7 @@ var _user$project$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Page.BlogPost.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart1":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Page.BlogPost.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Page.BlogPost.Slug":{"args":[],"tags":{"Slug":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"BlogPostPage":["Page.BlogPost.Model"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Page.BlogPost.Model":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Date.Date , slug : Page.BlogPost.Slug , title : String , getContentUrl : String , entry : Page.BlogPost.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Page.BlogPost.Model }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Page.BlogPost.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart1":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Page.BlogPost.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Page.BlogPost.Slug":{"args":[],"tags":{"Slug":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"ErrorPage":["String"],"BlogPostPage":["Page.BlogPost.Model"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Page.BlogPost.Model":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Date.Date , slug : Page.BlogPost.Slug , title : String , getContentUrl : String , entry : Page.BlogPost.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Page.BlogPost.Model }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

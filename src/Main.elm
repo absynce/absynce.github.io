@@ -35,14 +35,32 @@ type alias HomeModel =
 type Page
     = HomePage HomeModel
     | BlogPostPage BlogPost.Model
-
-
-
--- | PageNotFound String
+    | ErrorPage String
 
 
 type alias Model =
     Page
+
+
+initialModel : Page
+initialModel =
+    HomePage <|
+        HomeModel
+            { contentString = "Loading..."
+            , author = ""
+            , publishedOn = Date.fromTime 0
+            , slug = BlogPost.Slug ""
+            , title = "Loading..."
+            , getContentUrl = ""
+            , entry = BlogPost.None
+            }
+
+
+init : Navigation.Location -> ( Model, Cmd Msg )
+init location =
+    location
+        |> routeFromLocation
+        |> asRouteIn initialModel
 
 
 
@@ -79,15 +97,21 @@ update msg model =
             model
                 |> setRoute maybeRoute
 
+        TransitionTo (ErrorPage errorMessage) ->
+            ( ErrorPage errorMessage, Cmd.none )
 
-getPageBlogPost : Page -> BlogPost.Model
+
+getPageBlogPost : Page -> Maybe BlogPost.Model
 getPageBlogPost page =
     case page of
         HomePage homeModel ->
-            homeModel.blogPost
+            Just homeModel.blogPost
 
         BlogPostPage blogPostModel ->
-            blogPostModel
+            Just blogPostModel
+
+        ErrorPage errorMessage ->
+            Nothing
 
 
 updateModelBlogPost : BlogPost.Model -> Page -> Page
@@ -99,7 +123,12 @@ updateModelBlogPost newBlogPost model =
         BlogPostPage blogPostModel ->
             BlogPostPage newBlogPost
 
+        ErrorPage errorMessage ->
+            model
 
+
+{-| TODO: Clean this up. Maybe it's time to move to a real SPA pattern.
+-}
 blogPostLoaded : Model -> Result Http.Error String -> ( Model, Cmd Msg )
 blogPostLoaded model blogPostResult =
     case blogPostResult of
@@ -108,58 +137,36 @@ blogPostLoaded model blogPostResult =
                 oldBlogPost =
                     model
                         |> getPageBlogPost
-
-                newBlogPost =
-                    oldBlogPost
-                        |> updateBlogPostContent blogPostContent
-
-                newModel =
-                    model
-                        |> updateModelBlogPost newBlogPost
             in
-                ( newModel, initHighlighting () )
+                case oldBlogPost of
+                    Just blogPost ->
+                        let
+                            newBlogPost =
+                                blogPost
+                                    |> updateBlogPostContent blogPostContent
+
+                            newModel =
+                                model
+                                    |> updateModelBlogPost newBlogPost
+                        in
+                            ( newModel, initHighlighting () )
+
+                    Nothing ->
+                        ( ErrorPage "Could not update blog post content.", Cmd.none )
 
         Err err ->
             let
-                newContentString =
+                errorMessage =
                     err
                         |> toString
                         |> (++) "Failed to load blog post: "
-
-                oldBlogPost =
-                    model
-                        |> getPageBlogPost
-
-                newBlogPost =
-                    oldBlogPost
-                        |> updateBlogPostContent newContentString
-
-                newModel =
-                    model
-                        |> updateModelBlogPost newBlogPost
             in
-                ( newModel, Cmd.none )
+                ( ErrorPage errorMessage, Cmd.none )
 
 
 updateBlogPostContent : String -> BlogPost.Model -> BlogPost.Model
 updateBlogPostContent newContent blogPost =
     { blogPost | contentString = newContent }
-
-
-
--- Ports
-
-
-port initHighlighting : () -> Cmd msg
-
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
 
 
 
@@ -169,29 +176,8 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     model
-        |> pageResponseToContent
+        |> viewPage
         |> render model
-
-
-init : Navigation.Location -> ( Model, Cmd Msg )
-init location =
-    location
-        |> routeFromLocation
-        |> asRouteIn initialModel
-
-
-initialModel : Page
-initialModel =
-    HomePage <|
-        HomeModel
-            { contentString = "Loading..."
-            , author = ""
-            , publishedOn = Date.fromTime 0
-            , slug = BlogPost.Slug ""
-            , title = "Loading..."
-            , getContentUrl = ""
-            , entry = BlogPost.None
-            }
 
 
 
@@ -223,12 +209,11 @@ viewHomeLink child =
 
 
 
---
 -- I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
 
 
-pageResponseToContent : Page -> Html Msg
-pageResponseToContent page =
+viewPage : Page -> Html Msg
+viewPage page =
     case page of
         HomePage homeModel ->
             Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
@@ -236,16 +221,14 @@ pageResponseToContent page =
         BlogPostPage blogPostModel ->
             Markdown.toHtml [ class "content" ] blogPostModel.contentString
 
-
-
--- PageNotFound errorMessage ->
---     page |> viewPageNotFound errorMessage
+        ErrorPage errorMessage ->
+            page |> viewPageNotFound errorMessage
 
 
 viewPageNotFound : String -> Page -> Html Msg
 viewPageNotFound errorMessage page =
-    div []
-        [ h2 [] [ text "404 - Page Not Found :(" ]
+    div [ class "content" ]
+        [ h2 [] [ text "Error :(" ]
         , p [] [ text errorMessage ]
         , p [] [ viewHomeLink <| text "Go Home" ]
         ]
@@ -270,11 +253,11 @@ pageToTitle page =
         BlogPostPage model ->
             model.title
 
+        ErrorPage errorMessage ->
+            "Page not found"
 
 
--- PageNotFound errorMessage ->
---     "Page not found"
---
+
 -- BlogPost Views
 
 
@@ -316,7 +299,7 @@ setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
         Just Home ->
-            ( model
+            ( initialModel
             , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
 
@@ -337,10 +320,12 @@ setRoute route model =
                         )
 
                     Nothing ->
-                        Debug.crash "TODO: Handle page not found."
+                        ( ErrorPage <| "Page \"" ++ slugString ++ "\" not found"
+                        , Cmd.none
+                        )
 
         Nothing ->
-            ( model
+            ( initialModel
             , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
 
@@ -353,3 +338,19 @@ Based on [Updating Nested Records in Elm](https://medium.com/elm-shorts/updating
 asRouteIn : Model -> Maybe Route -> ( Page, Cmd Msg )
 asRouteIn =
     flip setRoute
+
+
+
+-- Ports
+
+
+port initHighlighting : () -> Cmd msg
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
