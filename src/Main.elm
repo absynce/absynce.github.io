@@ -285,6 +285,7 @@ route : Parser (Route -> a) a
 route =
     oneOf
         [ Url.map Home (Url.s "")
+        , Url.map Post (Url.s "!post" </> BlogPost.slugParser)
         , Url.map Post (Url.s "post" </> BlogPost.slugParser)
         ]
 

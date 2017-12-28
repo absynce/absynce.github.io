@@ -14630,9 +14630,19 @@ var _user$project$Main$route = _evancz$url_parser$UrlParser$oneOf(
 				_user$project$Main$Post,
 				A2(
 					_evancz$url_parser$UrlParser_ops['</>'],
-					_evancz$url_parser$UrlParser$s('post'),
+					_evancz$url_parser$UrlParser$s('!post'),
 					_user$project$Page_BlogPost$slugParser)),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_evancz$url_parser$UrlParser$map,
+					_user$project$Main$Post,
+					A2(
+						_evancz$url_parser$UrlParser_ops['</>'],
+						_evancz$url_parser$UrlParser$s('post'),
+						_user$project$Page_BlogPost$slugParser)),
+				_1: {ctor: '[]'}
+			}
 		}
 	});
 var _user$project$Main$routeFromLocation = function (location) {
