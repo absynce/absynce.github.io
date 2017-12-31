@@ -14059,9 +14059,22 @@ var _user$project$Page_BlogPost$Model = F7(
 var _user$project$Page_BlogPost$ElmBlogGithubPart3 = {ctor: 'ElmBlogGithubPart3'};
 var _user$project$Page_BlogPost$ElmBlogGithubPart2 = {ctor: 'ElmBlogGithubPart2'};
 var _user$project$Page_BlogPost$ElmBlogGithubPart1 = {ctor: 'ElmBlogGithubPart1'};
+var _user$project$Page_BlogPost$ElmBlogGithubPart0 = {ctor: 'ElmBlogGithubPart0'};
 var _user$project$Page_BlogPost$None = {ctor: 'None'};
 var _user$project$Page_BlogPost$Slug = function (a) {
 	return {ctor: 'Slug', _0: a};
+};
+var _user$project$Page_BlogPost$elmBlogGithubPart0 = {
+	contentString: '',
+	author: 'Jared M. Smith',
+	publishedOn: A2(
+		_elm_lang$core$Result$withDefault,
+		_elm_lang$core$Date$fromTime(0),
+		_elm_lang$core$Date$fromString('2018-01-04')),
+	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-0-introduction'),
+	title: 'elm-blog-github - Part 0 - Introduction',
+	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-0.md',
+	entry: _user$project$Page_BlogPost$ElmBlogGithubPart0
 };
 var _user$project$Page_BlogPost$elmBlogGithubPart1 = {
 	contentString: '',
@@ -14069,7 +14082,7 @@ var _user$project$Page_BlogPost$elmBlogGithubPart1 = {
 	publishedOn: A2(
 		_elm_lang$core$Result$withDefault,
 		_elm_lang$core$Date$fromTime(0),
-		_elm_lang$core$Date$fromString('2017-12-13')),
+		_elm_lang$core$Date$fromString('2018-01-13')),
 	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-1-host-elm-code-on-github'),
 	title: 'elm-blog-github - Part 1 - Host Elm code on GitHub',
 	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-1.md',
@@ -14081,7 +14094,7 @@ var _user$project$Page_BlogPost$elmBlogGithubPart2 = {
 	publishedOn: A2(
 		_elm_lang$core$Result$withDefault,
 		_elm_lang$core$Date$fromTime(0),
-		_elm_lang$core$Date$fromString('2017-12-20')),
+		_elm_lang$core$Date$fromString('2018-01-20')),
 	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-2-add-title-and-content-areas'),
 	title: 'elm-blog-github - Part 2 - Add title and content areas',
 	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-2.md',
@@ -14093,7 +14106,7 @@ var _user$project$Page_BlogPost$elmBlogGithubPart3 = {
 	publishedOn: A2(
 		_elm_lang$core$Result$withDefault,
 		_elm_lang$core$Date$fromTime(0),
-		_elm_lang$core$Date$fromString('2017-12-27')),
+		_elm_lang$core$Date$fromString('2018-01-27')),
 	slug: _user$project$Page_BlogPost$Slug('elm-blog-github-part-3-add-multiple-pages'),
 	title: 'elm-blog-github - Part 3 - Add multiple pages',
 	getContentUrl: 'https://absynce.github.io/posts/elm-blog-github-part-3.md',
@@ -14101,14 +14114,18 @@ var _user$project$Page_BlogPost$elmBlogGithubPart3 = {
 };
 var _user$project$Page_BlogPost$posts = {
 	ctor: '::',
-	_0: _user$project$Page_BlogPost$elmBlogGithubPart1,
+	_0: _user$project$Page_BlogPost$elmBlogGithubPart0,
 	_1: {
 		ctor: '::',
-		_0: _user$project$Page_BlogPost$elmBlogGithubPart2,
+		_0: _user$project$Page_BlogPost$elmBlogGithubPart1,
 		_1: {
 			ctor: '::',
-			_0: _user$project$Page_BlogPost$elmBlogGithubPart3,
-			_1: {ctor: '[]'}
+			_0: _user$project$Page_BlogPost$elmBlogGithubPart2,
+			_1: {
+				ctor: '::',
+				_0: _user$project$Page_BlogPost$elmBlogGithubPart3,
+				_1: {ctor: '[]'}
+			}
 		}
 	}
 };
@@ -14665,7 +14682,7 @@ var _user$project$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Page.BlogPost.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart1":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Page.BlogPost.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Page.BlogPost.Slug":{"args":[],"tags":{"Slug":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"ErrorPage":["String"],"BlogPostPage":["Page.BlogPost.Model"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Page.BlogPost.Model":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Date.Date , slug : Page.BlogPost.Slug , title : String , getContentUrl : String , entry : Page.BlogPost.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Page.BlogPost.Model }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Page.BlogPost.BlogPost":{"args":[],"tags":{"None":[],"ElmBlogGithubPart2":[],"ElmBlogGithubPart3":[],"ElmBlogGithubPart0":[],"ElmBlogGithubPart1":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Date.Date":{"args":[],"tags":{"Date":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Home":[],"Post":["Page.BlogPost.Slug"]}},"Main.Msg":{"args":[],"tags":{"TransitionTo":["Main.Page"],"SetRoute":["Maybe.Maybe Main.Route"],"Reset":[],"BlogPostLoaded":["Result.Result Http.Error String"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Page.BlogPost.Slug":{"args":[],"tags":{"Slug":["String"]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}},"Main.Page":{"args":[],"tags":{"HomePage":["Main.HomeModel"],"ErrorPage":["String"],"BlogPostPage":["Page.BlogPost.Model"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Page.BlogPost.Model":{"args":[],"type":"{ contentString : String , author : String , publishedOn : Date.Date , slug : Page.BlogPost.Slug , title : String , getContentUrl : String , entry : Page.BlogPost.BlogPost }"},"Main.HomeModel":{"args":[],"type":"{ blogPost : Page.BlogPost.Model }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

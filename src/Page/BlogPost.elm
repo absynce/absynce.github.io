@@ -22,6 +22,7 @@ import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, string)
 
 type BlogPost
     = None
+    | ElmBlogGithubPart0
     | ElmBlogGithubPart1
     | ElmBlogGithubPart2
     | ElmBlogGithubPart3
@@ -42,11 +43,23 @@ type alias Model =
     }
 
 
+elmBlogGithubPart0 : Model
+elmBlogGithubPart0 =
+    { contentString = ""
+    , author = "Jared M. Smith"
+    , publishedOn = Date.fromString "2018-01-04" |> Result.withDefault (Date.fromTime 0)
+    , slug = Slug "elm-blog-github-part-0-introduction"
+    , title = "elm-blog-github - Part 0 - Introduction"
+    , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-0.md"
+    , entry = ElmBlogGithubPart0
+    }
+
+
 elmBlogGithubPart1 : Model
 elmBlogGithubPart1 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2017-12-13" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = Date.fromString "2018-01-13" |> Result.withDefault (Date.fromTime 0)
     , slug = Slug "elm-blog-github-part-1-host-elm-code-on-github"
     , title = "elm-blog-github - Part 1 - Host Elm code on GitHub"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-1.md"
@@ -58,7 +71,7 @@ elmBlogGithubPart2 : Model
 elmBlogGithubPart2 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2017-12-20" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = Date.fromString "2018-01-20" |> Result.withDefault (Date.fromTime 0)
     , slug = Slug "elm-blog-github-part-2-add-title-and-content-areas"
     , title = "elm-blog-github - Part 2 - Add title and content areas"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-2.md"
@@ -70,7 +83,7 @@ elmBlogGithubPart3 : Model
 elmBlogGithubPart3 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2017-12-27" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = Date.fromString "2018-01-27" |> Result.withDefault (Date.fromTime 0)
     , slug = Slug "elm-blog-github-part-3-add-multiple-pages"
     , title = "elm-blog-github - Part 3 - Add multiple pages"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-3.md"
@@ -80,7 +93,8 @@ elmBlogGithubPart3 =
 
 posts : List Model
 posts =
-    [ elmBlogGithubPart1
+    [ elmBlogGithubPart0
+    , elmBlogGithubPart1
     , elmBlogGithubPart2
     , elmBlogGithubPart3
     ]
