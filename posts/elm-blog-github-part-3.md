@@ -269,9 +269,9 @@ view model =
 <div class="notice">
 We'll need to import <code>Html.Events</code> at the top before it will compile.
 
-```elm
-import Html.Events exposing (onClick)
-```
+  <pre>
+    <code class="lang-elm hljs">import Html.Events exposing (onClick)</code>
+  </pre>
 </div>
 
 ## Step 7 - Review the whole program
