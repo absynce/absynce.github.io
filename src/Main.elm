@@ -78,20 +78,22 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Reset ->
-            model
-                |> setRoute (Just Home)
+            ( model
+            , setUrl <| Just Home
+            )
 
         BlogPostLoaded result ->
             blogPostLoaded model result
 
         TransitionTo (HomePage homeModel) ->
-            model
-                |> setRoute (Just Home)
+            ( model
+            , setUrl <| Just Home
+            )
 
         TransitionTo (BlogPostPage blogPostModel) ->
-            -- ( BlogPostPage blogPostModel, blogPostModel.getContentCmd )
-            model
-                |> (setRoute <| Just <| Post blogPostModel.slug)
+            ( model
+            , setUrl <| Just <| Post blogPostModel.slug
+            )
 
         SetRoute maybeRoute ->
             model
@@ -265,7 +267,9 @@ viewBlogPostLink : BlogPost.Model -> Html Msg
 viewBlogPostLink blogPost =
     a
         [ onClick <| TransitionTo <| BlogPostPage blogPost
-        , href <| "#/post/" ++ (blogPost.slug |> BlogPost.slugToString)
+
+        -- TODO: Use # or another input type to get link behaviors.
+        --, href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
         ]
         [ text blogPost.title ]
 
@@ -285,7 +289,7 @@ route : Parser (Route -> a) a
 route =
     oneOf
         [ Url.map Home (Url.s "")
-        , Url.map Post (Url.s "!post" </> BlogPost.slugParser)
+        , Url.map Post (Url.s "!" </> Url.s "post" </> BlogPost.slugParser)
         , Url.map Post (Url.s "post" </> BlogPost.slugParser)
         ]
 
@@ -296,6 +300,12 @@ routeFromLocation location =
         |> parseHash route
 
 
+{-| This is called only when route is updated in update method.
+
+Use setUrl instead to change page. The reason is that setting the URL causes
+SetRoute to be triggered.
+
+-}
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
@@ -329,6 +339,47 @@ setRoute route model =
             ( initialModel
             , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
+
+
+{-| Use this to change the page.
+
+It will trigger SetRoute from the program because it calls `newUrl`
+which calls `Navigation.newUrl`.
+
+-}
+setUrl : Maybe Route -> Cmd msg
+setUrl routeMaybe =
+    case routeMaybe of
+        Just route ->
+            route
+                |> newUrl
+
+        Nothing ->
+            Cmd.none
+
+
+newUrl : Route -> Cmd msg
+newUrl =
+    routeToString >> Navigation.newUrl
+
+
+routeToString : Route -> String
+routeToString route =
+    let
+        segments =
+            case route of
+                Home ->
+                    [ "" ]
+
+                Post slug ->
+                    [ "post", slug |> BlogPost.slugToString ]
+
+        cons =
+            (::)
+    in
+        segments
+            |> cons "#!"
+            |> String.join "/"
 
 
 {-| Fluent inverted function for setRoute.
