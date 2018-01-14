@@ -14415,7 +14415,15 @@ var _user$project$Main$viewBlogPostLink = function (blogPost) {
 			_0: _elm_lang$html$Html_Events$onClick(
 				_user$project$Main$TransitionTo(
 					_user$project$Main$BlogPostPage(blogPost))),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$href(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'#!/post/',
+						_user$project$Page_BlogPost$slugToString(blogPost.slug))),
+				_1: {ctor: '[]'}
+			}
 		},
 		{
 			ctor: '::',

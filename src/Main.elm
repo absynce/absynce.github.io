@@ -267,9 +267,7 @@ viewBlogPostLink : BlogPost.Model -> Html Msg
 viewBlogPostLink blogPost =
     a
         [ onClick <| TransitionTo <| BlogPostPage blogPost
-
-        -- TODO: Use # or another input type to get link behaviors.
-        --, href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
+        , href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
         ]
         [ text blogPost.title ]
 
