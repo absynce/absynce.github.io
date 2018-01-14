@@ -1,9 +1,10 @@
-# Learn Elm while writing a blog on GitHub Pages - Part 3 of ...
+# elm-blog-github - Part 3 of 3
 
-[//]: # (Using The Elm Architecture)
+## Add multiple pages
+
 Add interaction while improving the architecture.
 
-## Step 1 - Add The Elm Architecture skeleton
+### Step 1 - Add The Elm Architecture skeleton
 
 [//]: # (Revise this...)
 
@@ -62,7 +63,7 @@ view model =
     This won't compile yet. We'll fill in the "..." bits soon.
 </p>
 
-## Step 2 - Define the model
+### Step 2 - Define the model
 
 Now we'll define our model. To keep it simple let's just have a title and some content.
 
@@ -82,7 +83,7 @@ home =
     }
 ```
 
-## Step 3 - Define the interactions
+### Step 3 - Define the interactions
 
 Next we'll define the interactions we want in our blog. To continue with the simplicity theme, we'll define each of the pages messages as distinct messages:
 
@@ -94,7 +95,7 @@ type Msg
 
 This means we can do two things in our application: show the home page and show the "What You Made with Elm" blog post.
 
-## Step 4 - Define the `update` function
+### Step 4 - Define the `update` function
 
 The `update` function defines how to interact with the view and the outside world.
 
@@ -235,7 +236,7 @@ Woohoo! It compiles!!
 
 What happens on the page? Wait, it still just shows the same thing. Let's improve that.
 
-## Step 5 - Use the model in the `view` function
+### Step 5 - Use the model in the `view` function
 
 As you can see we've moved `viewBlogPost` to the bottom and renamed it to just `view`. Now we'll set the title and content based on the model instead of hard-coding it.
 
@@ -250,7 +251,7 @@ view model =
 However, there's still no interaction. Not for long!
 
 
-## Step 6 - Add buttons
+### Step 6 - Add buttons
 
 Add a `div` with two `button` elements to the `view` function. The `onClick` event mimics HTML and expects us to give it a `Msg` to define what it should do.
 
@@ -274,7 +275,7 @@ We'll need to import <code>Html.Events</code> at the top before it will compile.
   </pre>
 </div>
 
-## Step 7 - Review the whole program
+### Step 7 - Review the whole program
 
 Here's your blog post app in all it's glory:
 
@@ -340,7 +341,7 @@ view model =
         ]
 ```
 
-## Summary
+### Summary
 
 We covered a lot in this post:
 - [The Elm Architecture (TEA)](https://guide.elm-lang.org/architecture/)
@@ -352,7 +353,7 @@ Things we didn't discuss, but secretly used anyway:
 - Union types
 - Declarative programming
 
-## Next steps
+### Next steps
 
 Explore some more on your own.
 
