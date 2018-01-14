@@ -1,8 +1,8 @@
-# Learn Elm while writing a blog on GitHub Pages - Part 2 of ...
+# elm-blog-github - Part 2 of 3
 
-Add title and content areas.
+## Add title and content areas
 
-## Step 1 - Try adding an `h1` for the blog title
+### Step 1 - Try adding an `h1` for the blog title
 
 A naive approach might be to add the `h1` before the content.
 
@@ -34,7 +34,7 @@ Maybe you forgot some parentheses? Or a comma?
 
 It looks like the compiler thinks we're passing four (4) arguments to the `h1` function but reminds us it expects only two (2).
 
-## Step 2 - Try returning a list
+### Step 2 - Try returning a list
 
 Since functions can only have one return value, let's try returning both of them in a list.
 
@@ -75,7 +75,7 @@ This makes sense if we think about how we write HTML; every element has a single
 
 In this case both the `h1` and the text "Here's what I..." have a single parent element, `body`. Let's apply this to the Elm application.
 
-## Step 3 - Wrap the elements in the `body`
+### Step 3 - Wrap the elements in the `body`
 
 ```elm
 main =
@@ -89,7 +89,7 @@ Yay! It compiles! Run it and see your progress come to life.
 
 Next we'll move this into it's own function.
 
-## Step 4 - Move the blog post view into a separate function
+### Step 4 - Move the blog post view into a separate function
 
 Now that we're confident the compiler will have our back let's do a bit of quick refactoring.
 
@@ -111,7 +111,7 @@ viewBlogPost =
 
 That was easy. It made the code a bit more semantic too.
 
-## Step 5 - Wrap the content with a `div`
+### Step 5 - Wrap the content with a `div`
 
 Actually, instead of _me_ showing _you_ this code, try it on your own; then show it to me.
 
