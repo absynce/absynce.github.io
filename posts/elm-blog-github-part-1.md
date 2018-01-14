@@ -1,15 +1,17 @@
-# Learn Elm while writing a blog on GitHub Pages - Part 1 of ...
+# elm-blog-github - Part 1 of 3
+
+## Host Elm code on GitHub
 
 
 Share your journey into Elm while learning it by creating a blog in Elm and hosting it for free on GitHub Pages.
 
-## Step 0. - Work through the beginning of _An Introduction to Elm_
+### Step 0. - Work through the beginning of _An Introduction to Elm_
 
 [// NOTE:]: # (Should I just say to read the syntax part since this is so simple?)
 
 If you haven't walked through the beginning of [_An Introduction to Elm_](https://guide.elm-lang.org/) to the ["Core Language" section](https://guide.elm-lang.org/core_language.html) do that now. And by "walk through" I mean do the examples and play with the code. It's easy and fun to read. By the end you'll have your environment set up and be ready to start writing your blog in Elm.
 
-## Step 1. - Write some Elm code
+### Step 1. - Write some Elm code
 
 Create a `src/Main.elm` file with the following code:
 
@@ -23,7 +25,7 @@ main =
     text "Here's what I learned while exploring Elm..."
 ```
 
-## Step 2. - Compile your Elm code
+### Step 2. - Compile your Elm code
 
 ```bash
 elm make src/Main.elm --output=elm.js
@@ -48,7 +50,7 @@ Press Enter. You should see some packages download and finally:
 Successfully generated elm.js
 ```
 
-## Step 3. - Add index.html
+### Step 3. - Add index.html
 
 Fire up your favorite text editor. Add the following to index.html in the root of your project:
 
@@ -82,7 +84,7 @@ This does two important things for Elm:
     var app = Elm.Main.fullscreen();
 ```
 
-## Step 4. - Run your app locally
+### Step 4. - Run your app locally
 
 ```bash
 elm reactor
@@ -106,14 +108,14 @@ You've written an application! Granted it doesn't do much yet, but you can get p
 
 Next we're going to work on publishing it.
 
-## Step 5. - Create a GitHub page
+### Step 5. - Create a GitHub page
 
 [Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_.
 
 Clone your repository locally.
 
 
-## Step 6. - Publish it!
+### Step 6. - Publish it!
 
 Commit your code. You can ignore `elm-stuff`.
 
@@ -131,6 +133,6 @@ Woohoo! You've just hosted an Elm blog on GitHub Pages.
 
 Go to _username.github.io_ and check it out!
 
-## Next steps
+### Next steps
 
 In the next post we'll make the site more interesting with a title and content section.
