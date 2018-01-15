@@ -2,6 +2,8 @@
 
 ## Add title and content areas
 
+If you're just arriving, read [the introduction](#!/post/elm-blog-github-part-0-introduction) and [part 1](#!/post/elm-blog-github-part-1-host-elm-code-on-github) first.
+
 ### Step 1 - Try adding an `h1` for the blog title
 
 A naive approach might be to add the `h1` before the content.
@@ -121,3 +123,7 @@ Chances are good if you make a mistake the compiler will let you know. If you ge
 
 
 [Tweet a link to your commit](https://twitter.com/intent/tweet?url=absynce.github.io&text=Here's+how+I+wrapped+some+content+using+Elm:&hashtags=elm&via=absynce) on GitHub repo with the result!
+
+### Next steps
+
+Make the blog interactive with multiple pages in [part 3](#!/post/elm-blog-github-part-3-add-multiple-pages).

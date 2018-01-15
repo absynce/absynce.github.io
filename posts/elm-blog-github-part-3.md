@@ -4,6 +4,8 @@
 
 Add interaction while improving the architecture.
 
+If you're just arriving, read [the introduction](#!/post/elm-blog-github-part-0-introduction), [part 1](#!/post/elm-blog-github-part-1-host-elm-code-on-github) and [part 2](#!/post/elm-blog-github-part-2-add-title-and-content-areas) first.
+
 ### Step 1 - Add The Elm Architecture skeleton
 
 [//]: # (Revise this...)
