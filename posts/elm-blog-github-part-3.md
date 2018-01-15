@@ -363,3 +363,5 @@ Here are a few ideas:
 - Add [markdown support](http://package.elm-lang.org/packages/evancz/elm-markdown/latest)
 - Improve the UI [with CSS](http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes#class)
 - Write a new blog post (add interaction `Msg`): `ShowElmMuchLovePost`
+
+If you liked the series share it!
