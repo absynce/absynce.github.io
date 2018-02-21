@@ -96,9 +96,7 @@ This will start the built-in Elm web server.
   If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
   </p>
 
-  <pre>
-    <code class="lang-bash">elm-reactor -p 8088</code>
-  </pre>
+  <pre><code class="lang-bash">elm-reactor -p 8088</code></pre>
 </div>
 
 Go to `http://localhost:8000/index.html`.

@@ -34,9 +34,10 @@ header a {
 }
 
 .notice {
-  padding: 10px;
-  border: solid 1px #c60;
-  border-radius: 3px;
+  background-color: #ffdbb5;
+  border: solid 1px #ffdbb5;
+  border-radius: 8px;
+  padding: 20px;
 }
 .notice p:last-child {
   margin-bottom: 0;
