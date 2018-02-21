@@ -41,3 +41,8 @@ header a {
 .notice p:last-child {
   margin-bottom: 0;
 }
+
+.hljs {
+  border-radius: 8px;
+  padding: 20px;
+}

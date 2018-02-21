@@ -27,7 +27,7 @@ main =
 ### Step 2. - Compile your Elm code
 
 ```bash
-elm make src/Main.elm --output=elm.js
+elm-make src/Main.elm --output=elm.js
 ```
 
 The first time you compile you'll get the following:
@@ -92,11 +92,13 @@ elm-reactor
 This will start the built-in Elm web server.
 
 <div class="notice">
-If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
+  <p>
+  If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
+  </p>
 
-```
-elm-reactor -p 8088
-```
+  <pre>
+    <code class="lang-bash">elm-reactor -p 8088</code>
+  </pre>
 </div>
 
 Go to `http://localhost:8000/index.html`.
