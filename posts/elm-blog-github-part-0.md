@@ -17,4 +17,4 @@ Without further ado:
 
 Constructive feedback is welcome. Find me on [Twitter](https://twitter.com/absynce) or [GitHub](https://github.com/absynce/) as @absynce.
 
-Thanks to [Matt King](https://twitter.com/making_3) and [your name here] for early feedback.
+Thanks to [Matt King](https://twitter.com/making_3) and [Alex Owens](https://twitter.com/AJOwens21) for early feedback.
