@@ -32,7 +32,7 @@ elm make src/Main.elm --output=elm.js
 
 The first time you compile you'll get the following:
 
-```nohighlight
+```console
 Some new packages are needed. Here is the upgrade plan.
 
   Install:
@@ -45,7 +45,7 @@ Do you approve of this plan? [Y/n]
 
 Press Enter. You should see some packages download and finally:
 
-```nohighlight
+```console
 Successfully generated elm.js
 ```
 
@@ -86,7 +86,7 @@ This does two important things for Elm:
 ### Step 4. - Run your app locally
 
 ```bash
-elm reactor
+elm-reactor
 ```
 
 This will start the built-in Elm web server.
@@ -95,7 +95,7 @@ This will start the built-in Elm web server.
 If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
 
 ```
-elm reactor -p 8088
+elm-reactor -p 8088
 ```
 </div>
 
