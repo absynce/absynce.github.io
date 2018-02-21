@@ -17,6 +17,12 @@ In it's simplest form it's just:
 - a view, and
 - an update function.
 
+The model represents our data.
+
+The view defines how we want the model to be displayed. In this case we will output HTML.
+
+The update function explains what should happen when a new message is received requesting some action or change. Example: requesting to view a blog post.
+
 Add the following to your `Main.elm` file:
 
 ```elm
@@ -110,7 +116,7 @@ update msg model =
           ...
 ```
 
-This won't compile for a couple reasons. The first is obvious; we haven't defined what happens when we want to show the home page.
+This won't compile for a couple reasons. The first is obvious: we haven't defined what happens when we want to show the home page.
 
 Let's fill that in:
 ```elm
