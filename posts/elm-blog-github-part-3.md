@@ -40,7 +40,7 @@ main =
 type alias Model = { ... }
 
 
-model = Nothing
+home = Nothing
 
 
 
