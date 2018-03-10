@@ -42,6 +42,8 @@ type alias Model =
     Page
 
 
+{-| TODO: Try `WebData` instead of an "empty" model.
+-}
 initialModel : Page
 initialModel =
     HomePage <|
@@ -85,6 +87,10 @@ update msg model =
         BlogPostLoaded result ->
             blogPostLoaded model result
 
+        SetRoute maybeRoute ->
+            model
+                |> setRoute maybeRoute
+
         TransitionTo (HomePage homeModel) ->
             ( model
             , setUrl <| Just Home
@@ -94,10 +100,6 @@ update msg model =
             ( model
             , setUrl <| Just <| Post blogPostModel.slug
             )
-
-        SetRoute maybeRoute ->
-            model
-                |> setRoute maybeRoute
 
         TransitionTo (ErrorPage errorMessage) ->
             ( ErrorPage errorMessage, Cmd.none )

@@ -12,8 +12,6 @@ module Page.BlogPost
         , slugToString
         )
 
---, Msg, view, update)
-
 import Date exposing (Date)
 import Dict exposing (Dict)
 import Http
