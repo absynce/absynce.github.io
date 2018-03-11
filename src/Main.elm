@@ -10,12 +10,12 @@ import List
 import Markdown exposing (..)
 import Navigation
 import Page.BlogPost as BlogPost
-import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, string)
+import Route exposing (Route)
 
 
 main : Program Never Page Msg
 main =
-    Navigation.program (routeFromLocation >> SetRoute)
+    Navigation.program (Route.fromLocation >> SetRoute)
         { init = init
         , subscriptions = subscriptions
         , view = view
@@ -61,7 +61,7 @@ initialModel =
 init : Navigation.Location -> ( Model, Cmd Msg )
 init location =
     location
-        |> routeFromLocation
+        |> Route.fromLocation
         |> asRouteIn initialModel
 
 
@@ -81,7 +81,7 @@ update msg model =
     case msg of
         Reset ->
             ( model
-            , setUrl <| Just Home
+            , Route.setUrl <| Just Route.Home
             )
 
         BlogPostLoaded result ->
@@ -93,12 +93,12 @@ update msg model =
 
         TransitionTo (HomePage homeModel) ->
             ( model
-            , setUrl <| Just Home
+            , Route.setUrl <| Just Route.Home
             )
 
         TransitionTo (BlogPostPage blogPostModel) ->
             ( model
-            , setUrl <| Just <| Post blogPostModel.slug
+            , Route.setUrl <| Just <| Route.Post blogPostModel.slug
             )
 
         TransitionTo (ErrorPage errorMessage) ->
@@ -278,43 +278,21 @@ viewBlogPostLink blogPost =
 -- Route
 
 
-type Route
-    = Home
-    | Post BlogPost.Slug
-
-
-{-| Route parser based on [elm-spa-example](https://github.com/rtfeldman/elm-spa-example/blob/master/src/Route.elm#L26).
--}
-route : Parser (Route -> a) a
-route =
-    oneOf
-        [ Url.map Home (Url.s "")
-        , Url.map Post (Url.s "!" </> Url.s "post" </> BlogPost.slugParser)
-        , Url.map Post (Url.s "post" </> BlogPost.slugParser)
-        ]
-
-
-routeFromLocation : Navigation.Location -> Maybe Route
-routeFromLocation location =
-    location
-        |> parseHash route
-
-
 {-| This is called only when route is updated in update method.
 
-Use setUrl instead to change page. The reason is that setting the URL causes
+Use Route.setUrl instead to change page. The reason is that setting the URL causes
 SetRoute to be triggered.
 
 -}
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
-        Just Home ->
+        Just Route.Home ->
             ( initialModel
             , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
 
-        Just (Post slug) ->
+        Just (Route.Post slug) ->
             -- Should this move to BlogPost.elm (init)?
             let
                 slugString =
@@ -339,47 +317,6 @@ setRoute route model =
             ( initialModel
             , BlogPost.latest |> BlogPost.get BlogPostLoaded
             )
-
-
-{-| Use this to change the page.
-
-It will trigger SetRoute from the program because it calls `newUrl`
-which calls `Navigation.newUrl`.
-
--}
-setUrl : Maybe Route -> Cmd msg
-setUrl routeMaybe =
-    case routeMaybe of
-        Just route ->
-            route
-                |> newUrl
-
-        Nothing ->
-            Cmd.none
-
-
-newUrl : Route -> Cmd msg
-newUrl =
-    routeToString >> Navigation.newUrl
-
-
-routeToString : Route -> String
-routeToString route =
-    let
-        segments =
-            case route of
-                Home ->
-                    [ "" ]
-
-                Post slug ->
-                    [ "post", slug |> BlogPost.slugToString ]
-
-        cons =
-            (::)
-    in
-        segments
-            |> cons "#!"
-            |> String.join "/"
 
 
 {-| Fluent inverted function for setRoute.
