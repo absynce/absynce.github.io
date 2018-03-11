@@ -81,7 +81,7 @@ update msg model =
     case msg of
         Reset ->
             ( model
-            , Route.setUrl <| Just Route.Home
+            , Route.setUrl Route.Home
             )
 
         BlogPostLoaded result ->
@@ -93,12 +93,12 @@ update msg model =
 
         TransitionTo (HomePage homeModel) ->
             ( model
-            , Route.setUrl <| Just Route.Home
+            , Route.setUrl Route.Home
             )
 
         TransitionTo (BlogPostPage blogPostModel) ->
             ( model
-            , Route.setUrl <| Just <| Route.Post blogPostModel.slug
+            , Route.setUrl <| Route.Post blogPostModel.slug
             )
 
         TransitionTo (ErrorPage errorMessage) ->

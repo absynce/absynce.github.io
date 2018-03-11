@@ -14195,14 +14195,7 @@ var _user$project$Route$newUrl = function (_p1) {
 	return _elm_lang$navigation$Navigation$newUrl(
 		_user$project$Route$routeToString(_p1));
 };
-var _user$project$Route$setUrl = function (routeMaybe) {
-	var _p2 = routeMaybe;
-	if (_p2.ctor === 'Just') {
-		return _user$project$Route$newUrl(_p2._0);
-	} else {
-		return _elm_lang$core$Platform_Cmd$none;
-	}
-};
+var _user$project$Route$setUrl = _user$project$Route$newUrl;
 var _user$project$Route$Post = function (a) {
 	return {ctor: 'Post', _0: a};
 };
@@ -14684,8 +14677,7 @@ var _user$project$Main$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: _user$project$Route$setUrl(
-						_elm_lang$core$Maybe$Just(_user$project$Route$Home))
+					_1: _user$project$Route$setUrl(_user$project$Route$Home)
 				};
 			case 'BlogPostLoaded':
 				return A2(_user$project$Main$blogPostLoaded, model, _p9._0);
@@ -14697,16 +14689,14 @@ var _user$project$Main$update = F2(
 						return {
 							ctor: '_Tuple2',
 							_0: model,
-							_1: _user$project$Route$setUrl(
-								_elm_lang$core$Maybe$Just(_user$project$Route$Home))
+							_1: _user$project$Route$setUrl(_user$project$Route$Home)
 						};
 					case 'BlogPostPage':
 						return {
 							ctor: '_Tuple2',
 							_0: model,
 							_1: _user$project$Route$setUrl(
-								_elm_lang$core$Maybe$Just(
-									_user$project$Route$Post(_p9._0._0.slug)))
+								_user$project$Route$Post(_p9._0._0.slug))
 						};
 					default:
 						return {

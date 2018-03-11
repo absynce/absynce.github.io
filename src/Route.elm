@@ -51,15 +51,9 @@ It will trigger SetRoute from the program because it calls `newUrl`
 which calls `Navigation.newUrl`.
 
 -}
-setUrl : Maybe Route -> Cmd msg
-setUrl routeMaybe =
-    case routeMaybe of
-        Just route ->
-            route
-                |> newUrl
-
-        Nothing ->
-            Cmd.none
+setUrl : Route -> Cmd msg
+setUrl =
+    newUrl
 
 
 newUrl : Route -> Cmd msg
