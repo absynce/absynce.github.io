@@ -12,13 +12,7 @@
       ga('require', 'outboundLinkTracker');
       ga('require', 'urlChangeTracker', {
         shouldTrackUrlChange: function(newPath, oldPath) {
-          // Strips the query string from the path values.
-          // newPath = newPath.split('?')[0];
-          // oldPath = oldPath.split('?')[0];
-          console.log(`oldPath: ${oldPath}`);
-          console.log(`newPath: ${newPath}`);
-          // TODO: Check/set page by post hash.
-
+          // Uses custom autotrack.js hacked to include hash.
           return newPath != oldPath;
         }
       });

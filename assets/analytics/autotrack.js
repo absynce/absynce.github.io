@@ -1,3 +1,5 @@
+// Hacked to include hash in url tracker.
+// Hacked on 2018.04 - Jared M. Smith
 (function () {
   var g, aa = "function" == typeof Object.defineProperties ? Object.defineProperty : function (a, b, c) {
       if (c.get || c.set) throw new TypeError("ES3 does not support getters and setters.");
