@@ -198,9 +198,6 @@ blogPostLoaded model blogPostResult =
         Err err ->
             let
                 errorMessage =
-                    -- err
-                    --     |> toString
-                    --     |> (++)
                     "Failed to load blog post"
             in
             ( { model | page = ErrorPage errorMessage }
@@ -254,7 +251,6 @@ render content =
 viewHomeLink : Html Msg -> Html Msg
 viewHomeLink child =
     a
-        -- [ onClick <| TransitionTo <| initialModel
         [ href "#"
         ]
         [ child ]
