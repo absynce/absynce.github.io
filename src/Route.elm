@@ -1,13 +1,13 @@
-module Route
-    exposing
-        ( Route(..)
-        , fromLocation
-        , setUrl
-        )
+module Route exposing
+    ( Route(..)
+    , parser
+    , urlHashToUrl
+    )
 
-import Navigation
+import Http
 import Page.BlogPost as BlogPost
-import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, string)
+import Url exposing (Url)
+import Url.Parser as Parser exposing ((</>), Parser, oneOf, string, top)
 
 
 type Route
@@ -17,51 +17,17 @@ type Route
 
 {-| Route parser based on [elm-spa-example](https://github.com/rtfeldman/elm-spa-example/blob/master/src/Route.elm#L26).
 -}
-route : Parser (Route -> a) a
-route =
+parser : Parser (Route -> a) a
+parser =
     oneOf
-        [ Url.map Home (Url.s "")
-        , Url.map Post (Url.s "!" </> Url.s "post" </> BlogPost.slugParser)
-        , Url.map Post (Url.s "post" </> BlogPost.slugParser)
+        [ Parser.map Home top
+        , Parser.map Post (Parser.s "!" </> Parser.s "post" </> BlogPost.slugParser)
+        , Parser.map Post (Parser.s "post" </> BlogPost.slugParser)
         ]
 
 
-routeToString : Route -> String
-routeToString route =
-    let
-        segments =
-            case route of
-                Home ->
-                    [ "" ]
-
-                Post slug ->
-                    [ "post", slug |> BlogPost.slugToString ]
-
-        cons =
-            (::)
-    in
-        segments
-            |> cons "#!"
-            |> String.join "/"
-
-
-{-| Use this to change the page.
-
-It will trigger SetRoute from the program because it calls `newUrl`
-which calls `Navigation.newUrl`.
-
--}
-setUrl : Route -> Cmd msg
-setUrl =
-    newUrl
-
-
-newUrl : Route -> Cmd msg
-newUrl =
-    routeToString >> Navigation.newUrl
-
-
-fromLocation : Navigation.Location -> Maybe Route
-fromLocation location =
-    location
-        |> parseHash route
+urlHashToUrl : Url -> Url
+urlHashToUrl url =
+    { url
+        | path = url.fragment |> Maybe.withDefault ""
+    }

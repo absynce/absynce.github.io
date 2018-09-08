@@ -3,16 +3,15 @@
   "version": "1.0.0",
   "description": "absynce developer blog - why I do the things I do on the slippery path to mastery. Written in Elm and English.",
   "main": "elm.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "chokidar-cli": "^1.2.0",
-    "elm": "^0.18.0"
+    "elm": "^0.19.0-bugfix2"
   },
   "scripts": {
     "build": "elm make src/Main.elm --output=elm.js --debug",
     "dev": "npm run watch -s & npm run start",
-    "start": "elm reactor -p 8082",
+    "start": "elm reactor --port=8082",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "chokidar '**/*.elm' -c 'npm run build' --initial"
   },

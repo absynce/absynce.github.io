@@ -40,7 +40,7 @@
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame;   //Cross browser support
 
-      var app = Elm.Main.fullscreen();
+      var app = Elm.Main.init();
 
       app.ports.initHighlighting.subscribe(function initHighlightJsCalled() {
         requestAnimationFrame(function callInitHighlighting() { // See https://stackoverflow.com/a/42451273/448876 for solution source.

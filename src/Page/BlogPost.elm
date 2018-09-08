@@ -1,21 +1,19 @@
-module Page.BlogPost
-    exposing
-        ( BlogPost(..)
-        , Model
-        , Msg(..)
-        , Slug(..)
-        , get
-        , latest
-        , posts
-        , postsBySlug
-        , slugParser
-        , slugToString
-        )
+module Page.BlogPost exposing
+    ( BlogPost(..)
+    , Model
+    , Msg(..)
+    , Slug(..)
+    , get
+    , latest
+    , posts
+    , postsBySlug
+    , slugParser
+    , slugToString
+    )
 
-import Date exposing (Date)
 import Dict exposing (Dict)
 import Http
-import UrlParser as Url exposing ((</>), Parser, oneOf, parseHash, s, string)
+import Url.Parser as Parser exposing ((</>), Parser, oneOf, s, string)
 
 
 type BlogPost
@@ -33,7 +31,7 @@ type Slug
 type alias Model =
     { contentString : String
     , author : String
-    , publishedOn : Date
+    , publishedOn : String
     , slug : Slug
     , title : String
     , getContentUrl : String
@@ -45,7 +43,7 @@ elmBlogGithubPart0 : Model
 elmBlogGithubPart0 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2018-01-04" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = "2018-01-04"
     , slug = Slug "elm-blog-github-part-0-introduction"
     , title = "elm-blog-github - Part 0 - Introduction"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-0.md"
@@ -57,7 +55,7 @@ elmBlogGithubPart1 : Model
 elmBlogGithubPart1 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2018-01-13" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = "2018-01-13"
     , slug = Slug "elm-blog-github-part-1-host-elm-code-on-github"
     , title = "elm-blog-github - Part 1 - Host Elm code on GitHub"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-1.md"
@@ -69,7 +67,7 @@ elmBlogGithubPart2 : Model
 elmBlogGithubPart2 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2018-01-20" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = "2018-01-20"
     , slug = Slug "elm-blog-github-part-2-add-title-and-content-areas"
     , title = "elm-blog-github - Part 2 - Add title and content areas"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-2.md"
@@ -81,7 +79,7 @@ elmBlogGithubPart3 : Model
 elmBlogGithubPart3 =
     { contentString = ""
     , author = "Jared M. Smith"
-    , publishedOn = Date.fromString "2018-01-27" |> Result.withDefault (Date.fromTime 0)
+    , publishedOn = "2018-01-27"
     , slug = Slug "elm-blog-github-part-3-add-multiple-pages"
     , title = "elm-blog-github - Part 3 - Add multiple pages"
     , getContentUrl = "https://absynce.github.io/posts/elm-blog-github-part-3.md"
@@ -108,7 +106,7 @@ postsBySlug =
 latest : Model
 latest =
     posts
-        |> List.sortBy (\post -> post.publishedOn |> Date.toTime)
+        |> List.sortBy (\post -> post.publishedOn)
         |> List.head
         |> Maybe.withDefault elmBlogGithubPart1
 
@@ -134,9 +132,9 @@ get toMsg model =
 
 {-| Slug parser based on [elm-spa-example](https://github.com/rtfeldman/elm-spa-example/).
 -}
-slugParser : Url.Parser (Slug -> a) a
+slugParser : Parser (Slug -> a) a
 slugParser =
-    Url.custom "SLUG" (Ok << Slug)
+    Parser.custom "SLUG" (Just << Slug)
 
 
 slugToString : Slug -> String
