@@ -29,7 +29,7 @@ type Slug
 
 
 type alias Model =
-    { contentString : String
+    { contentString : String -- TODO: Use Maybe/WebData.
     , author : String
     , publishedOn : String
     , slug : Slug

@@ -5149,34 +5149,9 @@ var author$project$Main$LinkClicked = function (a) {
 var author$project$Main$UrlChanged = function (a) {
 	return {$: 'UrlChanged', a: a};
 };
-var author$project$Main$HomeModel = function (blogPost) {
-	return {blogPost: blogPost};
-};
 var author$project$Main$HomePage = function (a) {
 	return {$: 'HomePage', a: a};
 };
-var author$project$Page$BlogPost$None = {$: 'None'};
-var author$project$Page$BlogPost$Slug = function (a) {
-	return {$: 'Slug', a: a};
-};
-var elm$core$Basics$apL = F2(
-	function (f, x) {
-		return f(x);
-	});
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
-var author$project$Main$initialModel = author$project$Main$HomePage(
-	author$project$Main$HomeModel(
-		{
-			author: '',
-			contentString: 'Loading...',
-			entry: author$project$Page$BlogPost$None,
-			getContentUrl: '',
-			publishedOn: '',
-			slug: author$project$Page$BlogPost$Slug(''),
-			title: 'Loading...'
-		}));
 var author$project$Main$BlogPostLoaded = function (a) {
 	return {$: 'BlogPostLoaded', a: a};
 };
@@ -5853,6 +5828,9 @@ var elm$http$Http$expectString = elm$http$Http$expectStringResponse(
 	function (response) {
 		return elm$core$Result$Ok(response.body);
 	});
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
 var elm$http$Http$Internal$Request = function (a) {
 	return {$: 'Request', a: a};
 };
@@ -6061,6 +6039,10 @@ var elm$core$Array$treeFromBuilder = F2(
 				continue treeFromBuilder;
 			}
 		}
+	});
+var elm$core$Basics$apL = F2(
+	function (f, x) {
+		return f(x);
 	});
 var elm$core$Basics$floor = _Basics_floor;
 var elm$core$Basics$max = F2(
@@ -6412,6 +6394,9 @@ var author$project$Page$BlogPost$get = F2(
 			elm$http$Http$getString(model.getContentUrl));
 	});
 var author$project$Page$BlogPost$ElmBlogGithubPart1 = {$: 'ElmBlogGithubPart1'};
+var author$project$Page$BlogPost$Slug = function (a) {
+	return {$: 'Slug', a: a};
+};
 var author$project$Page$BlogPost$elmBlogGithubPart1 = {
 	author: 'Jared M. Smith',
 	contentString: '',
@@ -6482,6 +6467,20 @@ var author$project$Page$BlogPost$latest = A2(
 				return post.publishedOn;
 			},
 			author$project$Page$BlogPost$posts)));
+var author$project$Page$Home$Model = function (blogPost) {
+	return {blogPost: blogPost};
+};
+var author$project$Page$Home$init = author$project$Page$Home$Model(author$project$Page$BlogPost$latest);
+var author$project$Main$initHomePage = function (model) {
+	var initialHomeModel = author$project$Page$Home$init;
+	return _Utils_Tuple2(
+		_Utils_update(
+			model,
+			{
+				page: author$project$Main$HomePage(initialHomeModel)
+			}),
+		A2(author$project$Page$BlogPost$get, author$project$Main$BlogPostLoaded, initialHomeModel.blogPost));
+};
 var author$project$Page$BlogPost$slugToString = function (_n0) {
 	var slug = _n0.a;
 	return slug;
@@ -6514,11 +6513,7 @@ var author$project$Main$setRoute = F2(
 		if (route.$ === 'Just') {
 			if (route.a.$ === 'Home') {
 				var _n1 = route.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{page: author$project$Main$initialModel}),
-					A2(author$project$Page$BlogPost$get, author$project$Main$BlogPostLoaded, author$project$Page$BlogPost$latest));
+				return author$project$Main$initHomePage(model);
 			} else {
 				var slug = route.a.a;
 				var slugString = author$project$Page$BlogPost$slugToString(slug);
@@ -6543,11 +6538,7 @@ var author$project$Main$setRoute = F2(
 				}
 			}
 		} else {
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{page: author$project$Main$initialModel}),
-				A2(author$project$Page$BlogPost$get, author$project$Main$BlogPostLoaded, author$project$Page$BlogPost$latest));
+			return author$project$Main$initHomePage(model);
 		}
 	});
 var elm$url$Url$Parser$Parser = function (a) {
@@ -6855,7 +6846,10 @@ var author$project$Main$routeFromUrl = F2(
 	});
 var author$project$Main$init = F3(
 	function (flags, url, key) {
-		var model = {key: key, page: author$project$Main$initialModel};
+		var model = {
+			key: key,
+			page: author$project$Main$HomePage(author$project$Page$Home$init)
+		};
 		return A2(author$project$Main$routeFromUrl, url, model);
 	});
 var elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6894,7 +6888,7 @@ var author$project$Main$updateModelBlogPost = F2(
 			case 'HomePage':
 				var homeModel = model.a;
 				return author$project$Main$HomePage(
-					author$project$Main$HomeModel(newBlogPost));
+					author$project$Page$Home$Model(newBlogPost));
 			case 'BlogPostPage':
 				var blogPostModel = model.a;
 				return author$project$Main$BlogPostPage(newBlogPost);

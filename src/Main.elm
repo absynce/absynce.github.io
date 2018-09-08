@@ -1,15 +1,11 @@
 port module Main exposing
-    ( HomeModel
-    , Model
+    ( Model
     , Msg(..)
-    ,  Page(..)
-       -- , asRouteIn
-
+    , Page(..)
     , blogPostLoaded
     , getPageBlogPost
     , init
     , initHighlighting
-    , initialModel
     , main
     , pageToTitle
     , render
@@ -36,6 +32,7 @@ import Http
 import List
 import Markdown exposing (..)
 import Page.BlogPost as BlogPost
+import Page.Home
 import Route exposing (Route)
 import Url
 import Url.Parser
@@ -58,13 +55,8 @@ main =
 -- MODEL
 
 
-type alias HomeModel =
-    { blogPost : BlogPost.Model
-    }
-
-
 type Page
-    = HomePage HomeModel
+    = HomePage Page.Home.Model
     | BlogPostPage BlogPost.Model
     | ErrorPage String
 
@@ -75,27 +67,11 @@ type alias Model =
     }
 
 
-{-| TODO: Try `WebData` instead of an "empty" model.
--}
-initialModel : Page
-initialModel =
-    HomePage <|
-        HomeModel
-            { contentString = "Loading..."
-            , author = ""
-            , publishedOn = ""
-            , slug = BlogPost.Slug ""
-            , title = "Loading..."
-            , getContentUrl = ""
-            , entry = BlogPost.None
-            }
-
-
 init : flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         model =
-            { page = initialModel
+            { page = HomePage Page.Home.init
             , key = key
             }
     in
@@ -157,7 +133,7 @@ updateModelBlogPost : BlogPost.Model -> Page -> Page
 updateModelBlogPost newBlogPost model =
     case model of
         HomePage homeModel ->
-            HomePage <| HomeModel newBlogPost
+            HomePage <| Page.Home.Model newBlogPost
 
         BlogPostPage blogPostModel ->
             BlogPostPage newBlogPost
@@ -322,19 +298,16 @@ viewBlogPostLink blogPost =
 -- Route
 
 
-{-| This is called only when route is updated in update method.
+{-| This is where magic happens for each page.
 
-Use Route.setUrl instead to change page. The reason is that setting the URL causes
-SetRoute to be triggered.
+TODO: Rename it to loadPage?
 
 -}
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
         Just Route.Home ->
-            ( { model | page = initialModel }
-            , BlogPost.latest |> BlogPost.get BlogPostLoaded
-            )
+            initHomePage model
 
         Just (Route.Post slug) ->
             -- Should this move to BlogPost.elm (init)?
@@ -358,9 +331,18 @@ setRoute route model =
                     )
 
         Nothing ->
-            ( { model | page = initialModel }
-            , BlogPost.latest |> BlogPost.get BlogPostLoaded
-            )
+            initHomePage model
+
+
+initHomePage model =
+    let
+        initialHomeModel =
+            Page.Home.init
+    in
+    ( { model | page = HomePage initialHomeModel }
+    , initialHomeModel.blogPost
+        |> BlogPost.get BlogPostLoaded
+    )
 
 
 
