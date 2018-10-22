@@ -1,25 +1,52 @@
-port module Main exposing (..)
+port module Main exposing
+    ( Model
+    , Msg(..)
+    , Page(..)
+    , blogPostLoaded
+    , getPageBlogPost
+    , init
+    , initHighlighting
+    , main
+    , pageToTitle
+    , render
+    , setRoute
+    , subscriptions
+    , update
+    , updateBlogPostContent
+    , updateModelBlogPost
+    , view
+    , viewBlogPostLink
+    , viewHomeLink
+    , viewPage
+    , viewPageNotFound
+    , viewPostLinks
+    )
 
-import Date exposing (Date)
+import Browser
+import Browser.Navigation
 import Dict exposing (Dict)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
 import List
-import Markdown exposing (..)
-import Navigation
+import Markdown exposing (defaultOptions)
 import Page.BlogPost as BlogPost
+import Page.Home
 import Route exposing (Route)
+import Url
+import Url.Parser
 
 
-main : Program Never Page Msg
+main : Program () Model Msg
 main =
-    Navigation.program (Route.fromLocation >> SetRoute)
+    Browser.application
         { init = init
         , subscriptions = subscriptions
         , view = view
         , update = update
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
         }
 
 
@@ -27,42 +54,27 @@ main =
 -- MODEL
 
 
-type alias HomeModel =
-    { blogPost : BlogPost.Model
-    }
-
-
 type Page
-    = HomePage HomeModel
+    = HomePage Page.Home.Model
     | BlogPostPage BlogPost.Model
     | ErrorPage String
 
 
 type alias Model =
-    Page
+    { page : Page
+    , key : Browser.Navigation.Key
+    }
 
 
-{-| TODO: Try `WebData` instead of an "empty" model.
--}
-initialModel : Page
-initialModel =
-    HomePage <|
-        HomeModel
-            { contentString = "Loading..."
-            , author = ""
-            , publishedOn = Date.fromTime 0
-            , slug = BlogPost.Slug ""
-            , title = "Loading..."
-            , getContentUrl = ""
-            , entry = BlogPost.None
+init : flags -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
+init flags url key =
+    let
+        model =
+            { page = HomePage Page.Home.init
+            , key = key
             }
-
-
-init : Navigation.Location -> ( Model, Cmd Msg )
-init location =
-    location
-        |> Route.fromLocation
-        |> asRouteIn initialModel
+    in
+    model |> routeFromUrl url
 
 
 
@@ -70,39 +82,46 @@ init location =
 
 
 type Msg
-    = Reset
-    | BlogPostLoaded (Result Http.Error String)
-    | TransitionTo Page
-    | SetRoute (Maybe Route)
+    = BlogPostLoaded (Result Http.Error String)
+    | LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Reset ->
-            ( model
-            , Route.setUrl Route.Home
+        BlogPostLoaded (Ok blogPostContent) ->
+            blogPostLoaded model blogPostContent
+
+        BlogPostLoaded (Err err) ->
+            let
+                errorMessage =
+                    "Failed to load blog post"
+            in
+            ( { model | page = ErrorPage errorMessage }
+            , Cmd.none
             )
 
-        BlogPostLoaded result ->
-            blogPostLoaded model result
+        LinkClicked urlRequest ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Browser.Navigation.pushUrl model.key (Url.toString url) )
 
-        SetRoute maybeRoute ->
-            model
-                |> setRoute maybeRoute
+                Browser.External href ->
+                    ( model, Browser.Navigation.load href )
 
-        TransitionTo (HomePage homeModel) ->
-            ( model
-            , Route.setUrl Route.Home
-            )
+        UrlChanged url ->
+            routeFromUrl url model
 
-        TransitionTo (BlogPostPage blogPostModel) ->
-            ( model
-            , Route.setUrl <| Route.Post blogPostModel.slug
-            )
 
-        TransitionTo (ErrorPage errorMessage) ->
-            ( ErrorPage errorMessage, Cmd.none )
+routeFromUrl url model =
+    let
+        maybeRoute =
+            url
+                |> Route.urlHashToUrl
+                |> Url.Parser.parse Route.parser
+    in
+    setRoute maybeRoute model
 
 
 getPageBlogPost : Page -> Maybe BlogPost.Model
@@ -122,7 +141,7 @@ updateModelBlogPost : BlogPost.Model -> Page -> Page
 updateModelBlogPost newBlogPost model =
     case model of
         HomePage homeModel ->
-            HomePage <| HomeModel newBlogPost
+            HomePage <| Page.Home.Model newBlogPost
 
         BlogPostPage blogPostModel ->
             BlogPostPage newBlogPost
@@ -133,39 +152,30 @@ updateModelBlogPost newBlogPost model =
 
 {-| TODO: Clean this up. Maybe it's time to move to a real SPA pattern.
 -}
-blogPostLoaded : Model -> Result Http.Error String -> ( Model, Cmd Msg )
-blogPostLoaded model blogPostResult =
-    case blogPostResult of
-        Ok blogPostContent ->
+blogPostLoaded : Model -> String -> ( Model, Cmd Msg )
+blogPostLoaded model blogPostContent =
+    let
+        oldBlogPost =
+            model.page
+                |> getPageBlogPost
+    in
+    case oldBlogPost of
+        Just blogPost ->
             let
-                oldBlogPost =
-                    model
-                        |> getPageBlogPost
+                newBlogPost =
+                    blogPost
+                        |> updateBlogPostContent blogPostContent
+
+                newPage =
+                    model.page
+                        |> updateModelBlogPost newBlogPost
             in
-                case oldBlogPost of
-                    Just blogPost ->
-                        let
-                            newBlogPost =
-                                blogPost
-                                    |> updateBlogPostContent blogPostContent
+            ( { model | page = newPage }, initHighlighting () )
 
-                            newModel =
-                                model
-                                    |> updateModelBlogPost newBlogPost
-                        in
-                            ( newModel, initHighlighting () )
-
-                    Nothing ->
-                        ( ErrorPage "Could not update blog post content.", Cmd.none )
-
-        Err err ->
-            let
-                errorMessage =
-                    err
-                        |> toString
-                        |> (++) "Failed to load blog post: "
-            in
-                ( ErrorPage errorMessage, Cmd.none )
+        Nothing ->
+            ( { model | page = ErrorPage "Could not update blog post content." }
+            , Cmd.none
+            )
 
 
 updateBlogPostContent : String -> BlogPost.Model -> BlogPost.Model
@@ -177,19 +187,23 @@ updateBlogPostContent newContent blogPost =
 -- VIEW
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    model
-        |> viewPage
-        |> render model
+    { title = "absynce.github.io"
+    , body =
+        [ model.page
+            |> viewPage
+            |> render
+        ]
+    }
 
 
 
 -- NOTE: Possibly refactor into (Views)/Page.elm like elm-spa-example.
 
 
-render : Page -> Html Msg -> Html Msg
-render page content =
+render : Html Msg -> Html Msg
+render content =
     div []
         [ header []
             [ h1 [ class "title" ] [ viewHomeLink <| text "absynce.github.io" ]
@@ -209,24 +223,34 @@ render page content =
 
 viewHomeLink : Html Msg -> Html Msg
 viewHomeLink child =
-    a [ onClick <| TransitionTo <| initialModel, href "#" ] [ child ]
-
-
-
--- I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
+    a
+        [ href "#"
+        ]
+        [ child ]
 
 
 viewPage : Page -> Html Msg
 viewPage page =
     case page of
         HomePage homeModel ->
-            Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
+            viewMarkdown homeModel.blogPost.contentString
 
         BlogPostPage blogPostModel ->
-            Markdown.toHtml [ class "content" ] blogPostModel.contentString
+            viewMarkdown blogPostModel.contentString
 
         ErrorPage errorMessage ->
             page |> viewPageNotFound errorMessage
+
+
+viewMarkdown : String -> Html Msg
+viewMarkdown contentString =
+    let
+        myOptions =
+            { defaultOptions
+                | sanitize = False
+            }
+    in
+    Markdown.toHtmlWith myOptions [ class "content" ] contentString
 
 
 viewPageNotFound : String -> Page -> Html Msg
@@ -268,8 +292,7 @@ pageToTitle page =
 viewBlogPostLink : BlogPost.Model -> Html Msg
 viewBlogPostLink blogPost =
     a
-        [ onClick <| TransitionTo <| BlogPostPage blogPost
-        , href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
+        [ href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
         ]
         [ text blogPost.title ]
 
@@ -278,19 +301,16 @@ viewBlogPostLink blogPost =
 -- Route
 
 
-{-| This is called only when route is updated in update method.
+{-| This is where magic happens for each page.
 
-Use Route.setUrl instead to change page. The reason is that setting the URL causes
-SetRoute to be triggered.
+TODO: Rename it to loadPage?
 
 -}
 setRoute : Maybe Route -> Model -> ( Model, Cmd Msg )
 setRoute route model =
     case route of
         Just Route.Home ->
-            ( initialModel
-            , BlogPost.latest |> BlogPost.get BlogPostLoaded
-            )
+            initHomePage model
 
         Just (Route.Post slug) ->
             -- Should this move to BlogPost.elm (init)?
@@ -301,32 +321,31 @@ setRoute route model =
                 maybeBlogPost =
                     BlogPost.postsBySlug |> Dict.get slugString
             in
-                case maybeBlogPost of
-                    Just blogPost ->
-                        ( BlogPostPage blogPost
-                        , blogPost
-                            |> BlogPost.get BlogPostLoaded
-                        )
+            case maybeBlogPost of
+                Just blogPost ->
+                    ( { model | page = BlogPostPage blogPost }
+                    , blogPost
+                        |> BlogPost.get BlogPostLoaded
+                    )
 
-                    Nothing ->
-                        ( ErrorPage <| "Page \"" ++ slugString ++ "\" not found"
-                        , Cmd.none
-                        )
+                Nothing ->
+                    ( { model | page = ErrorPage <| "Page \"" ++ slugString ++ "\" not found" }
+                    , Cmd.none
+                    )
 
         Nothing ->
-            ( initialModel
-            , BlogPost.latest |> BlogPost.get BlogPostLoaded
-            )
+            initHomePage model
 
 
-{-| Fluent inverted function for setRoute.
-
-Based on [Updating Nested Records in Elm](https://medium.com/elm-shorts/updating-nested-records-in-elm-15d162e80480) by Wouter In t Velt
-
--}
-asRouteIn : Model -> Maybe Route -> ( Page, Cmd Msg )
-asRouteIn =
-    flip setRoute
+initHomePage model =
+    let
+        initialHomeModel =
+            Page.Home.init
+    in
+    ( { model | page = HomePage initialHomeModel }
+    , initialHomeModel.blogPost
+        |> BlogPost.get BlogPostLoaded
+    )
 
 
 
