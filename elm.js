@@ -6898,36 +6898,23 @@ var author$project$Main$updateModelBlogPost = F2(
 		}
 	});
 var author$project$Main$blogPostLoaded = F2(
-	function (model, blogPostResult) {
-		if (blogPostResult.$ === 'Ok') {
-			var blogPostContent = blogPostResult.a;
-			var oldBlogPost = author$project$Main$getPageBlogPost(model.page);
-			if (oldBlogPost.$ === 'Just') {
-				var blogPost = oldBlogPost.a;
-				var newBlogPost = A2(author$project$Main$updateBlogPostContent, blogPostContent, blogPost);
-				var newPage = A2(author$project$Main$updateModelBlogPost, newBlogPost, model.page);
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{page: newPage}),
-					author$project$Main$initHighlighting(_Utils_Tuple0));
-			} else {
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							page: author$project$Main$ErrorPage('Could not update blog post content.')
-						}),
-					elm$core$Platform$Cmd$none);
-			}
+	function (model, blogPostContent) {
+		var oldBlogPost = author$project$Main$getPageBlogPost(model.page);
+		if (oldBlogPost.$ === 'Just') {
+			var blogPost = oldBlogPost.a;
+			var newBlogPost = A2(author$project$Main$updateBlogPostContent, blogPostContent, blogPost);
+			var newPage = A2(author$project$Main$updateModelBlogPost, newBlogPost, model.page);
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{page: newPage}),
+				author$project$Main$initHighlighting(_Utils_Tuple0));
 		} else {
-			var err = blogPostResult.a;
-			var errorMessage = 'Failed to load blog post';
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						page: author$project$Main$ErrorPage(errorMessage)
+						page: author$project$Main$ErrorPage('Could not update blog post content.')
 					}),
 				elm$core$Platform$Cmd$none);
 		}
@@ -10559,8 +10546,20 @@ var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'BlogPostLoaded':
-				var result = msg.a;
-				return A2(author$project$Main$blogPostLoaded, model, result);
+				if (msg.a.$ === 'Ok') {
+					var blogPostContent = msg.a.a;
+					return A2(author$project$Main$blogPostLoaded, model, blogPostContent);
+				} else {
+					var err = msg.a.a;
+					var errorMessage = 'Failed to load blog post';
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								page: author$project$Main$ErrorPage(errorMessage)
+							}),
+						elm$core$Platform$Cmd$none);
+				}
 			case 'LinkClicked':
 				var urlRequest = msg.a;
 				if (urlRequest.$ === 'Internal') {
@@ -10731,6 +10730,27 @@ var author$project$Main$render = function (content) {
 					]))
 			]));
 };
+var elm_explorations$markdown$Markdown$defaultOptions = {
+	defaultHighlighting: elm$core$Maybe$Nothing,
+	githubFlavored: elm$core$Maybe$Just(
+		{breaks: false, tables: false}),
+	sanitize: true,
+	smartypants: false
+};
+var elm_explorations$markdown$Markdown$toHtmlWith = _Markdown_toHtml;
+var author$project$Main$viewMarkdown = function (contentString) {
+	var myOptions = _Utils_update(
+		elm_explorations$markdown$Markdown$defaultOptions,
+		{sanitize: false});
+	return A3(
+		elm_explorations$markdown$Markdown$toHtmlWith,
+		myOptions,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('content')
+			]),
+		contentString);
+};
 var author$project$Main$viewPageNotFound = F2(
 	function (errorMessage, page) {
 		return A2(
@@ -10765,35 +10785,14 @@ var author$project$Main$viewPageNotFound = F2(
 						]))
 				]));
 	});
-var elm_explorations$markdown$Markdown$defaultOptions = {
-	defaultHighlighting: elm$core$Maybe$Nothing,
-	githubFlavored: elm$core$Maybe$Just(
-		{breaks: false, tables: false}),
-	sanitize: true,
-	smartypants: false
-};
-var elm_explorations$markdown$Markdown$toHtmlWith = _Markdown_toHtml;
-var elm_explorations$markdown$Markdown$toHtml = elm_explorations$markdown$Markdown$toHtmlWith(elm_explorations$markdown$Markdown$defaultOptions);
 var author$project$Main$viewPage = function (page) {
 	switch (page.$) {
 		case 'HomePage':
 			var homeModel = page.a;
-			return A2(
-				elm_explorations$markdown$Markdown$toHtml,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('content')
-					]),
-				homeModel.blogPost.contentString);
+			return author$project$Main$viewMarkdown(homeModel.blogPost.contentString);
 		case 'BlogPostPage':
 			var blogPostModel = page.a;
-			return A2(
-				elm_explorations$markdown$Markdown$toHtml,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('content')
-					]),
-				blogPostModel.contentString);
+			return author$project$Main$viewMarkdown(blogPostModel.contentString);
 		default:
 			var errorMessage = page.a;
 			return A2(author$project$Main$viewPageNotFound, errorMessage, page);
@@ -10806,7 +10805,7 @@ var author$project$Main$view = function (model) {
 				author$project$Main$render(
 				author$project$Main$viewPage(model.page))
 			]),
-		title: 'TODO'
+		title: 'absynce.github.io'
 	};
 };
 var elm$browser$Browser$application = _Browser_application;
