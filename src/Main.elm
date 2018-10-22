@@ -41,7 +41,6 @@ import Url.Parser
 main : Program () Model Msg
 main =
     Browser.application
-        --(Route.fromLocation >> SetRoute)
         { init = init
         , subscriptions = subscriptions
         , view = view
@@ -190,7 +189,7 @@ updateBlogPostContent newContent blogPost =
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "TODO"
+    { title = "absynce.github.io"
     , body =
         [ model.page
             |> viewPage
@@ -228,10 +227,6 @@ viewHomeLink child =
         [ href "#"
         ]
         [ child ]
-
-
-
--- I've been writing software for over 10 years. The beauty, simplicity and usefulness of [Elm](http://elm-lang.org/) is what brought me out of my clamshell and prompted me to write this.
 
 
 viewPage : Page -> Html Msg
@@ -297,7 +292,6 @@ pageToTitle page =
 viewBlogPostLink : BlogPost.Model -> Html Msg
 viewBlogPostLink blogPost =
     a
-        -- [ onClick <| TransitionTo <| BlogPostPage blogPost
         [ href <| "#!/post/" ++ (blogPost.slug |> BlogPost.slugToString)
         ]
         [ text blogPost.title ]

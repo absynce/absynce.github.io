@@ -1,4 +1,4 @@
-module Page.Home exposing (Model, Msg, init, update, view)
+module Page.Home exposing (Model, init)
 
 import Browser
 import Html exposing (..)
@@ -15,17 +15,3 @@ type alias Model =
 init : Model
 init =
     Model BlogPost.latest
-
-
-view : Model -> Browser.Document Msg
-view model =
-    Debug.todo "Add Home view."
-
-
-type Msg
-    = None
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    ( model, Cmd.none )
