@@ -91,8 +91,17 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        BlogPostLoaded result ->
-            blogPostLoaded model result
+        BlogPostLoaded (Ok blogPostContent) ->
+            blogPostLoaded model blogPostContent
+
+        BlogPostLoaded (Err err) ->
+            let
+                errorMessage =
+                    "Failed to load blog post"
+            in
+            ( { model | page = ErrorPage errorMessage }
+            , Cmd.none
+            )
 
         LinkClicked urlRequest ->
             case urlRequest of
@@ -144,39 +153,28 @@ updateModelBlogPost newBlogPost model =
 
 {-| TODO: Clean this up. Maybe it's time to move to a real SPA pattern.
 -}
-blogPostLoaded : Model -> Result Http.Error String -> ( Model, Cmd Msg )
-blogPostLoaded model blogPostResult =
-    case blogPostResult of
-        Ok blogPostContent ->
+blogPostLoaded : Model -> String -> ( Model, Cmd Msg )
+blogPostLoaded model blogPostContent =
+    let
+        oldBlogPost =
+            model.page
+                |> getPageBlogPost
+    in
+    case oldBlogPost of
+        Just blogPost ->
             let
-                oldBlogPost =
+                newBlogPost =
+                    blogPost
+                        |> updateBlogPostContent blogPostContent
+
+                newPage =
                     model.page
-                        |> getPageBlogPost
+                        |> updateModelBlogPost newBlogPost
             in
-            case oldBlogPost of
-                Just blogPost ->
-                    let
-                        newBlogPost =
-                            blogPost
-                                |> updateBlogPostContent blogPostContent
+            ( { model | page = newPage }, initHighlighting () )
 
-                        newPage =
-                            model.page
-                                |> updateModelBlogPost newBlogPost
-                    in
-                    ( { model | page = newPage }, initHighlighting () )
-
-                Nothing ->
-                    ( { model | page = ErrorPage "Could not update blog post content." }
-                    , Cmd.none
-                    )
-
-        Err err ->
-            let
-                errorMessage =
-                    "Failed to load blog post"
-            in
-            ( { model | page = ErrorPage errorMessage }
+        Nothing ->
+            ( { model | page = ErrorPage "Could not update blog post content." }
             , Cmd.none
             )
 
