@@ -30,7 +30,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
 import List
-import Markdown exposing (..)
+import Markdown exposing (defaultOptions)
 import Page.BlogPost as BlogPost
 import Page.Home
 import Route exposing (Route)
@@ -238,13 +238,24 @@ viewPage : Page -> Html Msg
 viewPage page =
     case page of
         HomePage homeModel ->
-            Markdown.toHtml [ class "content" ] homeModel.blogPost.contentString
+            viewMarkdown homeModel.blogPost.contentString
 
         BlogPostPage blogPostModel ->
-            Markdown.toHtml [ class "content" ] blogPostModel.contentString
+            viewMarkdown blogPostModel.contentString
 
         ErrorPage errorMessage ->
             page |> viewPageNotFound errorMessage
+
+
+viewMarkdown : String -> Html Msg
+viewMarkdown contentString =
+    let
+        myOptions =
+            { defaultOptions
+                | sanitize = False
+            }
+    in
+    Markdown.toHtmlWith myOptions [ class "content" ] contentString
 
 
 viewPageNotFound : String -> Page -> Html Msg
