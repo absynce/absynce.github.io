@@ -10581,6 +10581,157 @@ var author$project$Main$update = F2(
 				return A2(author$project$Main$routeFromUrl, url, model);
 		}
 	});
+var elm$core$String$fromFloat = _String_fromNumber;
+var elm$svg$Svg$map = elm$virtual_dom$VirtualDom$map;
+var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var elm$svg$Svg$svg = elm$svg$Svg$trustedNode('svg');
+var elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
+var elm$svg$Svg$Attributes$strokeLinecap = _VirtualDom_attribute('stroke-linecap');
+var elm$svg$Svg$Attributes$strokeLinejoin = _VirtualDom_attribute('stroke-linejoin');
+var elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
+var elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
+var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var feathericons$elm_feather$FeatherIcons$toHtml = F2(
+	function (attributes, _n0) {
+		var src = _n0.a.src;
+		var attrs = _n0.a.attrs;
+		var strSize = elm$core$String$fromFloat(attrs.size);
+		var baseAttributes = _List_fromArray(
+			[
+				elm$svg$Svg$Attributes$fill('none'),
+				elm$svg$Svg$Attributes$height(
+				_Utils_ap(strSize, attrs.sizeUnit)),
+				elm$svg$Svg$Attributes$width(
+				_Utils_ap(strSize, attrs.sizeUnit)),
+				elm$svg$Svg$Attributes$stroke('currentColor'),
+				elm$svg$Svg$Attributes$strokeLinecap('round'),
+				elm$svg$Svg$Attributes$strokeLinejoin('round'),
+				elm$svg$Svg$Attributes$strokeWidth(
+				elm$core$String$fromFloat(attrs.strokeWidth)),
+				elm$svg$Svg$Attributes$viewBox(attrs.viewBox)
+			]);
+		var combinedAttributes = _Utils_ap(
+			function () {
+				var _n1 = attrs._class;
+				if (_n1.$ === 'Just') {
+					var c = _n1.a;
+					return A2(
+						elm$core$List$cons,
+						elm$svg$Svg$Attributes$class(c),
+						baseAttributes);
+				} else {
+					return baseAttributes;
+				}
+			}(),
+			attributes);
+		return A2(
+			elm$svg$Svg$svg,
+			combinedAttributes,
+			A2(
+				elm$core$List$map,
+				elm$svg$Svg$map(elm$core$Basics$never),
+				src));
+	});
+var author$project$Icons$toHtml = function (icon) {
+	return A2(
+		elm$html$Html$span,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('svg-icon')
+			]),
+		_List_fromArray(
+			[
+				A2(feathericons$elm_feather$FeatherIcons$toHtml, _List_Nil, icon)
+			]));
+};
+var elm$svg$Svg$path = elm$svg$Svg$trustedNode('path');
+var elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
+var feathericons$elm_feather$FeatherIcons$Icon = function (a) {
+	return {$: 'Icon', a: a};
+};
+var feathericons$elm_feather$FeatherIcons$defaultAttributes = function (name) {
+	return {
+		_class: elm$core$Maybe$Just('feather feather-' + name),
+		size: 24,
+		sizeUnit: '',
+		strokeWidth: 2,
+		viewBox: '0 0 24 24'
+	};
+};
+var feathericons$elm_feather$FeatherIcons$makeBuilder = F2(
+	function (name, src) {
+		return feathericons$elm_feather$FeatherIcons$Icon(
+			{
+				attrs: feathericons$elm_feather$FeatherIcons$defaultAttributes(name),
+				src: src
+			});
+	});
+var elm$virtual_dom$VirtualDom$property = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_property,
+			_VirtualDom_noInnerHtmlOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var feathericons$elm_feather$FeatherIcons$xmlns = function (s) {
+	return A2(
+		elm$virtual_dom$VirtualDom$property,
+		'xmlns',
+		elm$json$Json$Encode$string(s));
+};
+var feathericons$elm_feather$FeatherIcons$github = A2(
+	feathericons$elm_feather$FeatherIcons$makeBuilder,
+	'github',
+	_List_fromArray(
+		[
+			A2(
+			elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					feathericons$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					elm$svg$Svg$Attributes$width('24'),
+					elm$svg$Svg$Attributes$height('24'),
+					elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					elm$svg$Svg$Attributes$fill('none'),
+					elm$svg$Svg$Attributes$stroke('currentColor'),
+					elm$svg$Svg$Attributes$strokeWidth('2'),
+					elm$svg$Svg$Attributes$strokeLinecap('round'),
+					elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					elm$svg$Svg$Attributes$class('feather feather-github')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$d('M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22')
+						]),
+					_List_Nil)
+				]))
+		]));
+var author$project$Icons$gitHub = author$project$Icons$toHtml(feathericons$elm_feather$FeatherIcons$github);
+var author$project$Main$viewGitHubLink = A2(
+	elm$html$Html$li,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$a,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('social-link'),
+					elm$html$Html$Attributes$href('https://github.com/absynce/')
+				]),
+			_List_fromArray(
+				[
+					author$project$Icons$gitHub,
+					elm$html$Html$text('@absynce')
+				]))
+		]));
 var author$project$Main$viewHomeLink = function (child) {
 	return A2(
 		elm$html$Html$a,
@@ -10591,6 +10742,82 @@ var author$project$Main$viewHomeLink = function (child) {
 		_List_fromArray(
 			[child]));
 };
+var elm$svg$Svg$circle = elm$svg$Svg$trustedNode('circle');
+var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
+var elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
+var feathericons$elm_feather$FeatherIcons$linkedin = A2(
+	feathericons$elm_feather$FeatherIcons$makeBuilder,
+	'linkedin',
+	_List_fromArray(
+		[
+			A2(
+			elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					feathericons$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					elm$svg$Svg$Attributes$width('24'),
+					elm$svg$Svg$Attributes$height('24'),
+					elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					elm$svg$Svg$Attributes$fill('none'),
+					elm$svg$Svg$Attributes$stroke('currentColor'),
+					elm$svg$Svg$Attributes$strokeWidth('2'),
+					elm$svg$Svg$Attributes$strokeLinecap('round'),
+					elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					elm$svg$Svg$Attributes$class('feather feather-linkedin')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$d('M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z')
+						]),
+					_List_Nil),
+					A2(
+					elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$x('2'),
+							elm$svg$Svg$Attributes$y('9'),
+							elm$svg$Svg$Attributes$width('4'),
+							elm$svg$Svg$Attributes$height('12')
+						]),
+					_List_Nil),
+					A2(
+					elm$svg$Svg$circle,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$cx('4'),
+							elm$svg$Svg$Attributes$cy('4'),
+							elm$svg$Svg$Attributes$r('2')
+						]),
+					_List_Nil)
+				]))
+		]));
+var author$project$Icons$linkedIn = author$project$Icons$toHtml(feathericons$elm_feather$FeatherIcons$linkedin);
+var author$project$Main$viewLinkedInLink = A2(
+	elm$html$Html$li,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$a,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('social-link'),
+					elm$html$Html$Attributes$href('https://www.linkedin.com/in/absynce/')
+				]),
+			_List_fromArray(
+				[
+					author$project$Icons$linkedIn,
+					elm$html$Html$text('LinkedIn')
+				]))
+		]));
 var author$project$Main$viewBlogPostLink = function (blogPost) {
 	return A2(
 		elm$html$Html$a,
@@ -10622,7 +10849,10 @@ var author$project$Main$viewPostLinks = A2(
 				])),
 			A2(
 			elm$html$Html$ul,
-			_List_Nil,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('post-links')
+				]),
 			A2(
 				elm$core$List$map,
 				function (post) {
@@ -10636,9 +10866,57 @@ var author$project$Main$viewPostLinks = A2(
 				},
 				author$project$Page$BlogPost$posts))
 		]));
+var feathericons$elm_feather$FeatherIcons$twitter = A2(
+	feathericons$elm_feather$FeatherIcons$makeBuilder,
+	'twitter',
+	_List_fromArray(
+		[
+			A2(
+			elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					feathericons$elm_feather$FeatherIcons$xmlns('http://www.w3.org/2000/svg'),
+					elm$svg$Svg$Attributes$width('24'),
+					elm$svg$Svg$Attributes$height('24'),
+					elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+					elm$svg$Svg$Attributes$fill('none'),
+					elm$svg$Svg$Attributes$stroke('currentColor'),
+					elm$svg$Svg$Attributes$strokeWidth('2'),
+					elm$svg$Svg$Attributes$strokeLinecap('round'),
+					elm$svg$Svg$Attributes$strokeLinejoin('round'),
+					elm$svg$Svg$Attributes$class('feather feather-twitter')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$svg$Svg$path,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$d('M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z')
+						]),
+					_List_Nil)
+				]))
+		]));
+var author$project$Icons$twitter = author$project$Icons$toHtml(feathericons$elm_feather$FeatherIcons$twitter);
+var author$project$Main$viewTwitterLink = A2(
+	elm$html$Html$li,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$a,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('social-link'),
+					elm$html$Html$Attributes$href('https://twitter.com/absynce')
+				]),
+			_List_fromArray(
+				[
+					author$project$Icons$twitter,
+					elm$html$Html$text('@absynce')
+				]))
+		]));
 var elm$html$Html$aside = _VirtualDom_node('aside');
-var elm$html$Html$h1 = _VirtualDom_node('h1');
-var elm$html$Html$header = _VirtualDom_node('header');
 var elm$html$Html$img = _VirtualDom_node('img');
 var elm$html$Html$Attributes$src = function (url) {
 	return A2(
@@ -10646,6 +10924,49 @@ var elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
+var author$project$Main$viewAside = A2(
+	elm$html$Html$aside,
+	_List_Nil,
+	_List_fromArray(
+		[
+			author$project$Main$viewHomeLink(
+			A2(
+				elm$html$Html$img,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$src('https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188')
+					]),
+				_List_Nil)),
+			A2(
+			elm$html$Html$h2,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('author-name')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text('Jared M. Smith')
+				])),
+			A2(
+			elm$html$Html$ul,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('social-links')
+				]),
+			_List_fromArray(
+				[author$project$Main$viewTwitterLink, author$project$Main$viewGitHubLink, author$project$Main$viewLinkedInLink])),
+			A2(
+			elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					author$project$Main$viewHomeLink(
+					elm$html$Html$text('Home'))
+				])),
+			author$project$Main$viewPostLinks
+		]));
+var elm$html$Html$h1 = _VirtualDom_node('h1');
+var elm$html$Html$header = _VirtualDom_node('header');
 var author$project$Main$render = function (content) {
 	return A2(
 		elm$html$Html$div,
@@ -10676,58 +10997,7 @@ var author$project$Main$render = function (content) {
 						elm$html$Html$Attributes$class('container')
 					]),
 				_List_fromArray(
-					[
-						content,
-						A2(
-						elm$html$Html$aside,
-						_List_Nil,
-						_List_fromArray(
-							[
-								author$project$Main$viewHomeLink(
-								A2(
-									elm$html$Html$img,
-									_List_fromArray(
-										[
-											elm$html$Html$Attributes$src('https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188')
-										]),
-									_List_Nil)),
-								A2(
-								elm$html$Html$h2,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('author-name')
-									]),
-								_List_fromArray(
-									[
-										elm$html$Html$text('Jared M. Smith')
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_Nil,
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$a,
-										_List_fromArray(
-											[
-												elm$html$Html$Attributes$href('https://twitter.com/absynce')
-											]),
-										_List_fromArray(
-											[
-												elm$html$Html$text('@absynce')
-											]))
-									])),
-								A2(
-								elm$html$Html$p,
-								_List_Nil,
-								_List_fromArray(
-									[
-										author$project$Main$viewHomeLink(
-										elm$html$Html$text('Home'))
-									])),
-								author$project$Main$viewPostLinks
-							]))
-					]))
+					[content, author$project$Main$viewAside]))
 			]));
 };
 var elm_explorations$markdown$Markdown$defaultOptions = {

@@ -313,7 +313,7 @@ viewPostLinks =
         [ h2 [] [ text "Blog Posts" ]
         , BlogPost.posts
             |> List.map (\post -> li [] [ viewBlogPostLink post ])
-            |> ul []
+            |> ul [ class "post-links" ]
         ]
 
 

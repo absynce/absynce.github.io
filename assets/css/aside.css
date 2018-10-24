@@ -24,3 +24,16 @@ a.social-link:hover {
 .social-link .svg-icon {
   margin-right: 5px;
 }
+
+.posts h2 {
+  margin-bottom: 0;
+}
+
+.post-links {
+  margin-top: 5px;
+  padding-left: 0;
+}
+.post-links li {
+  list-style: none;
+  padding: 2px 0;
+}
