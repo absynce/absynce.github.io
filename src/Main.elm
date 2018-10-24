@@ -29,6 +29,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
+import Icons
 import List
 import Markdown exposing (defaultOptions)
 import Page.BlogPost as BlogPost
@@ -210,13 +211,57 @@ render content =
             ]
         , div [ class "container" ]
             [ content
-            , aside []
-                [ viewHomeLink <| img [ src "https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188" ] []
-                , h2 [ class "author-name" ] [ text "Jared M. Smith" ]
-                , div [] [ a [ href "https://twitter.com/absynce" ] [ text "@absynce" ] ]
-                , p [] [ viewHomeLink <| text "Home" ]
-                , viewPostLinks
-                ]
+            , viewAside
+            ]
+        ]
+
+
+viewAside =
+    aside []
+        [ viewHomeLink <| img [ src "https://gravatar.com/avatar/b10e25a444d72682d875ff745166b91c?s=188" ] []
+        , h2 [ class "author-name" ] [ text "Jared M. Smith" ]
+        , ul [ class "social-links" ]
+            [ viewTwitterLink
+            , viewGitHubLink
+            , viewLinkedInLink
+            ]
+        , p [] [ viewHomeLink <| text "Home" ]
+        , viewPostLinks
+        ]
+
+
+viewTwitterLink =
+    li []
+        [ a
+            [ class "social-link"
+            , href "https://twitter.com/absynce"
+            ]
+            [ Icons.twitter
+            , text "@absynce"
+            ]
+        ]
+
+
+viewGitHubLink =
+    li []
+        [ a
+            [ class "social-link"
+            , href "https://github.com/absynce/"
+            ]
+            [ Icons.gitHub
+            , text "@absynce"
+            ]
+        ]
+
+
+viewLinkedInLink =
+    li []
+        [ a
+            [ class "social-link"
+            , href "https://www.linkedin.com/in/absynce/"
+            ]
+            [ Icons.linkedIn
+            , text "LinkedIn"
             ]
         ]
 

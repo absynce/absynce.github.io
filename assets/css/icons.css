@@ -1,0 +1,15 @@
+/* Thanks to Elliot Dahl for https://blog.prototypr.io/align-svg-icons-to-text-and-say-goodbye-to-font-icons-d44b3d7b26b4 */
+.svg-icon {
+  align-self: center;
+  display: inline-flex;
+  height: 1em;
+  position: relative;
+  width: 1em;
+}
+
+.svg-icon svg {
+  bottom: -0.125em;
+  height: 1em;
+  position: absolute;
+  width: 1em;
+}

@@ -1,4 +1,26 @@
 aside .author-name {
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 0;
+}
+
+.social-links {
+  margin-top: 5px;
+  padding-left: 0;
+}
+
+.social-links li {
+  list-style: none;
+  padding: 2px 0;
+}
+
+a.social-link {
+  text-decoration: none;
+}
+
+a.social-link:hover {
+  text-decoration: underline;
+}
+
+.social-link .svg-icon {
+  margin-right: 5px;
 }
