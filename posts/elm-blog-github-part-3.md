@@ -8,11 +8,10 @@ If you're just arriving, read [the introduction](#!/post/elm-blog-github-part-0-
 
 ### Step 1 - Add The Elm Architecture skeleton
 
-[//]: # (Revise this...)
-
 Now that we know how to get something in Elm on a web page hosted on GitHub, let's follow [The Elm Architecture](https://guide.elm-lang.org/architecture/).
 
-In it's simplest form it's just:
+In it's simplest form it includes:
+
 - a model,
 - a view, and
 - an update function.
@@ -27,8 +26,8 @@ Add the following to your `Main.elm` file:
 
 ```elm
 main =
-    Html.beginnerProgram
-        { model = home
+    Browser.sandbox
+        { init = home
         , update = update
         , view = view
         }
@@ -61,7 +60,7 @@ update msg model =
 
 
 view model =
-    body []
+    div []
         [ h1 [] [ text "Elm explorer blog" ]
         , text "Here's what I learned while exploring Elm..."
         ]
@@ -119,6 +118,7 @@ update msg model =
 This won't compile for a couple reasons. The first is obvious: we haven't defined what happens when we want to show the home page.
 
 Let's fill that in:
+
 ```elm
 update msg model =
   case msg of
@@ -135,24 +135,23 @@ elm make src/Main.elm --output=elm.js
 Output from the compiler:
 
 ```
-==================================== ERRORS ====================================
-
 -- MISSING PATTERNS ----------------------------------------------- src/Main.elm
 
-This `case` does not have branches for all possibilities.
+This `case` does not have branches for all possibilities:
 
-47|>    case msg of
-48|>        ShowHomePage ->
-49|>            home
+43|>    case msg of
+44|>        ShowHomePage ->
+45|>            home
 
-You need to account for the following values:
+Missing possibilities include:
 
-    Main.ShowWhatIMadeWithElmPost
+    ShowWhatIMadeWithElmPost
 
-Add a branch to cover this pattern!
+I would have to crash if I saw one of those. Add branches for them!
 
-If you are seeing this error for the first time, check out these hints:
-<https://github.com/elm-lang/elm-compiler/blob/0.18.0/hints/missing-patterns.md>
+Hint: If you want to write the code for each branch later, use `Debug.todo` as a
+placeholder. Read <https://elm-lang.org/0.19.0/missing-patterns> for more
+guidance on this workflow.
 ```
 
 Whoa! That's really useful. It tells us we forgot to handle one of the interactions. That means cases _must be exhaustive_ when used this way. It even provides a link explaining why and how to resolve it.
@@ -176,7 +175,6 @@ update msg model =
 
         ShowWhatIMadeWithElmPost ->
             whatIMadeWithElmPost
-
 ```
 
 Here's what the whole program looks like right now:
@@ -184,16 +182,16 @@ Here's what the whole program looks like right now:
 ```elm
 module Main exposing (main)
 
+import Browser
 import Html exposing (..)
 
 
 main =
-    Html.beginnerProgram
-        { model = home
+    Browser.sandbox
+        { init = home
         , update = update
         , view = view
         }
-
 
 
 type alias Model =
@@ -232,9 +230,8 @@ update msg model =
             whatIMadeWithElmPost
 
 
-
 view model =
-    body []
+    div []
         [ h1 [] [ text "Elm explorer blog" ]
         , text "Here's what I learned while exploring Elm..."
         ]
@@ -250,7 +247,7 @@ As you can see we've moved `viewBlogPost` to the bottom and renamed it to just `
 
 ```elm
 view model =
-    body []
+    div []
         [ h1 [] [ text model.title ]
         , text model.content
         ]
@@ -258,14 +255,13 @@ view model =
 
 However, there's still no interaction. Not for long!
 
-
 ### Step 6 - Add buttons
 
 Add a `div` with two `button` elements to the `view` function. The `onClick` event mimics HTML and expects us to give it a `Msg` to define what it should do.
 
 ```elm
 view model =
-    body []
+    div []
         [ h1 [] [ text model.title ]
         , text model.content
         , div []
@@ -288,13 +284,14 @@ Here's your blog post app in all it's glory:
 ```elm
 module Main exposing (main)
 
+import Browser
 import Html exposing (..)
 import Html.Events exposing (onClick)
 
 
 main =
-    Html.beginnerProgram
-        { model = home
+    Browser.sandbox
+        { init = home
         , update = update
         , view = view
         }
@@ -337,7 +334,7 @@ update msg model =
 
 
 view model =
-    body []
+    div []
         [ h1 [] [ text model.title ]
         , text model.content
         , div []
@@ -350,11 +347,13 @@ view model =
 ### Summary
 
 We covered a lot in this post:
+
 - [The Elm Architecture (TEA)](https://guide.elm-lang.org/architecture/)
 - `case` expressions
 - Model using records
 
 Things we didn't discuss, but secretly used anyway:
+
 - Pure functions
 - Union types
 - Declarative programming
@@ -364,8 +363,10 @@ Things we didn't discuss, but secretly used anyway:
 Explore some more on your own.
 
 Here are a few ideas:
-- Add [markdown support](http://package.elm-lang.org/packages/evancz/elm-markdown/latest)
-- Improve the UI [with CSS](http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes#class)
+
+- Add [markdown support](https://package.elm-lang.org/packages/elm-explorations/markdown/latest/)
+- Improve the UI [with CSS](https://package.elm-lang.org/packages/elm/html/latest/Html-Attributes#class)
+- Create a full-screen app, controlling the page title, with [`Browser.document`](https://package.elm-lang.org/packages/elm/browser/latest/Browser#document)
 - Write a new blog post (add interaction `Msg`): `ShowElmMuchLovePost`
 
 If you liked the series share it!

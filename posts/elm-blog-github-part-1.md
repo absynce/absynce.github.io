@@ -27,26 +27,13 @@ main =
 ### Step 2. - Compile your Elm code
 
 ```bash
-elm-make src/Main.elm --output=elm.js
+elm make src/Main.elm --output=elm.js
 ```
 
-The first time you compile you'll get the following:
+You should see some packages download and finally:
 
 ```console
-Some new packages are needed. Here is the upgrade plan.
-
-  Install:
-    elm-lang/core 5.1.1
-    elm-lang/html 2.0.0
-    elm-lang/virtual-dom 2.0.4
-
-Do you approve of this plan? [Y/n]
-```
-
-Press Enter. You should see some packages download and finally:
-
-```console
-Successfully generated elm.js
+Success! Compiled 1 module.
 ```
 
 ### Step 3. - Add index.html
@@ -58,12 +45,15 @@ Fire up your favorite text editor. Add the following to index.html in the root o
 <html>
   <head>
     <meta charset="utf-8">
-    <title>your blog title</title>
+    <title>Your Blog Title</title>
     <script src="elm.js"></script>
   </head>
   <body id="page-body">
+    <div id="elm-app"></div>
     <script>
-      var app = Elm.Main.fullscreen();
+      var app = Elm.Main.init({
+        node: document.getElementById('elm-app')
+      });
     </script>
   </body>
 </html>
@@ -73,30 +63,37 @@ GitHub Pages looks for `index.html` when serving your site at username.github.io
 
 This does two important things for Elm:
 
-1. References your compiled Elm app JavaScript output (`elm.js`):
+1.  References your compiled Elm app JavaScript output (`elm.js`):
+
 ```html
     <script src="elm.js"></script>
 ```
 
-2. Tells Elm to run your app full screen:
-```javascript
-    var app = Elm.Main.fullscreen();
+2.  Tells Elm what node to run our app within:
+
+```html
+    <div id="elm-app"></div>
+    <script>
+      var app = Elm.Main.init({
+        node: document.getElementById('elm-app')
+      });
+    </script>
 ```
 
 ### Step 4. - Run your app locally
 
 ```bash
-elm-reactor
+elm reactor
 ```
 
 This will start the built-in Elm web server.
 
 <div class="notice">
   <p>
-  If you get `elm-reactor: bind: resource busy (Address already in use)` then specify an open port:
+  If you get `elm: Network.Socket.bind: resource busy (Address in use)` then specify an open port:
   </p>
 
-  <pre><code class="lang-bash">elm-reactor -p 8088</code></pre>
+  <pre><code class="lang-bash">elm reactor --port=8088</code></pre>
 </div>
 
 Go to `http://localhost:8000/index.html`.
@@ -112,7 +109,6 @@ Next we're going to work on publishing it.
 [Create a GitHub page](https://pages.github.com/) with your GitHub username: _username.github.io_.
 
 Clone your repository locally.
-
 
 ### Step 6. - Publish it!
 

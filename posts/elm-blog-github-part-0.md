@@ -2,6 +2,10 @@
 
 If you're new to Elm and looking for a way to get started, look no further...
 
+<p class="notice">
+Upgraded to <a href="https://elm-lang.org/blog/small-assets-without-the-headache">Elm 0.19</a>!
+</p>
+
 ## Learn Elm while writing a blog on GitHub Pages.
 
 I like to learn by doing. This led me to create a blog in [Elm](http://elm-lang.org/) and write about how to create a blog in Elm in the process. I also wanted to make it easy to share. Therefore the walkthrough includes hosting it on [GitHub Pages](https://pages.github.com/).
@@ -11,9 +15,10 @@ This is a beginner tutorial, assuming no prior knowledge of Elm other than some 
 The format attempts to follow Richard Feldman's suggestions in his talk at elm-conf 2017 ["Teaching Elm to Beginners"](https://youtu.be/G-GhUxeYc1U) by providing as few detours from the goal as possible. I deviate a bit from that recommendation at the end, in Part 3, where I summarize some things used that you don't _need_ to know.
 
 Without further ado:
-* [Part 1 - Host Elm code on GitHub](#!/post/elm-blog-github-part-1-host-elm-code-on-github)
-* [Part 2 - Add title and content areas](#!/post/elm-blog-github-part-2-add-title-and-content-areas)
-* [Part 3 - Add multiple pages](#!/post/elm-blog-github-part-3-add-multiple-pages)
+
+- [Part 1 - Host Elm code on GitHub](#!/post/elm-blog-github-part-1-host-elm-code-on-github)
+- [Part 2 - Add title and content areas](#!/post/elm-blog-github-part-2-add-title-and-content-areas)
+- [Part 3 - Add multiple pages](#!/post/elm-blog-github-part-3-add-multiple-pages)
 
 Constructive feedback is welcome. Find me on [Twitter](https://twitter.com/absynce) or [GitHub](https://github.com/absynce/) as @absynce.
 
